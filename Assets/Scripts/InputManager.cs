@@ -14,12 +14,8 @@ public class InputManager : MonoBehaviour
 
 	void Update()
 	{
-		//TEST PURPOSES
-		if (Input.GetButtonUp(KeyCode.B.ToString()))
-			die.rollForward();
-		if (Input.GetButtonUp(KeyCode.V.ToString()))
-			die.rollBackward();
-
+		if (Input.GetButtonUp("Test1"))
+			GetComponent<MotorSystem>().Moving = !GetComponent<MotorSystem>().Moving;
 
 		if (Input.GetButtonUp("Flip"))
 			flipOrder = 0;
@@ -37,7 +33,7 @@ public class InputManager : MonoBehaviour
 
 
 		if (!die.flip(flipOrder))
-			Debug.Log("Fail");
+			//TO-DO. When player try to flip out of time;
 
 		flipOrder = 3; //Reset to no flip order.
 	}

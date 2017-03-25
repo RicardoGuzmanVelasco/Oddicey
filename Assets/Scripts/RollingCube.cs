@@ -10,7 +10,7 @@ public class RollingCube : MonoBehaviour
 	public float rollingTime = 1;
 
 	public bool grounding = false;
-	public float threshold = 15; //Min degrees difference to consider grounding.
+	float threshold = 15; //Min degrees difference to consider grounding.
 
 	void Awake()
 	{
@@ -27,7 +27,6 @@ public class RollingCube : MonoBehaviour
 		pivot = new Vector2(transform.position.x + extents.x, transform.position.y - extents.y);
 		StartCoroutine(Roll(Vector3.forward));
 	}
-
 
 	public void rollBackward()
 	{
