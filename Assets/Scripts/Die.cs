@@ -2,14 +2,15 @@
 
 public class Die : MonoBehaviour
 {
-	public int side = 1;
-	public Sprite[] sideSprites;
-	public SpriteRenderer sideSpriteRenderer;
+	int side = 1;
+	public Sprite[] sprites;
+	SpriteRenderer renderer;
 
 	float speed = 1; //Public interface for Cube.rollingTime.
 
 	RollingCube cube;
 
+	#region Properties
 	public float Speed
 	{
 		get
@@ -24,10 +25,19 @@ public class Die : MonoBehaviour
 		}
 	}
 
+	public int Side
+	{
+		get
+		{
+			return side;
+		}
+	} 
+	#endregion
+
 	void Awake()
 	{
-		sideSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-		sideSpriteRenderer.sprite = sideSprites[side - 1]; // Internal value smash inspector change.
+		renderer = GetComponent<SpriteRenderer>();
+		renderer.sprite = sprites[side - 1]; // Internal value smash inspector change.
 		cube = GetComponent<RollingCube>();
 	}
 
@@ -50,7 +60,7 @@ public class Die : MonoBehaviour
 			side += 6;
 		else if (side > 6)
 			side -= 6;
-		sideSpriteRenderer.sprite = sideSprites[side - 1];
+		renderer.sprite = sprites[side - 1];
 
 		return true;
 	}
@@ -64,6 +74,6 @@ public class Die : MonoBehaviour
 	public void rollBackward()
 	{
 		cube.rollBackward();
-	} 
+	}
 	#endregion
 }

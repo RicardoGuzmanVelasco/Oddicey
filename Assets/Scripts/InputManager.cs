@@ -31,9 +31,8 @@ public class InputManager : MonoBehaviour
 		if (flipOrder > 2 || flipOrder < -2)
 			return; //No flip is ordered.
 
-
 		if (!die.flip(flipOrder))
-			//TO-DO. When player try to flip out of time;
+			Debug.Log("Out of time!");//TO-DO. When player try to flip out of time;
 
 		flipOrder = 3; //Reset to no flip order.
 	}

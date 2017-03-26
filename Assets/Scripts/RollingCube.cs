@@ -10,7 +10,7 @@ public class RollingCube : MonoBehaviour
 	public float rollingTime = 1;
 
 	public bool grounding = false;
-	float threshold = 15; //Min degrees difference to consider grounding.
+	float threshold = 30; //Min degrees difference to consider grounding.
 
 	void Awake()
 	{
@@ -45,11 +45,10 @@ public class RollingCube : MonoBehaviour
 		rotating = true;
 		floor = transform.position.y;
 
+		grounding = false;
 		for (int i = 0; i < instants; i++)
 		{
 			transform.RotateAround(pivot, axis, -instantAngle); //Left-hand rule.
-			if (instantAngle * i >= threshold)
-				grounding = false;
 			if (instantAngle * i >= 90 - threshold)
 				grounding = true;
 			yield return null;

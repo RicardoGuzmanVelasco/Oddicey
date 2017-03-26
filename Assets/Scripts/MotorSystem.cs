@@ -8,7 +8,6 @@ public class MotorSystem : MonoBehaviour
 	bool moving = false;
 	Vector2 dir = Vector2.right;
 
-	int testCounter = 0;
 	/// <summary>
 	/// Tempo in BPM for movement adjustment.
 	/// </summary>
@@ -111,6 +110,7 @@ public class MotorSystem : MonoBehaviour
 	{
 		while (moving)
 		{
+			GetComponent<Notifier>().NotificateBeep();
 			if (dir == Vector2.right)
 				die.rollForward();
 			else if (dir == Vector2.left)
