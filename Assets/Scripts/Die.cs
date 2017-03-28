@@ -66,14 +66,14 @@ public class Die : MonoBehaviour
 	}
 
 	#region Delegate to rolling motor.
-	public void rollForward()
+	public void RollForward()
 	{
-		cube.rollForward();
+		cube.RollForward();
 	}
 
-	public void rollBackward()
+	public void RollBackward()
 	{
-		cube.rollBackward();
+		cube.RollBackward();
 	}
 	#endregion
 }

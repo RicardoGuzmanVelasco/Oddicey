@@ -20,6 +20,11 @@ public class InputManager : Notificable
 			GetComponent<MotorSystem>().Moving = !GetComponent<MotorSystem>().Moving;
 		if (Input.GetButtonUp("Test2"))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		if (Input.GetButtonUp("Test3"))
+			GetComponent<MotorSystem>().Tempo += GetComponent<MotorSystem>().Tempo / 2;
+		if (Input.GetButtonUp("Test4"))
+			GetComponent<MotorSystem>().Tempo -= GetComponent<MotorSystem>().Tempo / 2;
+
 
 		if (!flipEnabled)
 			return; //TO-DO. When player try to flip twice in a roll;

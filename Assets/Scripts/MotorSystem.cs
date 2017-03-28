@@ -8,6 +8,8 @@ public class MotorSystem : MonoBehaviour
 	bool moving = false;
 	Vector2 dir = Vector2.right;
 
+	float counter = 0;
+
 	/// <summary>
 	/// Tempo in BPM for movement adjustment.
 	/// </summary>
@@ -21,11 +23,11 @@ public class MotorSystem : MonoBehaviour
 	/// <example>
 	/// tempo=120 ^ beep=4 == tempo=30
 	/// </example>
-	[SerializeField] int beep = 1;
+	int beat = 1;
 	/// <summary>
-	/// Actual freq for player movement in hertzs. Internal use only.
+	/// Actual time for 1 player movement in seconds. Internal use only.
 	/// </summary>
-	float freq;
+	float beepTime;
 
 	#region Properties
 	public bool Moving
@@ -40,9 +42,10 @@ public class MotorSystem : MonoBehaviour
 			bool pastMoving = moving;
 			moving = value;
 			if (!pastMoving && value)
-				MoveInvoke();
-			if (pastMoving && !value)
-				StopCoroutine("MovePlayer");
+			{
+				RecalculateMovement();
+				counter = beepTime; //Force beat.
+			}
 		}
 	}
 
@@ -71,7 +74,7 @@ public class MotorSystem : MonoBehaviour
 		set
 		{
 			tempo = value;
-			MoveInvoke();
+			RecalculateMovement();
 		}
 	}
 
@@ -79,13 +82,13 @@ public class MotorSystem : MonoBehaviour
 	{
 		get
 		{
-			return beep;
+			return beat;
 		}
 
 		set
 		{
-			beep = value;
-			MoveInvoke();
+			beat = value;
+			RecalculateMovement();
 		}
 	}
 	#endregion
@@ -95,27 +98,31 @@ public class MotorSystem : MonoBehaviour
 		die = GetComponent<InputManager>().player.GetComponent<Die>();
 	}
 
-	void MoveInvoke()
+	void RecalculateMovement()
 	{
-		freq = 60f / tempo * beep;
-		die.Speed = freq;
-		StartCoroutine(MovePlayer());
+		beepTime = 60f / tempo * beat;
+		die.Speed = beepTime;
 	}
 
 	/// <summary>
-	/// Send to the player a rolling boost.
+	/// Send to the player a rolling boost each beep.
 	/// Assume it will not be called if the player should not be moved.
 	/// </summary>
-	IEnumerator MovePlayer()
+	void Update()
 	{
-		while (moving)
+		if (!moving)
+			return;
+
+		counter += Time.deltaTime;
+
+		if (counter >= beepTime)
 		{
+			counter -= beepTime;
 			GetComponent<Notifier>().NotificateBeep();
 			if (dir == Vector2.right)
-				die.rollForward();
+				die.RollForward();
 			else if (dir == Vector2.left)
-				die.rollBackward();
-			yield return new WaitForSeconds(freq);
+				die.RollBackward();
 		}
 	}
 }
