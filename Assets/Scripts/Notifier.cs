@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class Notifier : MonoBehaviour
 {
-	List<Mark> listeners;
+	List<Notificable> listeners;
 
 	void Awake()
 	{
-		listeners = new List<Mark>();
+		listeners = new List<Notificable>();
 	}
 
-	public void Subscribe(Mark listener)
+	public void Subscribe(Notificable listener)
 	{
 		listeners.Add(listener);
 	}
 
-	public void Unsubscribe(Mark listener)
+	public void Unsubscribe(Notificable listener)
 	{
 		if(!listeners.Remove(listener))
 			Debug.LogWarning("This listener was not subscribed");
@@ -25,5 +25,11 @@ public class Notifier : MonoBehaviour
 	{
 		foreach (var listener in listeners)
 			listener.OnBeep();
+	}
+
+	public void NotificateFlip()
+	{
+		foreach (var listener in listeners)
+			listener.OnFlip();
 	}
 }

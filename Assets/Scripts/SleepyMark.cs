@@ -9,18 +9,15 @@ public class SleepyMark : Mark
 
 	public override void OnBeep()
 	{
-		base.OnBeep();
-
-		if (State)
-			if (asleep)
-				OnWrong();
-			else
-				asleep = true;
+		if (asleep)
+			asleep = false;
+		else
+			OnWrong();
 	}
-
-	protected override void OnWrong()
+	public override void OnFlip()
 	{
-		asleep = false;
-		base.OnWrong();
+		CheckRight();
+		if (State)
+			asleep = true;
 	}
 }

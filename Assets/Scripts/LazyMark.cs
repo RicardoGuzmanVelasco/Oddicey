@@ -14,6 +14,11 @@ public class LazyMark : Mark
 		base.OnBeep();
 	}
 
+	public override void OnFlip()
+	{
+		
+	}
+
 	protected override void OnRight()
 	{
 		awaken = true;

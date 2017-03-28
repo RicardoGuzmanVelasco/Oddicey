@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class InputManager : MonoBehaviour
+public class InputManager : Notificable
 {
 	public GameObject player;
 	Die die;
 
 	int flipOrder = 3; //flip >3 or <(-3) will not be ordered.
+	bool flipEnabled = false;
 
 	void Awake()
 	{
@@ -16,6 +18,11 @@ public class InputManager : MonoBehaviour
 	{
 		if (Input.GetButtonUp("Test1"))
 			GetComponent<MotorSystem>().Moving = !GetComponent<MotorSystem>().Moving;
+		if (Input.GetButtonUp("Test2"))
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+		if (!flipEnabled)
+			return; //TO-DO. When player try to flip twice in a roll;
 
 		if (Input.GetButtonUp("Flip"))
 			flipOrder = 0;
@@ -32,8 +39,16 @@ public class InputManager : MonoBehaviour
 			return; //No flip is ordered.
 
 		if (!die.flip(flipOrder))
-			Debug.Log("Out of time!");//TO-DO. When player try to flip out of time;
+			return; //TO-DO. When player try to flip out of time;
+
+		GetComponent<Notifier>().NotificateFlip();
+		flipEnabled = false;
 
 		flipOrder = 3; //Reset to no flip order.
+	}
+
+	public override void OnBeep()
+	{
+		flipEnabled = true;
 	}
 }

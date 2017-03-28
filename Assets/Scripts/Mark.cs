@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Mark : MonoBehaviour
+public class Mark : Notificable
 {
 	protected int sideRequired;
 	private bool state;
@@ -9,7 +8,9 @@ public class Mark : MonoBehaviour
 	public Die player;
 
 	public Sprite[] sprites;
+#pragma warning disable CS0108
 	protected SpriteRenderer renderer;
+#pragma warning restore CS0108
 
 	protected bool State
 	{
@@ -31,11 +32,11 @@ public class Mark : MonoBehaviour
 		player = FindObjectOfType<Die>();
 	}
 
-	void Start()
+	protected override void Start()
 	{
-		sideRequired = UnityEngine.Random.Range(1, 6);
+		sideRequired = Random.Range(1, 6);
 		renderer.sprite = sprites[sideRequired - 1];
-		FindObjectOfType<Notifier>().Subscribe(this);
+		base.Start(); //Notificable will selfsuscribe.
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
@@ -47,17 +48,22 @@ public class Mark : MonoBehaviour
 				OnFailure();
 	}
 
-	public virtual void OnBeep()
+	public override void OnBeep()
 	{
-		if (IsRight(player.Side))
+		CheckRight();
+	}
+
+	public override void OnFlip()
+	{
+		CheckRight();
+	}
+
+	protected virtual void CheckRight()
+	{
+		if (player.Side == sideRequired)
 			OnRight();
 		else
 			OnWrong();
-	}
-
-	protected virtual bool IsRight(int side)
-	{
-		return side == sideRequired;
 	}
 
 	protected virtual void OnRight()
