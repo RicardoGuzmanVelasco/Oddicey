@@ -6,7 +6,6 @@ public class MotorSystem : MonoBehaviour
 {
 	Die die;
 	bool moving = false;
-	Vector2 dir = Vector2.right;
 
 	float counter = 0;
 
@@ -16,14 +15,14 @@ public class MotorSystem : MonoBehaviour
 	/// <value>
 	/// Current music tempo in BPM.
 	/// </value>
-	[SerializeField] int tempo = 120;
+	public int tempo = 120;
 	/// <summary>
 	/// Ratio between beeps and player movements.
 	/// </summary>
 	/// <example>
 	/// tempo=120 ^ beep=4 == tempo=30
 	/// </example>
-	int beat = 1;
+	public int beat = 1;
 	/// <summary>
 	/// Actual time for 1 player movement in seconds. Internal use only.
 	/// </summary>
@@ -46,21 +45,6 @@ public class MotorSystem : MonoBehaviour
 				RecalculateMovement();
 				counter = beepTime; //Force beat.
 			}
-		}
-	}
-
-	public Vector2 Dir
-	{
-		get
-		{
-			return dir;
-		}
-
-		set
-		{
-			if (value != Vector2.right && value != Vector2.left)
-				Debug.LogError("MotorSystem can only automove to left or right");
-			dir = value;
 		}
 	}
 
@@ -119,10 +103,7 @@ public class MotorSystem : MonoBehaviour
 		{
 			counter -= beepTime;
 			GetComponent<Notifier>().NotificateBeep();
-			if (dir == Vector2.right)
-				die.RollForward();
-			else if (dir == Vector2.left)
-				die.RollBackward();
+			die.GetComponent<RollingCube>().Roll();
 		}
 	}
 }

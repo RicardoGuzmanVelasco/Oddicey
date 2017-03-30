@@ -8,11 +8,9 @@ public class Mark : Notificable
 	public Die player;
 
 	public Sprite[] sprites;
-#pragma warning disable CS0108
 	protected SpriteRenderer renderer;
-#pragma warning restore CS0108
 
-	protected bool State
+	public bool State
 	{
 		get
 		{
@@ -42,10 +40,7 @@ public class Mark : Notificable
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag == "Player")
-			if (State)
-				OnSuccess();
-			else
-				OnFailure();
+			CheckSuccess();
 	}
 
 	public override void OnBeep()
@@ -60,10 +55,15 @@ public class Mark : Notificable
 
 	protected virtual void CheckRight()
 	{
-		if (player.Side == sideRequired)
+		if (IsRight())
 			OnRight();
 		else
 			OnWrong();
+	}
+
+	protected bool IsRight()
+	{
+		return player.Side == sideRequired;
 	}
 
 	protected virtual void OnRight()
@@ -76,15 +76,22 @@ public class Mark : Notificable
 		State = false;
 	}
 
+	public void CheckSuccess()
+	{
+		if (State)
+			OnSuccess();
+		else
+			OnFailure();
+	}
+
 	protected virtual void OnSuccess()
 	{
 		Debug.Log("Success");
-		FindObjectOfType<Notifier>().Unsubscribe(this);
 	}
 
 	protected virtual void OnFailure()
 	{
 		Debug.Log("Fail");
-		FindObjectOfType<Notifier>().Unsubscribe(this);
+		FindObjectOfType<Notifier>().NotificateFail();
 	}
 }

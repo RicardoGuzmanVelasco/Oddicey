@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Notificable : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public abstract class Notificable : MonoBehaviour
 
 		set
 		{
-			if(value)
+			if (value)
 				FindObjectOfType<Notifier>().Subscribe(this);
 			else
 				FindObjectOfType<Notifier>().Unsubscribe(this);
@@ -23,7 +24,8 @@ public abstract class Notificable : MonoBehaviour
 
 	public virtual void OnBeep() { }
 	public virtual void OnFlip() { }
-
+	public virtual void OnFail() { }
+	public virtual void OnDead() { }
 	/// <summary>
 	/// Notificable will selfsubscribe when “awake”.
 	/// </summary>

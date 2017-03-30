@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Die : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Die : MonoBehaviour
 		{
 			return side;
 		}
-	} 
+	}
 	#endregion
 
 	void Awake()
@@ -64,16 +65,4 @@ public class Die : MonoBehaviour
 
 		return true;
 	}
-
-	#region Delegate to rolling motor.
-	public void RollForward()
-	{
-		cube.RollForward();
-	}
-
-	public void RollBackward()
-	{
-		cube.RollBackward();
-	}
-	#endregion
 }

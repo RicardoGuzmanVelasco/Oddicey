@@ -16,14 +16,13 @@ public class LazyMark : Mark
 
 	public override void OnFlip()
 	{
-		
+		if (IsRight())
+			renderer.color = Color.yellow;
 	}
 
 	protected override void OnRight()
 	{
 		awaken = true;
-		if (!State)
-			renderer.color = Color.yellow;
 	}
 
 	protected override void OnWrong()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Notifier : MonoBehaviour
@@ -31,5 +32,17 @@ public class Notifier : MonoBehaviour
 	{
 		foreach (var listener in listeners)
 			listener.OnFlip();
+	}
+
+	public void NotificateFail()
+	{
+		foreach (var listener in listeners)
+			listener.OnFail();
+	}
+
+	public void NotificateDead()
+	{
+		foreach (var listener in listeners)
+			listener.OnDead();
 	}
 }

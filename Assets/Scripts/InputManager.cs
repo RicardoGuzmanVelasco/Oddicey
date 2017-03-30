@@ -11,7 +11,7 @@ public class InputManager : Notificable
 
 	void Awake()
 	{
-		die = player.GetComponent<Die>();
+		die = player.GetComponent<Player>().GetComponent<Die>();
 	}
 
 	void Update()
@@ -21,9 +21,9 @@ public class InputManager : Notificable
 		if (Input.GetButtonUp("Test2"))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		if (Input.GetButtonUp("Test3"))
-			GetComponent<MotorSystem>().Tempo += GetComponent<MotorSystem>().Tempo / 2;
+			GetComponent<MotorSystem>().Tempo += 10;
 		if (Input.GetButtonUp("Test4"))
-			GetComponent<MotorSystem>().Tempo -= GetComponent<MotorSystem>().Tempo / 2;
+			GetComponent<MotorSystem>().Tempo -= 10;
 
 
 		if (!flipEnabled)

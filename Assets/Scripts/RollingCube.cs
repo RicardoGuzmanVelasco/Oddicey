@@ -5,9 +5,11 @@ using UnityEngine;
 public class RollingCube : MonoBehaviour
 {
 	Vector2 pivot, extents;
-	float floor; //'y' value before roll.
+	public float floor; //'y' value before roll.
 	bool rolling = false;
 	public float rollingTime = 1;
+
+	public Vector2 dir = Vector2.right;
 
 	public bool grounding = false;
 	float threshold = 30; //Min degrees difference to consider grounding.
@@ -20,7 +22,15 @@ public class RollingCube : MonoBehaviour
 		extents = GetComponent<Collider2D>().bounds.extents;
 	}
 
-	public void RollForward()
+	public void Roll()
+	{
+		if (dir == Vector2.right)
+			RollForward();
+		else if (dir == Vector2.left)
+			RollBackward();
+	}
+
+	void RollForward()
 	{
 		if (rolling)
 			return;
@@ -28,7 +38,7 @@ public class RollingCube : MonoBehaviour
 		StartCoroutine(Roll(Vector3.forward));
 	}
 
-	public void RollBackward()
+	void RollBackward()
 	{
 		if (rolling)
 			return;
@@ -38,7 +48,7 @@ public class RollingCube : MonoBehaviour
 
 	IEnumerator Roll(Vector3 axis)
 	{
-		float instants = Mathf.Ceil(rollingTime * 1/Time.fixedDeltaTime); // The constant normalizes angular operations and frames.
+		float instants = Mathf.Ceil(rollingTime * 1 / Time.fixedDeltaTime); // The constant normalizes angular operations and frames.
 		float instantAngle = 90f / instants;
 
 		//Set and take values.
@@ -59,5 +69,15 @@ public class RollingCube : MonoBehaviour
 		transform.position = new Vector3(transform.position.x, floor, transform.position.z);
 		transform.eulerAngles = transform.eulerAngles.Snap(90);
 		rolling = false;
+	}
+
+	public void Turn()
+	{
+		dir *= -1;
+	}
+
+	public void Turn(Vector2 newDir)
+	{
+		dir = newDir;
 	}
 }
