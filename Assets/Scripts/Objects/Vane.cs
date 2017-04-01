@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Turner : Notificable
+public class Vane : Notificable
 {
 	void OnTriggerEnter2D(Collider2D collision)
 	{

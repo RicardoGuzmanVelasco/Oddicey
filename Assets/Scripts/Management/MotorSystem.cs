@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MotorSystem : MonoBehaviour
 {
@@ -15,6 +13,7 @@ public class MotorSystem : MonoBehaviour
 	/// <value>
 	/// Current music tempo in BPM.
 	/// </value>
+	[Range(30, 200)]
 	public int tempo = 120;
 	/// <summary>
 	/// Ratio between beeps and player movements.
@@ -22,11 +21,14 @@ public class MotorSystem : MonoBehaviour
 	/// <example>
 	/// tempo=120 ^ beep=4 == tempo=30
 	/// </example>
+	[Range(1, 4)]
 	public int beat = 1;
 	/// <summary>
 	/// Actual time for 1 player movement in seconds. Internal use only.
 	/// </summary>
 	float beepTime;
+
+	bool recalculatePending = false;
 
 	#region Properties
 	public bool Moving
@@ -58,11 +60,11 @@ public class MotorSystem : MonoBehaviour
 		set
 		{
 			tempo = value;
-			RecalculateMovement();
+			recalculatePending = true;
 		}
 	}
 
-	public int Beep
+	public int Beat
 	{
 		get
 		{
@@ -72,7 +74,7 @@ public class MotorSystem : MonoBehaviour
 		set
 		{
 			beat = value;
-			RecalculateMovement();
+			recalculatePending = true;
 		}
 	}
 	#endregion
@@ -85,7 +87,7 @@ public class MotorSystem : MonoBehaviour
 	void RecalculateMovement()
 	{
 		beepTime = 60f / tempo * beat;
-		die.Speed = beepTime;
+		die.GetComponent<RollingCube>().RollingTime = beepTime;
 	}
 
 	/// <summary>
@@ -102,6 +104,11 @@ public class MotorSystem : MonoBehaviour
 		if (counter >= beepTime)
 		{
 			counter -= beepTime;
+			if (recalculatePending)
+			{
+				RecalculateMovement();
+				recalculatePending = false;
+			}
 			GetComponent<Notifier>().NotificateBeep();
 			die.GetComponent<RollingCube>().Roll();
 		}

@@ -15,5 +15,6 @@ public class PlayManager : Notificable
 	{
 		FindObjectOfType<Notifier>().NotificateDead();
 		player.Teleport(checkpoint);
+		GetComponent<MotorSystem>().Moving = false;
 	}
 }

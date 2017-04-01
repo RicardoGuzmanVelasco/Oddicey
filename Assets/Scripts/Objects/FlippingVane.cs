@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FlippingTurner : Turner
+public class FlippingVane : Vane
 {
 	/// <summary>
 	/// Course the die will take when collides.

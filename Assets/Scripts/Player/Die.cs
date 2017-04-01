@@ -7,24 +7,9 @@ public class Die : MonoBehaviour
 	public Sprite[] sprites;
 	SpriteRenderer renderer;
 
-	float speed = 1; //Public interface for Cube.rollingTime.
-
 	RollingCube cube;
 
 	#region Properties
-	public float Speed
-	{
-		get
-		{
-			return speed;
-		}
-
-		set
-		{
-			cube.rollingTime = value;
-			speed = value;
-		}
-	}
 
 	public int Side
 	{

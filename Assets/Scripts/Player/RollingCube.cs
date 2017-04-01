@@ -1,4 +1,4 @@
-﻿using Extensions; //Own namespace for extension methods.
+﻿using Utils.Extensions.VectorExtensions;
 using System.Collections;
 using UnityEngine;
 
@@ -6,13 +6,30 @@ public class RollingCube : MonoBehaviour
 {
 	Vector2 pivot, extents;
 	public float floor; //'y' value before roll.
-	bool rolling = false;
-	public float rollingTime = 1;
+	public bool rolling = false;
+
+	const float error = 0.05f;
+	float rollingTime; //Inverse of speed with error constant. Time to do a roll.
 
 	public Vector2 dir = Vector2.right;
 
 	public bool grounding = false;
 	float threshold = 30; //Min degrees difference to consider grounding.
+
+	#region Properties
+	public float RollingTime
+	{
+		get
+		{
+			return rollingTime;
+		}
+
+		set
+		{
+			rollingTime = value - value * error;
+		}
+	}
+	#endregion
 
 	void Awake()
 	{
@@ -33,7 +50,10 @@ public class RollingCube : MonoBehaviour
 	void RollForward()
 	{
 		if (rolling)
+		{
+			Debug.LogError("LOST BEEP");
 			return;
+		}
 		pivot = new Vector2(transform.position.x + extents.x, transform.position.y - extents.y);
 		StartCoroutine(Roll(Vector3.forward));
 	}
@@ -41,14 +61,17 @@ public class RollingCube : MonoBehaviour
 	void RollBackward()
 	{
 		if (rolling)
+		{
+			Debug.LogError("LOST BEEP");
 			return;
+		}
 		pivot = new Vector2(transform.position.x - extents.x, transform.position.y - extents.y);
 		StartCoroutine(Roll(Vector3.back));
 	}
 
 	IEnumerator Roll(Vector3 axis)
 	{
-		float instants = Mathf.Ceil(rollingTime * 1 / Time.fixedDeltaTime); // The constant normalizes angular operations and frames.
+		float instants = Mathf.Ceil(RollingTime / Time.fixedDeltaTime);
 		float instantAngle = 90f / instants;
 
 		//Set and take values.
@@ -61,12 +84,12 @@ public class RollingCube : MonoBehaviour
 			transform.RotateAround(pivot, axis, -instantAngle); //Left-hand rule.
 			if (instantAngle * i >= 90 - threshold)
 				grounding = true;
-			yield return new WaitForEndOfFrame();
+			yield return new WaitForFixedUpdate();
 		}
 
 		//Reset, free and snap properly.
 		pivot = transform.position;
-		transform.position = new Vector3(transform.position.x, floor, transform.position.z);
+		transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), floor, transform.position.z);
 		transform.eulerAngles = transform.eulerAngles.Snap(90);
 		rolling = false;
 	}
