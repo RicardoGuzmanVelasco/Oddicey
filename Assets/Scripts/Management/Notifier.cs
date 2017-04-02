@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Notifier : MonoBehaviour
@@ -18,13 +17,14 @@ public class Notifier : MonoBehaviour
 
 	public void Unsubscribe(Notificable listener)
 	{
-		if(!listeners.Remove(listener))
+		if (!listeners.Remove(listener))
 			Debug.LogWarning("This listener was not subscribed");
 	}
 
 	public void NotificateBeep()
 	{
-		foreach (var listener in listeners)
+		//ToArray() returns a copy, which prevents problems unsubscribing during foreach.
+		foreach (var listener in listeners.ToArray())
 			listener.OnBeep();
 	}
 
