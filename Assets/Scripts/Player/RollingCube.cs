@@ -89,7 +89,7 @@ public class RollingCube : MonoBehaviour
 
 		//Reset, free and snap properly.
 		pivot = transform.position;
-		transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), floor, transform.position.z);
+		transform.position = transform.position.XY(Mathf.RoundToInt(transform.position.x), floor);
 		transform.eulerAngles = transform.eulerAngles.Snap(90);
 		rolling = false;
 	}

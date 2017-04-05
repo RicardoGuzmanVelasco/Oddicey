@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Utils.Extensions.VectorExtensions;
 
 public class MarksPile : Notificable
 {
@@ -46,9 +47,7 @@ public class MarksPile : Notificable
 		for (int i = foot; i < marks.Count; i++)
 		{
 			//Stacking marks by hierarchy order.
-			Vector3 place = transform.position;
-			place.y += -4 + (i - foot) * 4; // 4 is size of square.
-			marks[i].transform.position = place;
+			marks[i].transform.position = transform.position.Y(-4 + (i - foot) * 4);
 			if (marks[i].Listening)
 				marks[i].Listening = false;
 		}

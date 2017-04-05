@@ -26,4 +26,13 @@ public class Tracker : MonoBehaviour
 	{
 		distance = pursued.position - transform.position;
 	}
+
+	void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag == "EditorOnly")
+		{
+			x = false;
+			y = false;
+		}
+	}
 }
