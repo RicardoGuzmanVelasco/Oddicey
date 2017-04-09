@@ -10,7 +10,15 @@ public class Builder : MonoBehaviour
 			Destroy(this);
 	}
 
-	protected virtual void Clean() { }
+	public static bool IsSquare(Vector2 position)
+	{
+		return position.x % SquareSize <= float.Epsilon && position.y % SquareSize <= float.Epsilon;
+	}
+
+	public static bool IsSquare(float units)
+	{
+		return units % SquareSize <= float.Epsilon;
+	}
 
 	/// <summary>
 	/// Convert from <paramref name="units"/> to game squares.

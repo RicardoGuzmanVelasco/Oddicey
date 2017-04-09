@@ -98,8 +98,8 @@ namespace Utils
 			/// <summary>
 			/// Duplicates the object using <see cref="GameObject.Instantiate"/>.
 			/// </summary>
-			/// <param name="pos"> The position of the clone. By default, the same position.</param>
-			/// <param name="name">The name of the clone. By default, namesake.</param>
+			/// <param name="pos"> The ABSOLUTE position of the clone. Same that parent by default.</param>
+			/// <param name="name">The name of the clone. Namesake by default.</param>
 			public static GameObject Clone(this GameObject gameobject, Vector3 pos, string name = null)
 			{
 				if (name == null)
@@ -114,7 +114,7 @@ namespace Utils
 
 			/// <summary>
 			/// <para>Duplicates the object using <see cref="GameObject.Instantiate"/>.</para>
-			/// <para>The clone will take the same position.</para>
+			/// <para>The clone will take the same absolute position.</para>
 			/// </summary>
 			/// <param name="name">The name of the clone. By default, namesake.</param>
 			public static GameObject Clone(this GameObject gameobject, string name = null)
@@ -133,7 +133,7 @@ namespace Utils
 			public static void DestroyChildren(this Transform transform, string name)
 			{
 				//Cast & reverse prevent destroying on iterating array.
-				foreach (var child in transform.Cast<Transform>().Reverse())
+				foreach (Transform child in transform.Cast<Transform>().Reverse())
 					if (child.name == name)
 						GameObject.DestroyImmediate(child.gameObject);
 			}
