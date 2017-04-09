@@ -124,7 +124,7 @@ public class RollingCube : MonoBehaviour
 	{
 		do
 		{
-			transform.Translate(Vector2.down * 4 * error / rollingTime * Time.fixedDeltaTime, Space.World);
+			transform.Translate(Vector2.down * Builder.ToUnits(error / rollingTime) * Time.fixedDeltaTime, Space.World);
 			yield return new WaitForFixedUpdate();
 		} while (falling);
 	}

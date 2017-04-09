@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Utils
 {
@@ -121,6 +122,21 @@ namespace Utils
 				return gameobject.Clone(gameobject.transform.position, name);
 			}
 			#endregion
+		}
+
+		public static class TransformExtensions
+		{
+			/// <summary>
+			/// Destroy all childs with <paramref name="name"/>.
+			/// </summary>
+			/// <param name="name">String pattern.</param>
+			public static void DestroyChildren(this Transform transform, string name)
+			{
+				//Cast & reverse prevent destroying on iterating array.
+				foreach (var child in transform.Cast<Transform>().Reverse())
+					if (child.name == name)
+						GameObject.DestroyImmediate(child.gameObject);
+			}
 		}
 	}
 }

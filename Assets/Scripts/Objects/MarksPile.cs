@@ -47,7 +47,7 @@ public class MarksPile : Notificable
 		for (int i = foot; i < marks.Count; i++)
 		{
 			//Stacking marks by hierarchy order.
-			marks[i].transform.position = transform.position.Y(-4 + (i - foot) * 4);
+			marks[i].transform.position = transform.position.Y(-Builder.SquareSize + Builder.ToUnits(i - foot));
 			if (marks[i].Listening)
 				marks[i].Listening = false;
 		}
