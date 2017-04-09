@@ -45,4 +45,12 @@ public class Notifier : MonoBehaviour
 		foreach (var listener in listeners)
 			listener.OnDead();
 	}
+
+	public void NotificateTurn()
+	{
+		foreach (var listener in listeners)
+		{
+			listener.OnTurn();
+		}
+	}
 }

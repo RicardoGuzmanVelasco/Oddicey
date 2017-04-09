@@ -29,10 +29,9 @@ public class Tracker : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "EditorOnly")
+		if (collision.tag == "Boundary" && collision.name == "EOL")
 		{
 			x = false;
-			y = false;
 		}
 	}
 }

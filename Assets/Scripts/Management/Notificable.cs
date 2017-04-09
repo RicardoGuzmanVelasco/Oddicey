@@ -26,6 +26,7 @@ public abstract class Notificable : MonoBehaviour
 	public virtual void OnFlip() { }
 	public virtual void OnFail() { }
 	public virtual void OnDead() { }
+	public virtual void OnTurn() { }
 	/// <summary>
 	/// Notificable will selfsubscribe when “awake”.
 	/// </summary>

@@ -5,7 +5,7 @@ public class Die : MonoBehaviour
 {
 	int side = 1;
 	public Sprite[] sprites;
-	SpriteRenderer renderer;
+	SpriteRenderer spriteRenderer;
 
 	RollingCube cube;
 
@@ -22,8 +22,8 @@ public class Die : MonoBehaviour
 
 	void Awake()
 	{
-		renderer = GetComponent<SpriteRenderer>();
-		renderer.sprite = sprites[side - 1]; // Internal value smash inspector change.
+		spriteRenderer = GetComponent<SpriteRenderer>();
+		spriteRenderer.sprite = sprites[side - 1]; // Internal value smash inspector change.
 		cube = GetComponent<RollingCube>();
 	}
 
@@ -46,7 +46,7 @@ public class Die : MonoBehaviour
 			side += 6;
 		else if (side > 6)
 			side -= 6;
-		renderer.sprite = sprites[side - 1];
+		spriteRenderer.sprite = sprites[side - 1];
 
 		return true;
 	}

@@ -103,6 +103,7 @@ public class MotorSystem : MonoBehaviour
 
 		if (counter >= beepTime)
 		{
+			GetComponent<AudioSource>().Play();
 			counter -= beepTime;
 			if (recalculatePending)
 			{

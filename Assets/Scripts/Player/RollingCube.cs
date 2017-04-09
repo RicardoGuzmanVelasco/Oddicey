@@ -1,14 +1,17 @@
-﻿using Utils.Extensions.VectorExtensions;
+﻿using Utils.Extensions;
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class RollingCube : MonoBehaviour
 {
+	private bool falling = false;
+
 	Vector2 pivot, extents;
 	public float floor; //'y' value before roll.
 	public bool rolling = false;
 
-	const float error = 0.05f;
+	const float error = 0.95f;
 	float rollingTime; //Inverse of speed with error constant. Time to do a roll.
 
 	public Vector2 dir = Vector2.right;
@@ -26,7 +29,22 @@ public class RollingCube : MonoBehaviour
 
 		set
 		{
-			rollingTime = value - value * error;
+			rollingTime = value * error;
+		}
+	}
+
+	public bool Falling
+	{
+		get
+		{
+			return falling;
+		}
+
+		set
+		{
+			if (value && !falling)
+				StartCoroutine(Fall());
+			falling = value;
 		}
 	}
 	#endregion
@@ -41,6 +59,9 @@ public class RollingCube : MonoBehaviour
 
 	public void Roll()
 	{
+		if (Falling)
+			return;
+
 		if (dir == Vector2.right)
 			RollForward();
 		else if (dir == Vector2.left)
@@ -89,18 +110,34 @@ public class RollingCube : MonoBehaviour
 
 		//Reset, free and snap properly.
 		pivot = transform.position;
+		Snap();
+		rolling = false;
+	}
+
+	public void Snap()
+	{
 		transform.position = transform.position.XY(Mathf.RoundToInt(transform.position.x), floor);
 		transform.eulerAngles = transform.eulerAngles.Snap(90);
-		rolling = false;
+	}
+
+	IEnumerator Fall()
+	{
+		do
+		{
+			transform.Translate(Vector2.down * 4 * error / rollingTime * Time.fixedDeltaTime, Space.World);
+			yield return new WaitForFixedUpdate();
+		} while (falling);
 	}
 
 	public void Turn()
 	{
 		dir *= -1;
+		FindObjectOfType<Notifier>().NotificateTurn();
 	}
 
 	public void Turn(Vector2 newDir)
 	{
 		dir = newDir;
+		FindObjectOfType<Notifier>().NotificateTurn();
 	}
 }

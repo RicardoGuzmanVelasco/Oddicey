@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Utils.Extensions.VectorExtensions;
+using Utils.Extensions;
 
 public class StaticBackground : MonoBehaviour
 {

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils.Extensions;
 
 public class Vane : Notificable
 {
@@ -11,5 +12,10 @@ public class Vane : Notificable
 	protected virtual void TurnPlayer(RollingCube rollingCube)
 	{
 		rollingCube.Turn();
+	}
+
+	public override void OnTurn()
+	{
+		transform.localScale = transform.localScale.X(transform.localScale.x * -1);
 	}
 }

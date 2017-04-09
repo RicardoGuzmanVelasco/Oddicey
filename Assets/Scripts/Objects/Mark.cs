@@ -8,7 +8,7 @@ public class Mark : Notificable
 	public Die player;
 
 	public Sprite[] sprites;
-	protected SpriteRenderer renderer;
+	protected SpriteRenderer spriteRenderer;
 
 	public bool State
 	{
@@ -20,20 +20,20 @@ public class Mark : Notificable
 		set
 		{
 			state = value;
-			renderer.color = state ? Color.green : Color.red;
+			spriteRenderer.color = state ? Color.green : Color.red;
 		}
 	}
 
 	void Awake()
 	{
-		renderer = GetComponent<SpriteRenderer>();
+		spriteRenderer = GetComponent<SpriteRenderer>();
 		player = FindObjectOfType<Die>();
 	}
 
 	protected override void Start()
 	{
 		sideRequired = Random.Range(1, 6);
-		renderer.sprite = sprites[sideRequired - 1];
+		spriteRenderer.sprite = sprites[sideRequired - 1];
 		base.Start(); //Notificable will selfsuscribe.
 	}
 

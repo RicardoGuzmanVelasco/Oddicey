@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils.Extensions;
 
 public class Post : MonoBehaviour
 {
@@ -7,9 +8,9 @@ public class Post : MonoBehaviour
 		if (collision.tag != "Player")
 			return;
 
-		Debug.Log("Checkpoint");
-
 		FindObjectOfType<PlayManager>().checkpoint = transform.position;
 		GetComponent<Collider2D>().enabled = false;
+
+		transform.localScale = transform.localScale.X(transform.localScale.x * -1);
 	}
 }

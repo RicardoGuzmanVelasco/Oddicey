@@ -16,4 +16,6 @@ public class FlippingVane : Vane
 	{
 		rollingCube.Turn(dir);
 	}
+
+	public override void OnTurn() { }
 }

@@ -7,7 +7,7 @@ public class InputManager : Notificable
 	Die die;
 
 	int flipOrder = 3; //flip >3 or <(-3) will not be ordered.
-	bool flipEnabled = false;
+	public bool flipEnabled = false;
 
 	void Awake()
 	{

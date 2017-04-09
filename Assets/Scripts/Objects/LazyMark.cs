@@ -17,7 +17,7 @@ public class LazyMark : Mark
 	public override void OnFlip()
 	{
 		if (IsRight())
-			renderer.color = Color.yellow;
+			spriteRenderer.color = Color.yellow;
 	}
 
 	protected override void OnRight()
