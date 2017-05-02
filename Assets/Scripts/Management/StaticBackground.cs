@@ -42,18 +42,18 @@ public class StaticBackground : MonoBehaviour
 		camOffset = cameraEdge - cam.position.x;
 
 		xOrigin = transform.localPosition.x;
-		float backgroundOffset = xOrigin + GetComponent<SpriteRenderer>().sprite.bounds.extents.x * error;
+		float backgroundOffset = xOrigin + GetComponent<SpriteRenderer>().sprite.bounds.extents.x * transform.localScale.x * error;
 		xOffset = backgroundOffset - cameraEdge;
 	}
 
 	void Update()
 	{
-		/* normalizedOrigin |--> x |--> normalizedEndOfLevel.
-		   camOrigin |--> camX |--> endOfLevel */
 		float camEdge = cam.position.x + camOffset;
 		float camX = (camEdge - camOrigin) / (endOfLevel - camOrigin);
 
-		transform.localPosition = transform.position.X(xOrigin - xOffset * camX);
+		Debug.Log(camEdge + " " + camOrigin);
+
+		transform.localPosition = transform.localPosition.X(xOrigin - xOffset * camX);
 	}
 
 

@@ -24,6 +24,8 @@ public class InputManager : Notificable
 			GetComponent<MotorSystem>().Tempo += 10;
 		if (Input.GetButtonUp("Test4"))
 			GetComponent<MotorSystem>().Tempo -= 10;
+		if (Input.GetButtonUp("Test5"))
+			die.GetComponent<RollingCube>().Turn();
 
 
 		if (!flipEnabled)
