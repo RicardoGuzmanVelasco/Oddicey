@@ -19,7 +19,7 @@ public class StaticBackground : MonoBehaviour
 
 	Transform cam;
 	/// <summary>
-	/// Original position of camera.
+	/// Original position of camera (right edge).
 	/// </summary>
 	float camOrigin;
 	/// <summary>
@@ -37,21 +37,18 @@ public class StaticBackground : MonoBehaviour
 	{
 		Camera camera = GetComponentInParent<Camera>();
 		cam = camera.transform;
-		float cameraEdge = camera.ScreenToWorldPoint(new Vector3(camera.pixelWidth, 0, 0)).x;
-		camOrigin = cam.position.x + cameraEdge;
-		camOffset = cameraEdge - cam.position.x;
+		camOrigin = camera.ScreenToWorldPoint(new Vector3(camera.pixelWidth, 0, 0)).x;
+		camOffset = camOrigin - cam.position.x;
 
 		xOrigin = transform.localPosition.x;
 		float backgroundOffset = xOrigin + GetComponent<SpriteRenderer>().sprite.bounds.extents.x * transform.localScale.x * error;
-		xOffset = backgroundOffset - cameraEdge;
+		xOffset = backgroundOffset - camOffset;
 	}
 
 	void Update()
 	{
 		float camEdge = cam.position.x + camOffset;
 		float camX = (camEdge - camOrigin) / (endOfLevel - camOrigin);
-
-		Debug.Log(camEdge + " " + camOrigin);
 
 		transform.localPosition = transform.localPosition.X(xOrigin - xOffset * camX);
 	}

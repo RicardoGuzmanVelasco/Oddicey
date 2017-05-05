@@ -126,6 +126,7 @@ namespace Utils
 
 		public static class TransformExtensions
 		{
+			#region Destroy
 			/// <summary>
 			/// Destroy all childs with <paramref name="name"/>.
 			/// </summary>
@@ -137,6 +138,7 @@ namespace Utils
 					if (child.name == name)
 						GameObject.DestroyImmediate(child.gameObject);
 			}
+			#endregion
 		}
 	}
 }
