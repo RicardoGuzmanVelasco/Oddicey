@@ -13,17 +13,15 @@ public class Die : MonoBehaviour
 
 	public int Side
 	{
-		get
-		{
-			return side;
-		}
+		get { return side; }
 	}
+
 	#endregion
 
 	void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
-		spriteRenderer.sprite = sprites[side - 1]; // Internal value smash inspector change.
+		spriteRenderer.sprite = sprites[side - 1]; //Internal value smashes inspector change.
 		cube = GetComponent<RollingCube>();
 	}
 

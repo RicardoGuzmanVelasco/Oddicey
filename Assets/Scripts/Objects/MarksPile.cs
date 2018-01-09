@@ -4,12 +4,30 @@ using Utils.Extensions;
 
 public class MarksPile : Notificable
 {
+	/// <summary>
+	/// Marks shaping the pile.
+	/// </summary>
 	List<Mark> marks = new List<Mark>();
-	int foot = 0; //Index of marks that is in foot.
+	/// <summary>
+	/// Index of mark that is at the bottom of the pile (the only one listening).
+	/// </summary>
+	int foot = 0;
+	/// <summary>
+	/// If marks remaining.
+	/// </summary>
+	/// <value>
+	/// False: still not passed. Marks remaining.
+	/// </value>
 	bool state;
 
+	/// <summary>
+	/// Portal linked with this pile, if any.
+	/// </summary>
 	public Portal Gate;
 
+	/// <summary>
+	/// Setting State to true will send Open instruction to the linked gate.
+	/// </summary>
 	#region Properties
 	public bool State
 	{
@@ -42,11 +60,14 @@ public class MarksPile : Notificable
 		base.Start(); //The pile selfsubscribes.
 	}
 
+	/// <summary>
+	/// Set the marks shaping a pile, one over other.
+	/// </summary>
 	private void StackMarks()
 	{
 		for (int i = foot; i < marks.Count; i++)
 		{
-			//Stacking marks by hierarchy order.
+			//Stacking marks by 'hierarchy' order.
 			marks[i].transform.position = transform.position.Y(-Builder.SquareSize + Builder.ToUnits(i - foot));
 			if (marks[i].Listening)
 				marks[i].Listening = false;
@@ -55,10 +76,14 @@ public class MarksPile : Notificable
 			marks[foot].Listening = true; //Just the foot of the pile subscribes.
 	}
 
+	/// <summary>
+	/// Reshaping if foot mark is passed, changing State if was the last.
+	/// </summary>
 	public override void OnBeep()
 	{
 		if (State)
 			return;
+		//May cause throughput decreases. TO-DO?: avoid generate aux Mark each beep.
 		Mark footMark = marks[foot];
 		if (footMark.State)
 		{

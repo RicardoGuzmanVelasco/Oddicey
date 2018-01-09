@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Change player's direction where the vane itself points.
+/// </summary>
+/// <remarks>
+/// Change his own direction every beep, and NOT when player does.
+/// </remarks>
 public class FlippingVane : Vane
 {
-	/// <summary>
-	/// Course the die will take when collides.
-	/// </summary>
-	public Vector2 dir = Vector2.left;
 
 	public override void OnBeep()
 	{
-		dir *= -1;
+		TurnAround();
 	}
 
-	protected override void TurnPlayer(RollingCube rollingCube)
-	{
-		rollingCube.Turn(dir);
-	}
-
+	/// <summary>
+	/// Overriding in order to avoid turn around when player does. 
+	/// </summary>
 	public override void OnTurn() { }
 }

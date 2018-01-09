@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Tracker : MonoBehaviour
+public class Tracker : Notificable
 {
 	public Transform pursued;
 	Vector2 distance;
@@ -8,9 +8,14 @@ public class Tracker : MonoBehaviour
 	/// if tracker will follow on X, Y or both. X by default.
 	/// </summary>
 	public bool x = true, y = false;
+	/// <summary>
+	/// When stopped, if retrack it will take last values.
+	/// </summary>
+	bool lastX = true, lastY = false;
 
-	void Start()
+	override protected void Start()
 	{
+		base.Start(); // Subscribing to the notifier.
 		RecalculateDistance();
 	}
 
@@ -31,7 +36,17 @@ public class Tracker : MonoBehaviour
 	{
 		if (collision.tag == "Boundary" && collision.name == "EOL")
 		{
+			lastX = x;
 			x = false;
+		}
+	}
+
+	public override void OnTurn()
+	{
+		if (!x && !y)
+		{
+			x = lastX;
+			y = lastY;
 		}
 	}
 }

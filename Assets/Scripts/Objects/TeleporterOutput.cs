@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TeleporterOutput : MonoBehaviour
 {
+	/// <summary>
+	/// Not collisionable mark! Just floating over the output.
+	/// </summary>
 	Mark mark;
 
 	void Awake()

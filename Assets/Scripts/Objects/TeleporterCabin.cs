@@ -1,9 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Teleporter origin with linked outputs.
+/// </summary>
 public class TeleporterCabin : MonoBehaviour
 {
 	public List<TeleporterOutput> outputs;
+	/// <summary>
+	/// Default output if none fits.
+	/// </summary>
 	public Transform sink;
 
 	void OnTriggerEnter2D(Collider2D collision)

@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Obstacle that switch on when die side of the player fits with its own. 
+/// </summary>
+/// <remarks>
+/// It remains awaken just a beep.
+/// </remarks>
 public class SleepyMark : Mark
 {
 	/// <summary>
@@ -14,6 +20,7 @@ public class SleepyMark : Mark
 		else
 			OnWrong();
 	}
+
 	public override void OnFlip()
 	{
 		CheckRight();

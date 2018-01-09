@@ -29,7 +29,7 @@ public class InputManager : Notificable
 
 
 		if (!flipEnabled)
-			return; //TO-DO. When player try to flip twice in a roll;
+			return; //TO-DO: When player try to flip twice in a roll;
 
 		if (Input.GetButtonUp("Flip"))
 			flipOrder = 0;
@@ -46,7 +46,7 @@ public class InputManager : Notificable
 			return; //No flip is ordered.
 
 		if (!die.flip(flipOrder))
-			return; //TO-DO. When player try to flip out of time;
+			return; //TO-DO: when player try to flip out of time;
 
 		GetComponent<Notifier>().NotificateFlip();
 		flipEnabled = false;

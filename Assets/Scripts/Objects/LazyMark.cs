@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Obstacle that switch on when die side of the player fits with its own. 
+/// </summary>
+/// <remarks>
+/// It takes a beep more on waking up and then remains active forever.
+/// </remarks>
 public class LazyMark : Mark
 {
 	/// <summary>
-	/// LazyMark takes a beep more on waking up and then remains active forever.
+	/// If awaken state (it is, it will be awake the next beep).
 	/// </summary>
 	bool awaken = false;
 
@@ -17,6 +23,7 @@ public class LazyMark : Mark
 	public override void OnFlip()
 	{
 		if (IsRight())
+			//TO-DO: replace by animation. That animation will change the color.
 			spriteRenderer.color = Color.yellow;
 	}
 
