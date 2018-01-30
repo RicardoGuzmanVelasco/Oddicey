@@ -13,8 +13,6 @@ public class PrefabsBuilderEditor : Editor
 
 	public override void OnInspectorGUI()
 	{
-		DrawDefaultInspector();
-
 		GUILayout.Space(10);
 
 		GUILayout.BeginHorizontal();

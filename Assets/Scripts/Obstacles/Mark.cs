@@ -31,6 +31,7 @@ public class Mark : Notificable
 	/// </summary>
 	protected SpriteRenderer spriteRenderer;
 
+	#region Properties
 	/// <value>
 	/// This value change too the mark skin!
 	/// </value>
@@ -48,6 +49,7 @@ public class Mark : Notificable
 			spriteRenderer.color = state ? Color.green : Color.red;
 		}
 	}
+	#endregion
 
 	void Awake()
 	{
@@ -57,9 +59,14 @@ public class Mark : Notificable
 
 	protected override void Start()
 	{
-		sideRequired = Random.Range(1, 6);
-		spriteRenderer.sprite = sprites[sideRequired - 1];
+		SelectRandomSide();
 		base.Start(); //Notificable will selfsubscribe.
+	}
+
+	private void SelectRandomSide()
+	{
+		sideRequired = Random.Range(1, 7); //'max' is exclusive.
+		spriteRenderer.sprite = sprites[sideRequired - 1];
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
@@ -125,8 +132,10 @@ public class Mark : Notificable
 	{
 		//TO-DO: replay by effect on gameplay.
 		Debug.Log("Success");
+		//Listening = false;
+		spriteRenderer.enabled = false;
 	}
-	
+
 	/// <summary>
 	/// Obstacle not passed.
 	/// </summary>
@@ -135,5 +144,12 @@ public class Mark : Notificable
 		//TO-DO: replace by effect on gameplay.
 		Debug.Log("Fail");
 		FindObjectOfType<Notifier>().NotificateFail();
+	}
+
+	public override void OnDead()
+	{
+		//Listening = true;
+		SelectRandomSide();
+		spriteRenderer.enabled = true;
 	}
 }

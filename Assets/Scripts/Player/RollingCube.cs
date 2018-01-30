@@ -1,7 +1,7 @@
 ﻿using Utils.Extensions;
 using System.Collections;
 using UnityEngine;
-using System;
+using Utils.Directions;
 
 public class RollingCube : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class RollingCube : MonoBehaviour
 	const float error = 0.95f;
 	float rollingTime; //Inverse of speed with error constant. Time to do a roll.
 
-	public Vector2 dir = Vector2.right;
+	public Direction dir = Direction.right;
 
 	public bool grounding = false;
 	float threshold = 30; //Min degrees difference to consider grounding.
@@ -62,9 +62,9 @@ public class RollingCube : MonoBehaviour
 		if (Falling)
 			return;
 
-		if (dir == Vector2.right)
+		if (dir.ToVector2() == Vector2.right)
 			RollForward();
-		else if (dir == Vector2.left)
+		else if (dir.ToVector2() == Vector2.left)
 			RollBackward();
 	}
 
@@ -131,13 +131,13 @@ public class RollingCube : MonoBehaviour
 
 	public void Turn()
 	{
-		dir *= -1;
+		dir = dir.Reverse();
 		FindObjectOfType<Notifier>().NotificateTurn();
 	}
 
 	public void Turn(Vector2 newDir)
 	{
-		dir = newDir;
+		dir = newDir.ToDirection();
 		FindObjectOfType<Notifier>().NotificateTurn();
 	}
 }

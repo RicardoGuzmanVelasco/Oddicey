@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using Utils.Directions;
 
 namespace Utils
 {
@@ -88,6 +89,22 @@ namespace Utils
 			public static Vector3 Z(this Vector3 vector, float z)
 			{
 				return new Vector3(vector.x, vector.y, z);
+			}
+			#endregion
+
+			#region Vector2Direction
+			/// <summary>
+			/// Sidescrolling vector direction to Direction enum type.
+			/// </summary>
+			/// <returns>Right if unknown.</returns>
+			public static Direction ToDirection(this Vector2 vector)
+			{
+				if (vector == Vector2.right)
+					return Direction.right;
+				if (vector == Vector2.left)
+					return Direction.left;
+
+				return Direction.right;
 			}
 			#endregion
 		}

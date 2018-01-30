@@ -1,24 +1,32 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Notifier : MonoBehaviour
 {
-	List<Notificable> listeners;
+	//List<Notificable> listeners;
+	HashSet<Notificable> listeners;
 
 	void Awake()
 	{
-		listeners = new List<Notificable>();
+		//listeners = new List<Notificable>();
+		listeners = new HashSet<Notificable>();
 	}
 
 	public void Subscribe(Notificable listener)
 	{
-		listeners.Add(listener);
+		//if (listeners.Contains(listener))
+		//	Debug.LogWarning(listener.name + " already subscribed.");
+		//else
+		//	listeners.Add(listener);
+		if(!listeners.Add(listener))
+			Debug.LogWarning(listener.name + " already subscribed.");
 	}
 
 	public void Unsubscribe(Notificable listener)
 	{
 		if (!listeners.Remove(listener))
-			Debug.LogWarning("This listener was not subscribed");
+			Debug.LogWarning(name + " was not subscribed");
 	}
 
 	public void NotificateBeep()

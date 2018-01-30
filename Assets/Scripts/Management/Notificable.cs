@@ -5,6 +5,7 @@ public abstract class Notificable : MonoBehaviour
 {
 	bool listening;
 
+	#region Properties
 	public bool Listening
 	{
 		get
@@ -14,13 +15,14 @@ public abstract class Notificable : MonoBehaviour
 
 		set
 		{
-			if (value)
+			if (value && !listening)
 				FindObjectOfType<Notifier>().Subscribe(this);
-			else
+			else if (!value)
 				FindObjectOfType<Notifier>().Unsubscribe(this);
 			listening = value;
 		}
 	}
+	#endregion
 
 	public virtual void OnBeep() { }
 	public virtual void OnFlip() { }

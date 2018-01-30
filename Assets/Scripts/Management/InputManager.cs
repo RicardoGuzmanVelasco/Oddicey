@@ -6,8 +6,34 @@ public class InputManager : Notificable
 	public GameObject player;
 	Die die;
 
-	int flipOrder = 3; //flip >3 or <(-3) will not be ordered.
-	public bool flipEnabled = false;
+	/// <summary>
+	/// If die can flip its side.
+	/// </summary>
+	private bool flipEnabled = false;
+	/// <summary>
+	/// Amount of sides to flip.
+	/// '3' internally represents the no order (flip=0).
+	/// '0' internally represents the '3' order (flip to opposite side).
+	/// </summary>
+	/// <remarks>
+	/// Any <=-3 or =>3 order will be ignored.
+	/// </remarks>
+	int flipOrder = 3;
+
+	#region Properties
+	public bool FlipEnabled
+	{
+		get
+		{
+			return flipEnabled;
+		}
+
+		set
+		{
+			flipEnabled = value;
+		}
+	} 
+	#endregion
 
 	void Awake()
 	{
@@ -16,8 +42,13 @@ public class InputManager : Notificable
 
 	void Update()
 	{
+		#region Test Controls
 		if (Input.GetButtonUp("Test1"))
+		{
 			GetComponent<MotorSystem>().Moving = !GetComponent<MotorSystem>().Moving;
+			if (GetComponent<MotorSystem>().Moving)
+				flipEnabled = true;
+		}
 		if (Input.GetButtonUp("Test2"))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		if (Input.GetButtonUp("Test3"))
@@ -26,9 +57,9 @@ public class InputManager : Notificable
 			GetComponent<MotorSystem>().Tempo -= 10;
 		if (Input.GetButtonUp("Test5"))
 			die.GetComponent<RollingCube>().Turn();
+		#endregion
 
-
-		if (!flipEnabled)
+		if (!FlipEnabled)
 			return; //TO-DO: When player try to flip twice in a roll;
 
 		if (Input.GetButtonUp("Flip"))
@@ -49,13 +80,14 @@ public class InputManager : Notificable
 			return; //TO-DO: when player try to flip out of time;
 
 		GetComponent<Notifier>().NotificateFlip();
-		flipEnabled = false;
+		FlipEnabled = false;
 
 		flipOrder = 3; //Reset to no flip order.
 	}
 
-	public override void OnBeep()
-	{
-		flipEnabled = true;
-	}
+	//This overriding makes the die not properly falling.
+	//public override void OnBeep()
+	//{
+	//	FlipEnabled = true;
+	//}
 }
