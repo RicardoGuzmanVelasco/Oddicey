@@ -9,7 +9,7 @@ public class YTrack : MonoBehaviour
 	/// More semantic on the inspector.
 	/// Just a bool could be enough.
 	/// </summary>
-	enum TrackTriggerType { TrackOn, TrackOff}
+	enum TrackTriggerType { TrackOn, TrackOff }
 	[SerializeField]
 	TrackTriggerType type = TrackTriggerType.TrackOn;
 
@@ -24,7 +24,9 @@ public class YTrack : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Player")
-			cameraScript.Y = type == TrackTriggerType.TrackOn;
+		if(!(collision.tag == "Player"))
+			return;
+	
+		cameraScript.Y = type == TrackTriggerType.TrackOn;
 	}
 }

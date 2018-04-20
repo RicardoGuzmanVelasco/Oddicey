@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 	void OnGroundLost()
 	{
 		cube.Falling = true;
-		FindObjectOfType<InputManager>().FlipEnabled = false;
+		FindObjectOfType<Notifier>().NotificateFall();
 	}
 
 	public void OnGroundGained()
@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
 		body.velocity = Vector2.zero;
 		cube.floor = transform.position.y;
 		cube.Snap();
-		FindObjectOfType<InputManager>().FlipEnabled = true;
+
+		FindObjectOfType<Notifier>().NotificateLand();
 	}
 }

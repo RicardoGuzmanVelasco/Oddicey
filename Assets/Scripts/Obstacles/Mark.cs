@@ -60,6 +60,7 @@ public class Mark : Notificable
 	protected override void Start()
 	{
 		SelectRandomSide();
+
 		base.Start(); //Notificable will selfsubscribe.
 	}
 
@@ -75,9 +76,16 @@ public class Mark : Notificable
 			CheckSuccess();
 	}
 
+	#region Notifications
 	/// <summary>
 	/// Checking state every beep, towards state changes if neccesary.
 	/// </summary>
+	/// 
+	protected override void ConfigureSubscriptions()
+	{
+		subscriptions = News.Beep | News.Flip | News.Dead;
+	}
+
 	public override void OnBeep()
 	{
 		CheckRight();
@@ -90,6 +98,14 @@ public class Mark : Notificable
 	{
 		CheckRight();
 	}
+
+	public override void OnDead()
+	{
+		//Listening = true;
+		SelectRandomSide();
+		spriteRenderer.enabled = true;
+	}
+	#endregion
 
 	protected virtual void CheckRight()
 	{
@@ -144,12 +160,5 @@ public class Mark : Notificable
 		//TO-DO: replace by effect on gameplay.
 		Debug.Log("Fail");
 		FindObjectOfType<Notifier>().NotificateFail();
-	}
-
-	public override void OnDead()
-	{
-		//Listening = true;
-		SelectRandomSide();
-		spriteRenderer.enabled = true;
 	}
 }

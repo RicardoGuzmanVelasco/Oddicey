@@ -7,7 +7,7 @@ public class InputManager : Notificable
 	Die die;
 
 	/// <summary>
-	/// If die can flip its side.
+	/// If die can flip its side on current beep.
 	/// </summary>
 	private bool flipEnabled = false;
 	/// <summary>
@@ -85,9 +85,25 @@ public class InputManager : Notificable
 		flipOrder = 3; //Reset to no flip order.
 	}
 
-	//This overriding makes the die not properly falling.
-	//public override void OnBeep()
-	//{
-	//	FlipEnabled = true;
-	//}
+	#region Notifications
+	protected override void ConfigureSubscriptions()
+	{
+		subscriptions = News.Beep | News.Fall | News.Land;
+	}
+	//This overriding did make the die not properly falling.
+	public override void OnBeep()
+	{
+		if(!player.GetComponent<RollingCube>().Falling) FlipEnabled = true;
+	}
+
+	public override void OnFall()
+	{
+		FlipEnabled = false;
+	}
+
+	public override void OnLand()
+	{
+		FlipEnabled = true;
+	}
+	#endregion
 }

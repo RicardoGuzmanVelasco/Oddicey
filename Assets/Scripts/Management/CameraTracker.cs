@@ -72,6 +72,12 @@ public class CameraTracker : Notificable
 		}
 	}
 
+	#region Notificacion Events
+	protected override void ConfigureSubscriptions()
+	{
+		subscriptions = News.Turn;
+	}
+
 	public override void OnTurn()
 	{
 		if (!X && !Y)
@@ -80,5 +86,5 @@ public class CameraTracker : Notificable
 			Y = lastY;
 		}
 	}
-
+	#endregion
 }

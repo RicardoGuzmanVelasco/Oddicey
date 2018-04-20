@@ -12,7 +12,7 @@ public class Post : MonoBehaviour
 			return;
 
 		//May cause a framedropping. TO-DO?: replace by notification.
-		FindObjectOfType<PlayManager>().checkpoint = transform.position;
+		FindObjectOfType<Notifier>().NotificateSave();
 		GetComponent<Collider2D>().enabled = false;
 	
 		//TO-DO: replace by animation play. That animation will make the checked effect.

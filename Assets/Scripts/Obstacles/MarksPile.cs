@@ -76,6 +76,12 @@ public class MarksPile : Notificable
 			marks[foot].Listening = true; //Just the foot of the pile subscribes.
 	}
 
+	#region Notifications
+	protected override void ConfigureSubscriptions()
+	{
+		subscriptions = News.Beep;
+	}
+
 	/// <summary>
 	/// Reshaping if foot mark is passed, changing State if was the last.
 	/// </summary>
@@ -97,4 +103,5 @@ public class MarksPile : Notificable
 			StackMarks();
 		}
 	}
+	#endregion
 }

@@ -8,7 +8,12 @@
 /// </remarks>
 public class StaticVane : Vane
 {
-	public override void OnTurn()
+	protected override void ConfigureSubscriptions()
 	{
+		subscriptions = News.None;
 	}
+	//Unnecesary, as FlippingVane's comment explain.
+	//public override void OnTurn()
+	//{
+	//}
 }

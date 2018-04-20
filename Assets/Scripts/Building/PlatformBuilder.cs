@@ -8,8 +8,8 @@ public class PlatformBuilder : Builder
 	[Range(3, 20)]
 	int size = 3;
 
-	GameObject innerTile;
-	GameObject outerTile;
+	[SerializeField] GameObject innerTile;
+	[SerializeField] GameObject outerTile;
 
 	void Update()
 	{
@@ -27,9 +27,11 @@ public class PlatformBuilder : Builder
 		//Clone & Destroy let "Right" stay down on the hierarchy.
 	}
 
+	/// <summary>
+	/// Destroy all inner childs but one.
+	/// </summary>
 	void Clean()
 	{
-		//Destroy all inner childs but one.
 		innerTile = transform.Find("Center").gameObject;
 		innerTile.name = "CenterTemplate";
 		transform.DestroyChildren("Center");

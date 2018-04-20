@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using Utils.Directions;
 
@@ -156,6 +157,16 @@ namespace Utils
 						GameObject.DestroyImmediate(child.gameObject);
 			}
 			#endregion
+		}
+
+		public static class EnumExtensions
+		{
+			public static bool HasFlag(this Enum notifications, Enum flag)
+			{
+				ulong keys = Convert.ToUInt64(notifications);
+				ulong flags = Convert.ToUInt64(flag);
+				return (keys & flags) == flags;
+			}
 		}
 	}
 }
