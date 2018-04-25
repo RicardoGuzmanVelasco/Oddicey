@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using Utils.Directions;
 
@@ -118,6 +119,7 @@ namespace Utils
 			/// </summary>
 			/// <param name="pos"> The ABSOLUTE position of the clone. Same that parent by default.</param>
 			/// <param name="name">The name of the clone. Namesake by default.</param>
+			/// <returns>The clone.</returns>
 			public static GameObject Clone(this GameObject gameobject, Vector3 pos, string name = null)
 			{
 				if (name == null)
@@ -135,9 +137,26 @@ namespace Utils
 			/// <para>The clone will take the same absolute position.</para>
 			/// </summary>
 			/// <param name="name">The name of the clone. By default, namesake.</param>
+			/// <returns>The clone.</returns>
 			public static GameObject Clone(this GameObject gameobject, string name = null)
 			{
 				return gameobject.Clone(gameobject.transform.position, name);
+			}
+			#endregion
+
+			#region Fork
+			/// <summary>
+			/// <para>Create a child of the given game object.</para>
+			/// <para>The child will take the same absolute position (local origin).</para>
+			/// </summary>
+			/// <param name="name">The name of the clone.</param>
+			/// <returns>The child created.</returns>
+			public static GameObject CreateChild(this GameObject gameobject, string name)
+			{
+				GameObject child = new GameObject(name);
+				child.transform.parent = gameobject.transform;
+				child.transform.position = gameobject.transform.position;
+				return child;
 			}
 			#endregion
 		}
@@ -167,6 +186,22 @@ namespace Utils
 				ulong flags = Convert.ToUInt64(flag);
 				return (keys & flags) == flags;
 			}
+		}
+
+		public static class ListExtensions
+		{
+			/// <summary>
+			/// Returns a random item from the list.
+			/// Based on some useful extensions by omgwtfgames@GitHub. 
+			/// </summary>
+			/// <remarks><exception cref="System.IndexOutOfRangeException">Trown when size of the list is zero.</exception></remarks>
+			/// <returns> </returns>
+			public static T GetRandom<T>(this IList<T> list)
+			{
+				if(list.Count == 0)
+					throw new System.IndexOutOfRangeException("Cannot select a random item from an empty list.");
+				return list[UnityEngine.Random.Range(0, list.Count)];
+			} 
 		}
 	}
 }

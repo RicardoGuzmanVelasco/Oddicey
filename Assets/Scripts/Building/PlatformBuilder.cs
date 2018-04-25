@@ -8,15 +8,14 @@ public class PlatformBuilder : Builder
 	[Range(3, 20)]
 	int size = 3;
 
-	[SerializeField] GameObject innerTile;
-	[SerializeField] GameObject outerTile;
+	GameObject innerTile;
+	GameObject outerTile;
 
 	void Update()
 	{
 		Clean();
 
 		//Repopulate with 'size-2' "Center" childs (in local positions).
-		innerTile.name = "Center";
 		for (int i = 3; i < size; i++)
 			innerTile.Clone((Vector2)transform.position + Vector2.right * Builder.ToUnits(i - 1));
 
@@ -35,6 +34,7 @@ public class PlatformBuilder : Builder
 		innerTile = transform.Find("Center").gameObject;
 		innerTile.name = "CenterTemplate";
 		transform.DestroyChildren("Center");
+		innerTile.name = "Center";
 	}
 
 	void OnValidate()
