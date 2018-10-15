@@ -11,7 +11,7 @@ public class FlippingVane : Vane
 	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.Beep;
+		subscriptions = Notification.Beep;
 	}
 
 	public override void OnBeep()

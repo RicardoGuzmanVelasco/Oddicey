@@ -7,10 +7,6 @@ public class InputManager : Notificable
 	Die die;
 
 	/// <summary>
-	/// If die can flip its side on current beep.
-	/// </summary>
-	private bool flipEnabled = false;
-	/// <summary>
 	/// Amount of sides to flip.
 	/// '3' internally represents the no order (flip=0).
 	/// '0' internally represents the '3' order (flip to opposite side).
@@ -18,7 +14,20 @@ public class InputManager : Notificable
 	/// <remarks>
 	/// Any <=-3 or =>3 order will be ignored.
 	/// </remarks>
-	int flipOrder = 3;
+	private enum FlipOrder
+	{
+		NoFlip = 3,
+		Back1 = -1,
+		Back2 = -2,
+		Flip = 0,
+		Plus1 = 1,
+		Plus2 = 2,
+	}
+	FlipOrder flipOrder = FlipOrder.NoFlip;
+	/// <summary>
+	/// If die can flip its side on current beep.
+	/// </summary>
+	private bool flipEnabled = false;
 
 	#region Properties
 	public bool FlipEnabled
@@ -32,7 +41,7 @@ public class InputManager : Notificable
 		{
 			flipEnabled = value;
 		}
-	} 
+	}
 	#endregion
 
 	void Awake()
@@ -43,57 +52,60 @@ public class InputManager : Notificable
 	void Update()
 	{
 		#region Test Controls
-		if (Input.GetButtonUp("Test1"))
+		if(Input.GetButtonUp("Test1"))
 		{
 			GetComponent<MotorSystem>().Moving = !GetComponent<MotorSystem>().Moving;
-			if (GetComponent<MotorSystem>().Moving)
+			if(GetComponent<MotorSystem>().Moving)
 				flipEnabled = true;
 		}
-		if (Input.GetButtonUp("Test2"))
+		if(Input.GetButtonUp("Test2"))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		if (Input.GetButtonUp("Test3"))
+		if(Input.GetButtonUp("Test3"))
 			GetComponent<MotorSystem>().Tempo += 10;
-		if (Input.GetButtonUp("Test4"))
+		if(Input.GetButtonUp("Test4"))
 			GetComponent<MotorSystem>().Tempo -= 10;
-		if (Input.GetButtonUp("Test5"))
+		if(Input.GetButtonUp("Test5"))
 			die.GetComponent<RollingCube>().Turn();
 		#endregion
 
-		if (!FlipEnabled)
-			return; //TO-DO: When player try to flip twice in a roll;
+		if(!FlipEnabled)
+			return; //TODO: When player try to flip twice in a roll;
 
-		if (Input.GetButtonUp("Flip"))
-			flipOrder = 0;
-		else if (Input.GetButtonUp("Flip+1"))
-			flipOrder = 1;
-		else if (Input.GetButtonUp("Flip-1"))
-			flipOrder = -1;
-		else if (Input.GetButtonUp("Flip+2"))
-			flipOrder = 2;
-		else if (Input.GetButtonUp("Flip-2"))
-			flipOrder = -2;
+		if(Input.GetButtonUp("Flip"))
+			flipOrder = FlipOrder.Flip;
+		else if(Input.GetButtonUp("Flip+1"))
+			flipOrder = FlipOrder.Plus1;
+		else if(Input.GetButtonUp("Flip-1"))
+			flipOrder = FlipOrder.Back1;
+		else if(Input.GetButtonUp("Flip+2"))
+			flipOrder = FlipOrder.Plus2;
+		else if(Input.GetButtonUp("Flip-2"))
+			flipOrder = FlipOrder.Back2;
 
-		if (flipOrder > 2 || flipOrder < -2)
-			return; //No flip is ordered.
+		if(flipOrder == FlipOrder.NoFlip)
+			return;
 
-		if (!die.flip(flipOrder))
-			return; //TO-DO: when player try to flip out of time;
+		if(!die.Flip((int)flipOrder))
+			Debug.Log("Out of time"); //TODO: when player try to flip out of time;
+		else
+		{
+			GetComponent<Notifier>().NotificateFlip();
+			FlipEnabled = false;
+		}
 
-		GetComponent<Notifier>().NotificateFlip();
-		FlipEnabled = false;
-
-		flipOrder = 3; //Reset to no flip order.
+		flipOrder = FlipOrder.NoFlip;
 	}
 
 	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.Beep | News.Fall | News.Land;
+		subscriptions = Notification.Beep | Notification.Fall | Notification.Land;
 	}
+
 	//This overriding did make the die not properly falling.
 	public override void OnBeep()
 	{
-		if(!player.GetComponent<RollingCube>().Falling) FlipEnabled = true;
+		FlipEnabled = !player.GetComponent<RollingCube>().Falling;
 	}
 
 	public override void OnFall()

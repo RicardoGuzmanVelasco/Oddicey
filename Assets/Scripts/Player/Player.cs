@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 		else if (collision.tag == "Floor" && cube.Falling)
 			OnGroundGained();
 		else if (collision.tag == "Boundary" && collision.name == "BOTTOM")
-			FindObjectOfType<Notifier>().NotificateFail(); //TO-DO: change: If EOL, no fail!
+			FindObjectOfType<Notifier>().NotificateFail(); //TODO: change: If EOL, no fail!
 	}
 
 	void OnGroundLost()

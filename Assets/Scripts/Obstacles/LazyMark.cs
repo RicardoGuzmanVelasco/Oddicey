@@ -23,7 +23,7 @@ public class LazyMark : Mark
 	public override void OnFlip()
 	{
 		if (IsRight())
-			//TO-DO: replace by animation. That animation will change the color.
+			//TODO: replace by animation. That animation will change the color.
 			spriteRenderer.color = Color.yellow;
 	}
 

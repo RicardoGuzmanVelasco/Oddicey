@@ -79,7 +79,7 @@ public class MarksPile : Notificable
 	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.Beep;
+		subscriptions = Notification.Beep;
 	}
 
 	/// <summary>
@@ -89,7 +89,7 @@ public class MarksPile : Notificable
 	{
 		if (State)
 			return;
-		//May cause throughput decreases. TO-DO?: avoid generate aux Mark each beep.
+		//May cause throughput decreases. TODO?: avoid generate aux Mark each beep.
 		Mark footMark = marks[foot];
 		if (footMark.State)
 		{

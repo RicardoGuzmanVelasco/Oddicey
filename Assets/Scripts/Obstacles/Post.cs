@@ -11,11 +11,11 @@ public class Post : MonoBehaviour
 		if (collision.tag != "Player")
 			return;
 
-		//May cause a framedropping. TO-DO?: replace by notification.
+		//May cause a framedropping. TODO?: replace by notification.
 		FindObjectOfType<Notifier>().NotificateSave();
 		GetComponent<Collider2D>().enabled = false;
 	
-		//TO-DO: replace by animation play. That animation will make the checked effect.
+		//TODO: replace by animation play. That animation will make the checked effect.
 		transform.localScale = transform.localScale.X(transform.localScale.x * -1);
 	}
 }

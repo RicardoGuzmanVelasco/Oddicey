@@ -39,7 +39,7 @@ public class Vane : Notificable
 	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.Turn | News.Dead;
+		subscriptions = Notification.Turn | Notification.Dead;
 	}
 
 	public override void OnTurn()
@@ -59,7 +59,7 @@ public class Vane : Notificable
 	protected void TurnAround()
 	{
 		dir = dir.Reverse();
-		//TO-DO: replace by animation play. That animation will make the inversion.
+		//TODO: replace by animation play. That animation will make the inversion.
 		transform.localScale = transform.localScale.X(transform.localScale.x * -1);
 	}
 }

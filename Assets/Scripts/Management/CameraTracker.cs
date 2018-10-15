@@ -3,6 +3,9 @@
 public class CameraTracker : Notificable
 {
 	public Transform pursued;
+	/// <summary>
+	/// Initial offset between camera center and pursued center.
+	/// </summary>
 	Vector2 distance;
 
 	[SerializeField]
@@ -50,17 +53,16 @@ public class CameraTracker : Notificable
 		RecalculateDistance();
 	}
 
+	void RecalculateDistance()
+	{
+		distance = pursued.position - transform.position;
+	}
+
 	void Update()
 	{
 		transform.position = new Vector3(X ? pursued.position.x - distance.x : transform.position.x,
 										 Y ? pursued.position.y - distance.y : transform.position.y,
 										 transform.position.z);
-		//RecalculateDistance(); //TO-DO: Unnecessary if it is called on 'x', 'y' changes.
-	}
-
-	private void RecalculateDistance()
-	{
-		distance = pursued.position - transform.position;
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
@@ -75,7 +77,7 @@ public class CameraTracker : Notificable
 	#region Notificacion Events
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.Turn;
+		subscriptions = Notification.Turn;
 	}
 
 	public override void OnTurn()

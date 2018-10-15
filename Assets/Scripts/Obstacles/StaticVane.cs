@@ -10,7 +10,7 @@ public class StaticVane : Vane
 {
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.None;
+		subscriptions = Notification.None;
 	}
 	//Unnecesary, as FlippingVane's comment explain.
 	//public override void OnTurn()

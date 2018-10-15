@@ -25,7 +25,7 @@ public class Die : MonoBehaviour
 		cube = GetComponent<RollingCube>();
 	}
 
-	public bool flip(int increment = 0)
+	public bool Flip(int increment = 0)
 	{
 		if (Mathf.Abs(increment) > 2)
 			Debug.LogError("Unable to flip an increment of " + increment + "sides.");

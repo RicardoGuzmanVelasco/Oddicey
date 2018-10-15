@@ -83,7 +83,7 @@ public class Mark : Notificable
 	/// 
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = News.Beep | News.Flip | News.Dead;
+		subscriptions = Notification.Beep | Notification.Flip | Notification.Dead;
 	}
 
 	public override void OnBeep()
@@ -146,7 +146,7 @@ public class Mark : Notificable
 	/// </summary>
 	protected virtual void OnSuccess()
 	{
-		//TO-DO: replay by effect on gameplay.
+		//TODO: replay by effect on gameplay.
 		Debug.Log("Success");
 		//Listening = false;
 		spriteRenderer.enabled = false;
@@ -157,7 +157,7 @@ public class Mark : Notificable
 	/// </summary>
 	protected virtual void OnFailure()
 	{
-		//TO-DO: replace by effect on gameplay.
+		//TODO: replace by effect on gameplay.
 		Debug.Log("Fail");
 		FindObjectOfType<Notifier>().NotificateFail();
 	}

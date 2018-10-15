@@ -101,7 +101,7 @@ public class ModularChooser : MonoBehaviour
 	{
 		SpriteRenderer spriteComponent = gameObject.AddComponent<SpriteRenderer>();
 		spriteComponent.sprite = sprite;
-		spriteComponent.sortingLayerName = sortingLayer; //To-Do: assert sortingLayer exists.
+		spriteComponent.sortingLayerName = sortingLayer; //TODO: assert sortingLayer exists.
 
 		spriteComponent.sortingOrder = index * 10;
 

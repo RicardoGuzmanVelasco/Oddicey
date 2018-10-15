@@ -1,11 +1,11 @@
-﻿	using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Utils.Extensions;
 
 [Flags]
-public enum News
+public enum Notification
 {
 	/// <summary>
 	/// All news, identity element.
@@ -51,110 +51,104 @@ public enum News
 
 public class Notifier : MonoBehaviour
 {
-	Dictionary<News, HashSet<Notificable>> listeners;
+	Dictionary<Notification, HashSet<Notificable>> listeners;
 
 	void Awake()
 	{
-		listeners = new Dictionary<News, HashSet<Notificable>>();
+		listeners = new Dictionary<Notification, HashSet<Notificable>>();
 
-		foreach(News notification in Enum.GetValues(typeof(News)))
-			if(notification != News.Any)
+		foreach(Notification notification in Enum.GetValues(typeof(Notification)))
+			if(notification != Notification.Any)
 				listeners.Add(notification, new HashSet<Notificable>());
 	}
 
-	public void Subscribe(Notificable listener, News subscriptions = News.Any)
+	/// <summary>
+	/// Includes <paramref name="listener"/> to all <see cref="Notification"/> types within <paramref name="subscriptions"/>.
+	/// </summary>
+	/// <param name="subscriptions">Subscribed to all notifications by default.</param>
+	public void Subscribe(Notificable listener, Notification subscriptions = Notification.Any)
 	{
-		//foreach(News notification in Enum.GetValues(typeof(News)))
-		//	if(notification == News.None)
-		//		continue;
-		foreach(News notification in listeners.Keys)
+		foreach(Notification notification in listeners.Keys)
 			if(subscriptions.HasFlag(notification))
 				listeners[notification].Add(listener);
-		//if(!listeners[notification].Add(listener))
-		//			Debug.LogError(listener.name + " / " + listener.GetType() + " has already subscribed to " + notification);
-		//		else
-		//			Debug.Log(listener.name + "/" + listener.GetType() + " successfully subscribed to " + notification);
 	}
 
-	public void Unsubscribe(Notificable listener, News subscriptions = News.Any)
+	/// <summary>
+	/// Take out <paramref name="listener"/> to all <see cref="Notification"/> types within <paramref name="subscriptions"/>.
+	/// </summary>
+	/// <param name="subscriptions">Unsubscribed to all notifications by default.</param>
+	public void Unsubscribe(Notificable listener, Notification subscriptions = Notification.Any)
 	{
-		//foreach(News notification in Enum.GetValues(typeof(News)))
-		//	if(notification == News.None)
-		//		continue;
-		foreach(News notification in listeners.Keys)
+		foreach(Notification notification in listeners.Keys)
 			if(subscriptions.HasFlag(notification))
 				listeners[notification].Remove(listener);
-		//if(!subscriptionLists[notification].Remove(listener))
-		//	Debug.Log("<color=red>  " + listener.name + " was not subscribed to " + notification + ".</color>");
-		//else
-		//	Debug.Log("<color=green>" + listener.name + " was unsubscribed to " + notification + ".</color>");
 	}
 
 	public void NotificateBeep()
 	{
-		foreach(var listener in listeners[News.Beep].ToArray()) //ToArray() returns a copy, which prevents problems unsubscribing during foreach.
+		foreach(var listener in listeners[Notification.Beep].ToArray()) //ToArray() returns a copy, which prevents problems unsubscribing during foreach.
 			listener.OnBeep();
 	}
 
 	public void NotificateFlip()
 	{
-		foreach(var listener in listeners[News.Flip])
+		foreach(var listener in listeners[Notification.Flip])
 			listener.OnFlip();
 	}
 
 	public void NotificateFail()
 	{
-		foreach(var listener in listeners[News.Fail])
+		foreach(var listener in listeners[Notification.Fail])
 			listener.OnFail();
 	}
 
 	public void NotificateDead()
 	{
-		foreach(var listener in listeners[News.Dead])
+		foreach(var listener in listeners[Notification.Dead])
 			listener.OnDead();
 	}
 
 	public void NotificateTurn()
 	{
-		foreach(var listener in listeners[News.Turn])
+		foreach(var listener in listeners[Notification.Turn])
 			listener.OnTurn();
 	}
 
 	public void NotificateSave()
 	{
-		foreach(var listener in listeners[News.Save])
+		foreach(var listener in listeners[Notification.Save])
 			listener.OnSave();
 	}
 
 	public void NotificateFall()
 	{
-		foreach(var listener in listeners[News.Fall])
+		foreach(var listener in listeners[Notification.Fall])
 			listener.OnFall();
 	}
 
 	public void NotificateLand()
 	{
-		foreach(var listener in listeners[News.Land])
+		foreach(var listener in listeners[Notification.Land])
 			listener.OnLand();
 	}
 
-	public void Notificate(News notification)
+	public void Notificate(Notification notification)
 	{
-		if(notification.HasFlag(News.Beep))
+		if(notification.HasFlag(Notification.Beep))
 			NotificateBeep();
-		if(notification.HasFlag(News.Flip))
+		if(notification.HasFlag(Notification.Flip))
 			NotificateFlip();
-		if(notification.HasFlag(News.Fail))
+		if(notification.HasFlag(Notification.Fail))
 			NotificateFail();
-		if(notification.HasFlag(News.Dead))
+		if(notification.HasFlag(Notification.Dead))
 			NotificateDead();
-		if(notification.HasFlag(News.Turn))
+		if(notification.HasFlag(Notification.Turn))
 			NotificateTurn();
-		if(notification.HasFlag(News.Save))
+		if(notification.HasFlag(Notification.Save))
 			NotificateSave();
-		if(notification.HasFlag(News.Fall))
+		if(notification.HasFlag(Notification.Fall))
 			NotificateFall();
-		if(notification.HasFlag(News.Land))
+		if(notification.HasFlag(Notification.Land))
 			NotificateLand();
 	}
 }
