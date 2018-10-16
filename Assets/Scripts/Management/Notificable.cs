@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class Notificable : MonoBehaviour
 {
+	protected Notifier notifier;
 	protected Notification subscriptions;
 	/// <summary>
 	/// If it's subscribed to <see cref="Notifier"/>, regardless <see cref="subscriptions"/> content.
@@ -31,6 +32,20 @@ public abstract class Notificable : MonoBehaviour
 	}
 	#endregion
 
+	protected virtual void Awake()
+	{
+		notifier = FindObjectOfType<Notifier>();
+	}
+
+	/// <summary>
+	/// Notificable will selfsubscribe when “start”.
+	/// </summary>
+	protected virtual void Start()
+	{
+		ConfigureSubscriptions();
+		Listening = true;
+	}
+
 	#region Notifications
 	public virtual void OnBeep() { }
 	public virtual void OnFlip() { }
@@ -41,15 +56,6 @@ public abstract class Notificable : MonoBehaviour
 	public virtual void OnFall() { }
 	public virtual void OnLand() { }
 	#endregion
-
-	/// <summary>
-	/// Notificable will selfsubscribe when “start”.
-	/// </summary>
-	protected virtual void Start()
-	{
-		ConfigureSubscriptions();
-		Listening = true;
-	}
 
 	/// <summary>
 	/// Set <see cref="subscriptions"/> content, regardless if <see cref="listening"/> or not.

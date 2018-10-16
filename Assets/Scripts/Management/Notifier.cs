@@ -46,10 +46,18 @@ public enum Notification
 	/// <summary>
 	/// Ground gained.
 	/// </summary>
-	Land = 1 << 7
+	Land = 1 << 7,
+	/// <summary>
+	/// Try to flip out of time.
+	/// </summary>
+	Late = 1 << 8,
+	/// <summary>
+	/// Die marches on after stopped.
+	/// </summary>
+	Walk = 1 << 9
 }
 
-public class Notifier : MonoBehaviour
+public sealed class Notifier : MonoBehaviour
 {
 	Dictionary<Notification, HashSet<Notificable>> listeners;
 

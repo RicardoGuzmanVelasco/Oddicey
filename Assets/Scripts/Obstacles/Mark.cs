@@ -51,7 +51,7 @@ public class Mark : Notificable
 	}
 	#endregion
 
-	void Awake()
+	protected override void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		player = FindObjectOfType<Die>();
