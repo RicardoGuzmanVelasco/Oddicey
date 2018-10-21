@@ -20,6 +20,24 @@ public class Vane : Notificable
 
     private Animator animator;
 
+    /// <summary>
+    /// Set <see cref="dir"/> and sprites to fit visually.
+    /// </summary>
+    public Direction Dir
+    {
+        get
+        {
+            return dir;
+        }
+        
+        set
+        {
+            foreach (var sprite in GetComponentsInChildren<SpriteRenderer>())
+                sprite.flipX = value == Direction.right;
+            dir = value;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();

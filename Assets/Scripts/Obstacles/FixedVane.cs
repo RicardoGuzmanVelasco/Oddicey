@@ -6,7 +6,7 @@
 /// <remarks>
 /// Never change this direction.
 /// </remarks>
-public class StaticVane : Vane
+public class FixedVane : Vane
 {
 	protected override void ConfigureSubscriptions()
 	{

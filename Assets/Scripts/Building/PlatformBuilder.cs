@@ -14,16 +14,6 @@ public class PlatformBuilder : Builder
 	[SerializeField]
 	[Range(3, 50)]
 	int size = 3;
-	/// <summary>
-	/// If <see cref="size"/> changed, platform need <see cref="Build"/>.
-	/// </summary>
-	bool rebuild = false;
-
-	void Update()
-	{
-		if(rebuild)
-			Build();
-	}
 
 	/// <summary>
 	/// Builds a platform of <see cref="size"/> squares.
@@ -36,8 +26,10 @@ public class PlatformBuilder : Builder
 	/// 5- It reinstantiates the "right" tile in order to stay it down on the hierarchy.
 	/// 6- It ends the <see cref="rebuild"/> flag. Then disables the component itself.
 	/// </remarks>
-	void Build()
+	protected override void Build()
 	{
+        base.Build();
+
 		Clean();
 
         GameObject centerTile = transform.Find("Center").gameObject;
@@ -52,7 +44,6 @@ public class PlatformBuilder : Builder
 		DestroyImmediate(rightTile);
 		//Clone & Destroy let "Right" stay down on the hierarchy.
 
-		rebuild = false;
 		this.enabled = false;
 	}
 
@@ -75,6 +66,9 @@ public class PlatformBuilder : Builder
         transform.DestroyDuplicatedChildren("Right");
 	}
 
+    /// <summary>
+    /// If <see cref="size"/> changed, platform needs <see cref="Build"/>.
+    /// </summary>
 	void OnValidate()
 	{
 		//TODO: support size=2, or even size=1 (less priority).

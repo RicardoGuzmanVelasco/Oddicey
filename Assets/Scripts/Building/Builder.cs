@@ -1,12 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Any builder is a helper with square, tiles info
 /// which will be deleted when playing.
 /// </summary>
-public class Builder : MonoBehaviour
+public abstract class Builder : MonoBehaviour
 {
 	public const float SquareSize = 4;
+
+    /// <summary>
+    /// If OnValidate() saw any change which needs rebuilt.
+    /// </summary>
+    protected bool rebuild = false;
 
 	void Awake()
 	{
@@ -14,7 +20,18 @@ public class Builder : MonoBehaviour
 			Destroy(this);
 	}
 
-	public static bool IsSquare(Vector2 position)
+    void Update()
+    {
+        if (rebuild)
+            Build();
+    }
+
+    protected virtual void Build()
+    {
+        rebuild = false;
+    }
+
+    public static bool IsSquare(Vector2 position)
 	{
 		return position.x % SquareSize <= float.Epsilon && position.y % SquareSize <= float.Epsilon;
 	}
