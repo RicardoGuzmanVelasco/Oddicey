@@ -6,7 +6,7 @@ public class PlayManager : Notificable
 	Player player;
 	public Vector3 checkpoint;
 
-	void Awake()
+	protected override void Awake()
 	{
 		player = FindObjectOfType<Player>();
 		checkpoint = player.transform.position;

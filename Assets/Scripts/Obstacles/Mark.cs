@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Obstacle that switch on when die side of the player fits with its own. 
+/// Obstacle that switch on when <see cref="Die.side"/> fits with its own. 
 /// </summary>
 /// <remarks>
 /// "Switch on" means here OK state, obstacle passed.
@@ -13,7 +13,7 @@ public class Mark : Notificable
 	/// </summary>
 	protected int sideRequired;
 	/// <summary>
-	/// Wether or not switched on (OK or WRONG state).
+	/// Whether or not switched on (OK or WRONG state).
 	/// </summary>
 	private bool state;
 

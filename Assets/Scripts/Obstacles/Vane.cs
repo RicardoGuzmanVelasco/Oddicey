@@ -8,16 +8,27 @@ using Utils.Directions;
 /// <remarks>
 /// Change his own direction when player does, always being against the player.
 /// </remarks>
+[RequireComponent(typeof(Animator))]
 public class Vane : Notificable
 {
 	/// <summary>
 	/// Course the die will take when collides.
 	/// </summary>
-	public Direction dir; //will be a property which change the sprite.
+	[SerializeField]
+    Direction dir;
 	Direction startingDir;
 
-	private void Awake()
+    private Animator animator;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        animator = GetComponent<Animator>();
+    }
+
+    protected override void Start()
 	{
+        base.Start();
 		startingDir = dir;
 	}
 
@@ -28,9 +39,9 @@ public class Vane : Notificable
 	}
 
 	/// <summary>
-	/// Send the player a Turn instruction.
+	/// Send the player a <see cref="RollingCube.Turn"/> instruction.
 	/// </summary>
-	/// <param name="rollingCube">Player's RollingCube assigned.</param>
+	/// <param name="rollingCube">Player's <see cref="RollingCube"/> assigned.</param>
 	protected virtual void TurnPlayer(RollingCube rollingCube)
 	{
 		rollingCube.Turn(dir.ToVector2());
@@ -54,12 +65,11 @@ public class Vane : Notificable
 	#endregion
 
 	/// <summary>
-	/// Reverse 'dir' attribute and make visual change.
+	/// Reverse <see cref="dir"/> and make visual change.
 	/// </summary>
 	protected void TurnAround()
 	{
 		dir = dir.Reverse();
-		//TODO: replace by animation play. That animation will make the inversion.
-		transform.localScale = transform.localScale.X(transform.localScale.x * -1);
+        animator.SetTrigger("Turn");
 	}
 }

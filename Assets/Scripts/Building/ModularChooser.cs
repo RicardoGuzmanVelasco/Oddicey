@@ -3,25 +3,33 @@ using System.Collections.Generic;
 using Utils.Extensions;
 using System;
 
+/// <summary>
+/// Draw sprites from <see cref="groups"/> as childs of a <see cref="GameObject"/> called "/Sprites".
+/// It requires <see cref="SpriteRenderer"/> component to set the sprites setup.
+/// </summary>
+/// <remarks>
+/// As a child of <see cref="Builder"/>, it selfdestroys on play mode,
+/// so <see cref="Start"/> acts just on edit mode.
+/// </remarks>
 [ExecuteInEditMode]
-public class ModularChooser : MonoBehaviour
+[RequireComponent(typeof(SpriteRenderer))]
+public class ModularChooser : Builder
 {
 	GameObject spritesContainer;
 
 	[SerializeField]
 	List<ModularGroup> groups;
 
-	[Header("Sprite options")]
-	[SerializeField]
 	bool flipX;
-	[SerializeField]
 	bool flipY;
-	[SerializeField]
 	string sortingLayer;
 
 	void Start()
 	{
-		Draw();
+        sortingLayer = GetComponent<SpriteRenderer>().sortingLayerName;
+        flipX = GetComponent<SpriteRenderer>().flipX;
+        flipY = GetComponent<SpriteRenderer>().flipY;
+        Draw();
 	}
 
 	public void Draw()

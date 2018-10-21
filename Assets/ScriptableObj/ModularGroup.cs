@@ -22,6 +22,10 @@ public enum ModularGroupType
 	Scarce
 }
 
+/// <summary>
+/// <see cref="ScriptableObject"/> which merely groups a list of sprites candidates
+/// and the relationship between these candidates when it comes to choose.
+/// </summary>
 [CreateAssetMenu(fileName = "ModularGroup", menuName = "Building/Modular Group", order = 2)]
 public class ModularGroup : ScriptableObject
 {

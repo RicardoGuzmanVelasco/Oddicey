@@ -44,7 +44,7 @@ public class InputManager : Notificable
 	}
 	#endregion
 
-	void Awake()
+	protected override void Awake()
 	{
 		die = player.GetComponent<Player>().GetComponent<Die>();
 	}

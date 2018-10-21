@@ -1,6 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// A Notificable can both receive a <see cref="Notification"/> event
+/// and also request the <see cref="Notifier"/> to raise any of them.
+/// </summary>
 public abstract class Notificable : MonoBehaviour
 {
 	protected Notifier notifier;
@@ -10,11 +14,19 @@ public abstract class Notificable : MonoBehaviour
 	/// </summary>
 	bool listening;
 
-	#region Properties
-	/// <summary>
-	/// Set listening property subscribes or unsubscribes to <see cref="Notifier"/>.
-	/// </summary>
-	public bool Listening
+#if UNITY_EDITOR
+    /// <summary>
+    /// Just a remainder. If <see langword="false"/> when play mode, it means that
+    /// <see cref="Start"/> has been override and base.Start() doesn't exist.
+    /// </summary>
+    bool subscriptionConfigured = false;
+#endif
+
+    #region Properties
+    /// <summary>
+    /// Set listening property subscribes or unsubscribes to <see cref="Notifier"/>.
+    /// </summary>
+    public bool Listening
 	{
 		get
 		{
@@ -44,10 +56,22 @@ public abstract class Notificable : MonoBehaviour
 	{
 		ConfigureSubscriptions();
 		Listening = true;
-	}
+#if UNITY_EDITOR
+        subscriptionConfigured = true;
+#endif
+    }
 
-	#region Notifications
-	public virtual void OnBeep() { }
+#if UNITY_EDITOR
+    void LateUpdate()
+    {
+        if (!subscriptionConfigured)
+            Debug.LogException(new InvalidOperationException(gameObject.name +
+                " overrides Notificable.Start() and doesn't call its base."));
+    }
+#endif
+
+    #region Notifications
+    public virtual void OnBeep() { }
 	public virtual void OnFlip() { }
 	public virtual void OnFail() { }
 	public virtual void OnDead() { }

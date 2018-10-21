@@ -12,8 +12,4 @@ public class StaticVane : Vane
 	{
 		subscriptions = Notification.None;
 	}
-	//Unnecesary, as FlippingVane's comment explain.
-	//public override void OnTurn()
-	//{
-	//}
 }

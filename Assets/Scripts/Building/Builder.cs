@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Any builder is a helper with square, tiles info
+/// which will be deleted when playing.
+/// </summary>
 public class Builder : MonoBehaviour
 {
 	public const float SquareSize = 4;
