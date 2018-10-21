@@ -20,6 +20,7 @@ public class Mark : Notificable
 	/// <summary>
 	/// Player's die reference.
 	/// </summary>
+    [HideInInspector]
 	public Die player;
 
 	/// <summary>
@@ -51,7 +52,7 @@ public class Mark : Notificable
 	}
 	#endregion
 
-	protected override void Awake()
+	void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		player = FindObjectOfType<Die>();
@@ -59,9 +60,8 @@ public class Mark : Notificable
 
 	protected override void Start()
 	{
-		SelectRandomSide();
-
-		base.Start(); //Notificable will selfsubscribe.
+        base.Start(); //Notificable will selfsubscribe.
+        SelectRandomSide();
 	}
 
 	private void SelectRandomSide()
@@ -77,16 +77,15 @@ public class Mark : Notificable
 	}
 
 	#region Notifications
-	/// <summary>
-	/// Checking state every beep, towards state changes if neccesary.
-	/// </summary>
-	/// 
 	protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep | Notification.Flip | Notification.Dead;
 	}
 
-	public override void OnBeep()
+    /// <summary>
+    /// Checking state every beep, towards state changes if neccesary.
+    /// </summary>
+    public override void OnBeep()
 	{
 		CheckRight();
 	}
@@ -99,9 +98,11 @@ public class Mark : Notificable
 		CheckRight();
 	}
 
+    /// <summary>
+    /// Reactivate if was passed, and new side. So far, random selection.
+    /// </summary>
 	public override void OnDead()
 	{
-		//Listening = true;
 		SelectRandomSide();
 		spriteRenderer.enabled = true;
 	}
@@ -157,8 +158,8 @@ public class Mark : Notificable
 	/// </summary>
 	protected virtual void OnFailure()
 	{
-		//TODO: replace by effect on gameplay.
+		//TODO: replace by effect on gameplay. Death, rewind, -1 lifes... whatever.
 		Debug.Log("Fail");
-		FindObjectOfType<Notifier>().NotificateFail();
+		notifier.NotificateFail();
 	}
 }

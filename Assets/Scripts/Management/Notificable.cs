@@ -36,25 +36,21 @@ public abstract class Notificable : MonoBehaviour
 		set
 		{
 			if(value && !listening)
-				FindObjectOfType<Notifier>().Subscribe(this, subscriptions);
+				notifier.Subscribe(this, subscriptions);
 			else if(!value)
-				FindObjectOfType<Notifier>().Unsubscribe(this);
+				notifier.Unsubscribe(this);
 			listening = value;
 		}
 	}
 	#endregion
-
-	protected virtual void Awake()
-	{
-		notifier = FindObjectOfType<Notifier>();
-	}
 
 	/// <summary>
 	/// Notificable will selfsubscribe when “start”.
 	/// </summary>
 	protected virtual void Start()
 	{
-		ConfigureSubscriptions();
+        notifier = FindObjectOfType<Notifier>();
+        ConfigureSubscriptions();
 		Listening = true;
 #if UNITY_EDITOR
         subscriptionConfigured = true;

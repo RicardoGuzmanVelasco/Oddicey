@@ -14,7 +14,7 @@ public class InputManager : Notificable
 	/// <remarks>
 	/// Any <=-3 or =>3 order will be ignored.
 	/// </remarks>
-	private enum FlipOrder
+	enum FlipOrder
 	{
 		NoFlip = 3,
 		Back1 = -1,
@@ -27,7 +27,7 @@ public class InputManager : Notificable
 	/// <summary>
 	/// If die can flip its side on current beep.
 	/// </summary>
-	private bool flipEnabled = false;
+	bool flipEnabled = false;
 
 	#region Properties
 	public bool FlipEnabled
@@ -44,7 +44,7 @@ public class InputManager : Notificable
 	}
 	#endregion
 
-	protected override void Awake()
+	void Awake()
 	{
 		die = player.GetComponent<Player>().GetComponent<Die>();
 	}

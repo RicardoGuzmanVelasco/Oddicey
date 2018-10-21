@@ -10,7 +10,6 @@ public enum VaneType
     Fixed
 }
 
-
 [ExecuteInEditMode]
 public class VaneBuilder : Builder
 {

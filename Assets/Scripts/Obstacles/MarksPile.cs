@@ -45,7 +45,7 @@ public class MarksPile : Notificable
 	}
 	#endregion
 
-	protected override void Awake()
+	void Awake()
 	{
 		foreach (var mark in GetComponentsInChildren<Mark>())
 		{

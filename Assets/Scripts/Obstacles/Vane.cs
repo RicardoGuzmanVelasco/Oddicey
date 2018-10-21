@@ -38,16 +38,11 @@ public class Vane : Notificable
         }
     }
 
-    protected override void Awake()
-    {
-        base.Awake();
-        animator = GetComponent<Animator>();
-    }
-
     protected override void Start()
 	{
         base.Start();
-		startingDir = dir;
+        animator = GetComponent<Animator>();
+        startingDir = dir;
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)

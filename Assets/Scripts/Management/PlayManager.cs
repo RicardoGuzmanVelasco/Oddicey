@@ -6,7 +6,7 @@ public class PlayManager : Notificable
 	Player player;
 	public Vector3 checkpoint;
 
-	protected override void Awake()
+	void Awake()
 	{
 		player = FindObjectOfType<Player>();
 		checkpoint = player.transform.position;
@@ -20,7 +20,7 @@ public class PlayManager : Notificable
 
 	public override void OnFail()
 	{
-		FindObjectOfType<Notifier>().NotificateDead();
+		notifier.NotificateDead();
 		player.Teleport(checkpoint);
 		//TODO: may be a method. 'dir' will be private or Property.
 		player.GetComponent<RollingCube>().dir = Vector2.right.ToDirection();
