@@ -74,7 +74,7 @@ public class CameraTracker : Notificable
 		}
 	}
 
-	#region Notificacion Events
+	#region Notificacions
 	protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Turn;

@@ -8,10 +8,16 @@
 /// </remarks>
 public class Mark : Notificable
 {
+    /// <summary>
+    /// If <see cref="sideRequired"/> must be shuffle within [1,6] or it's prefixed.
+    /// </summary>
+    [HideInInspector]
+    public bool randomSide;
 	/// <summary>
 	/// Side that will switch on the obstacle.
 	/// </summary>
-	protected int sideRequired;
+    [HideInInspector]
+	public int sideRequired;
 	/// <summary>
 	/// Whether or not switched on (OK or WRONG state).
 	/// </summary>
@@ -26,6 +32,7 @@ public class Mark : Notificable
 	/// <summary>
 	/// Sprites list for each side of the die.
 	/// </summary>
+    [HideInInspector]
 	public Sprite[] sprites;
 	/// <summary>
 	/// Unique renderer of the current side.
@@ -61,7 +68,8 @@ public class Mark : Notificable
 	protected override void Start()
 	{
         base.Start(); //Notificable will selfsubscribe.
-        SelectRandomSide();
+        if(randomSide)
+            SelectRandomSide();
 	}
 
 	private void SelectRandomSide()

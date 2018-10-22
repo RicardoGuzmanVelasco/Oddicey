@@ -12,7 +12,7 @@ public class PlayManager : Notificable
 		checkpoint = player.transform.position;
 	}
 
-	#region Notification Events
+	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Fail | Notification.Save;
