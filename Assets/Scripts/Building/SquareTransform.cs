@@ -13,6 +13,7 @@ public class SquareTransform : MonoBehaviour
 		set
 		{
 			transform.position = transform.position.X(Builder.ToUnits(value));
+            UpdatePositionInName();
 		}
 	}
 
@@ -26,6 +27,7 @@ public class SquareTransform : MonoBehaviour
 		set
 		{
 			transform.position = transform.position.Y(Builder.ToUnits(value));
+            UpdatePositionInName();
 		}
 	}
 
@@ -40,5 +42,11 @@ public class SquareTransform : MonoBehaviour
     public override string ToString()
     {
         return "[" + (int)X + "," + (int)Y + "]";
+    }
+
+    void UpdatePositionInName()
+    {
+        if(GetComponent<Builder>())
+            GetComponent<Builder>().UpdateName();
     }
 }

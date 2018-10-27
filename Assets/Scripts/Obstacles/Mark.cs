@@ -55,6 +55,7 @@ public class Mark : Notificable
 			state = value;
 			//Will be changed by animation play. That animation will make the color change.
 			spriteRenderer.color = state ? Color.green : Color.red;
+            transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color; //TEST: to see easierly cows.
 		}
 	}
 	#endregion

@@ -41,7 +41,7 @@ public class HierarchySeparator : MonoBehaviour
 
     void OnValidate()
     {
-        gameObject.name = new string(separator, level * 2) + " " + hierarchyName;
+        gameObject.name = new string(separator, level * 2) + "[ " + hierarchyName + " ]";
         gameObject.SetActive(false);
     }
 }

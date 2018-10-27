@@ -10,13 +10,8 @@ public enum PostType
 }
 
 [ExecuteInEditMode]
-public class PostBuilder : Builder
+public class PostBuilder : ObstacleBuilder<Post>
 {
-    /// <summary>
-    /// Post component to build.
-    /// </summary>
-    Post attachedPost;
-
     /// <summary>
     /// What type the vane to build will be.
     /// </summary>
@@ -30,32 +25,25 @@ public class PostBuilder : Builder
     protected override void Build()
     {
         base.Build();
-
-        DestroyImmediate(attachedPost);
-        switch (type)
-        {
-            case PostType.Unbreakable:
-                attachedPost = gameObject.AddComponent<UnbreakablePost>();
-                break;
-            case PostType.Weak:
-                attachedPost = gameObject.AddComponent<WeakPost>();
-                (attachedPost as WeakPost).Attemps = attemps;
-                break;
-            default:
-                attachedPost = gameObject.AddComponent<Post>();
-                break;
-        }
-    }
-
-    private void OnValidate()
-    {
-        attachedPost = GetComponent<Post>();
-
-        if (attachedPost.GetType() == typeof(WeakPost))
-            attemps = (attachedPost as WeakPost).Attemps;
+        
+        if(attached.GetType() == typeof(WeakPost))
+            attemps = (attached as WeakPost).Attemps;
         else
             attemps = 1;
 
-        rebuild = true;
+        DestroyImmediate(attached);
+        switch (type)
+        {
+            case PostType.Unbreakable:
+                attached = gameObject.AddComponent<UnbreakablePost>();
+                break;
+            case PostType.Weak:
+                attached = gameObject.AddComponent<WeakPost>();
+                (attached as WeakPost).Attemps = attemps;
+                break;
+            default:
+                attached = gameObject.AddComponent<Post>();
+                break;
+        }
     }
 }

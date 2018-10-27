@@ -10,13 +10,8 @@ public enum MarkType
 }
 
 [ExecuteInEditMode]
-public class MarkBuilder : Builder
+public class MarkBuilder : ObstacleBuilder<Mark>
 {
-    /// <summary>
-    /// Mark component to build.
-    /// </summary>
-    Mark attachedMark;
-
     /// <summary>
     /// Target side of the mark when play starts.
     /// 0 means random side.
@@ -43,30 +38,24 @@ public class MarkBuilder : Builder
     {
         base.Build();
 
-        DestroyImmediate(attachedMark);
+        DestroyImmediate(attached);
         switch (type)
         {
             case MarkType.Lazy:
-                attachedMark = gameObject.AddComponent<LazyMark>();
+                attached = gameObject.AddComponent<LazyMark>();
                 break;
             case MarkType.Sleepy:
-                attachedMark = gameObject.AddComponent<SleepyMark>();
+                attached = gameObject.AddComponent<SleepyMark>();
                 break;
             default:
-                attachedMark = gameObject.AddComponent<Mark>();
+                attached = gameObject.AddComponent<Mark>();
                 break;
         }
-        attachedMark.sprites = sprites;
+        attached.sprites = sprites;
 
-        attachedMark.randomSide = sideRequired == 0;
-        attachedMark.sideRequired = sideRequired;
+        attached.randomSide = sideRequired == 0;
+        attached.sideRequired = sideRequired;
         //Draw on edit mode if no random side.
-        attachedMark.GetComponent<SpriteRenderer>().sprite = sideRequired != 0 ? sprites[sideRequired - 1] : null;
-    }
-
-    private void OnValidate()
-    {
-        attachedMark = GetComponent<Mark>();
-        rebuild = true;
+        attached.GetComponent<SpriteRenderer>().sprite = sideRequired != 0 ? sprites[sideRequired - 1] : null;
     }
 }
