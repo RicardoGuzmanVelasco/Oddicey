@@ -67,14 +67,16 @@ public abstract class Notificable : MonoBehaviour
 #endif
 
     #region Notifications
-    public virtual void OnBeep() { }
-	public virtual void OnFlip() { }
-	public virtual void OnFail() { }
-	public virtual void OnDead() { }
-	public virtual void OnTurn() { }
-	public virtual void OnSave() { }
-	public virtual void OnFall() { }
-	public virtual void OnLand() { }
+    public virtual void OnBeep()    { }
+	public virtual void OnFlip()    { }
+	public virtual void OnFail()    { }
+	public virtual void OnDead()    { }
+	public virtual void OnTurn()    { }
+	public virtual void OnSave()    { }
+    public virtual void OnUnsave()  { }
+	public virtual void OnFall()    { }
+	public virtual void OnLand()    { }
+    public virtual void OnWalk()    { }
 	#endregion
 
 	/// <summary>
@@ -87,4 +89,12 @@ public abstract class Notificable : MonoBehaviour
 	{
 		subscriptions = Notification.Any;
 	}
+
+    /// <summary>
+    /// Notificable will self-unsubscribe when it's destroyed.
+    /// </summary>
+    protected virtual void OnDestroy()
+    {
+        Listening = false;
+    }
 }

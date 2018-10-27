@@ -18,43 +18,47 @@ public enum Notification
 	/// <summary>
 	/// Musical beat.
 	/// </summary>
-	Beep = 1 << 0,
+	Beep    = 1 << 00,
 	/// <summary>
 	/// Active side on die changed.
 	/// </summary>
-	Flip = 1 << 1,
+	Flip    = 1 << 01,
 	/// <summary>
 	/// Failure when reaching a mark.
 	/// </summary>
-	Fail = 1 << 2,
+	Fail    = 1 << 02,
 	/// <summary>
 	/// Any death condition.
 	/// </summary>
-	Dead = 1 << 3,
+	Dead    = 1 << 03,
 	/// <summary>
 	/// Direction inverted.
 	/// </summary>
-	Turn = 1 << 4,
+	Turn    = 1 << 04,
 	/// <summary>
 	/// Checkpoint reached.
 	/// </summary>
-	Save = 1 << 5,
+	Save    = 1 << 05,
 	/// <summary>
 	/// Ground lost.
 	/// </summary>
-	Fall = 1 << 6,
+	Unsave  = 1 << 06,
 	/// <summary>
 	/// Ground gained.
 	/// </summary>
-	Land = 1 << 7,
+	Land    = 1 << 07,
 	/// <summary>
 	/// Try to flip out of time.
 	/// </summary>
-	Late = 1 << 8,
+	Fall    = 1 << 08,
 	/// <summary>
-	/// Die marches on after stopped.
+	/// Die marches on. Consider this a kind of "JustFirstBeepNotification".
 	/// </summary>
-	Walk = 1 << 9
+	Walk    = 1 << 09,
+    /// <summary>
+	/// Ground lost.
+	/// </summary>
+	Late    = 1 << 10
 }
 
 public sealed class Notifier : MonoBehaviour
@@ -128,6 +132,12 @@ public sealed class Notifier : MonoBehaviour
 			listener.OnSave();
 	}
 
+    public void NotificateUnsave()
+    {
+        foreach (var listener in listeners[Notification.Unsave])
+            listener.OnUnsave();
+    }
+
 	public void NotificateFall()
 	{
 		foreach(var listener in listeners[Notification.Fall])
@@ -140,7 +150,13 @@ public sealed class Notifier : MonoBehaviour
 			listener.OnLand();
 	}
 
-	public void Notificate(Notification notification)
+    public void NotificateWalk()
+    {
+        foreach (var listener in listeners[Notification.Walk])
+            listener.OnWalk();
+    }
+
+    public void Notificate(Notification notification)
 	{
 		if(notification.HasFlag(Notification.Beep))
 			NotificateBeep();
@@ -154,9 +170,13 @@ public sealed class Notifier : MonoBehaviour
 			NotificateTurn();
 		if(notification.HasFlag(Notification.Save))
 			NotificateSave();
-		if(notification.HasFlag(Notification.Fall))
+        if (notification.HasFlag(Notification.Unsave))
+            NotificateUnsave();
+        if (notification.HasFlag(Notification.Fall))
 			NotificateFall();
 		if(notification.HasFlag(Notification.Land))
 			NotificateLand();
+        if (notification.HasFlag(Notification.Walk))
+            NotificateWalk();
 	}
 }

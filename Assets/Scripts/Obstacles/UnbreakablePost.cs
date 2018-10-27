@@ -1,45 +1,43 @@
-﻿using UnityEngine;
-using Utils.Extensions;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Checkpoint which persist after save player position.
 /// </summary>
 public class UnbreakablePost : Post
 {
-
-	protected override void Start()
-	{
-		base.Start();
-		Listening = false; // UnbreakablePost needn't listen until collision. 
-	}
-
-	void OnTriggerEnter2D(Collider2D collision)
-	{
-		if(collision.tag != "Player")
-			return;
-
-		notifier.NotificateSave();
-		GetComponent<Collider2D>().enabled = false;
-
-		Listening = true;
-
-		//TODO: add animation play. That animation will make the checked effect but no break as the standard Post.
-	}
-
 	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = Notification.Beep;
+        base.ConfigureSubscriptions();
+		subscriptions |= Notification.Walk | Notification.Dead | Notification.Turn;
 	}
 
 	/// <summary>
-	/// It just listens one beep, exactly after the player collides with it.
+	/// It just listens first beep.
 	/// This avoids multiple saves within the same beep.
 	/// </summary>
-	public override void OnBeep()
-	{
-		GetComponent<Collider2D>().enabled = true;
-		Listening = false;
-	}
-	#endregion
+	public override void OnWalk()
+    {
+        StartCoroutine(ReactivateCollider());
+    }
+
+    /// <summary>
+    /// When death, post stops listening collisions, in case die overlap after teleporting to checkpoint.
+    /// This avoids multiple saves within the same checkpoint due to death and not to rewalking.
+    /// </summary>
+    public override void OnDead()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+
+    /// <summary>
+    /// If the player turns before it has dead, collider must be reactivated.
+    /// Maybe Teleport event will require same reactivation.
+    /// </summary>
+    public override void OnTurn()
+    {
+        StartCoroutine(ReactivateCollider());
+    }
+    #endregion
 }

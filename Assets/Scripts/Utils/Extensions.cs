@@ -234,4 +234,32 @@ namespace Utils.Extensions
             return list[UnityEngine.Random.Range(0, list.Count)];
         }
     }
+
+    public static class StringExtensions
+    {
+        /// <summary>
+        /// If <paramref name="value"/> has any payload content.
+        /// </summary>
+        /// <remarks>
+        /// Simulates .NET 4.0 String.IsNullOrBlankSpaces(value) through <see cref="Trim(string, string)"/>.
+        /// </remarks>
+		public static bool HasContent(this string value)
+        {
+            value = value.Trim();
+            return !string.IsNullOrEmpty(value) ||
+                    (value.Length > 0);
+        }
+
+        /// <summary>
+        /// Overcharge based on <see cref="string"/> fragments instead of <see cref="char"/> occurrences.
+        /// </summary>
+        /// <remarks>
+        /// Not a mutable function. The purged string is returned, and the object string remains as originally.
+        /// </remarks>
+        /// <returns>The <see cref="string"/> with <paramref name="fragment"/> purged.</returns>
+        public static string Trim(this string value, string fragment)
+        {
+            return value.Replace(fragment, "");
+        }
+    }
 }

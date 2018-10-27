@@ -28,4 +28,17 @@ public class SquareTransform : MonoBehaviour
 			transform.position = transform.position.Y(Builder.ToUnits(value));
 		}
 	}
+
+    public Vector2 Position
+    {
+        get
+        {
+            return new Vector2(X, Y);
+        }
+    }
+
+    public override string ToString()
+    {
+        return "[" + (int)X + "," + (int)Y + "]";
+    }
 }

@@ -55,8 +55,11 @@ public class InputManager : Notificable
 		if(Input.GetButtonUp("Test1"))
 		{
 			GetComponent<MotorSystem>().Moving = !GetComponent<MotorSystem>().Moving;
-			if(GetComponent<MotorSystem>().Moving)
-				flipEnabled = true;
+            if (GetComponent<MotorSystem>().Moving)
+            {
+                flipEnabled = true;
+                notifier.NotificateWalk();
+            }
 		}
 		if(Input.GetButtonUp("Test2"))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -66,6 +69,10 @@ public class InputManager : Notificable
 			GetComponent<MotorSystem>().Tempo -= 10;
 		if(Input.GetButtonUp("Test5"))
 			die.GetComponent<RollingCube>().Turn();
+        if(Input.GetButtonUp("Test6"))
+            notifier.NotificateUnsave();
+        if (Input.GetButtonUp("Test7"))
+            notifier.NotificateDead();
 		#endregion
 
 		if(!FlipEnabled)

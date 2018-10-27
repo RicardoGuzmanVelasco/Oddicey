@@ -14,7 +14,7 @@ public class RollingCube : MonoBehaviour
 	const float error = 0.95f;
 	float rollingTime; //Inverse of speed with error constant. Time to do a roll.
 
-	public Direction dir = Direction.right;
+	public Direction direction = Direction.right;
 
 	public bool grounding = false;
 	float threshold = 30; //Min degrees difference to consider grounding.
@@ -62,9 +62,9 @@ public class RollingCube : MonoBehaviour
 		if (Falling)
 			return;
 
-		if (dir.ToVector2() == Vector2.right)
+		if (direction.ToVector2() == Vector2.right)
 			RollForward();
-		else if (dir.ToVector2() == Vector2.left)
+		else if (direction.ToVector2() == Vector2.left)
 			RollBackward();
 	}
 
@@ -131,13 +131,13 @@ public class RollingCube : MonoBehaviour
 
 	public void Turn()
 	{
-		dir = dir.Reverse();
+		direction = direction.Reverse();
 		FindObjectOfType<Notifier>().NotificateTurn();
 	}
 
 	public void Turn(Vector2 newDir)
 	{
-		dir = newDir.ToDirection();
+		direction = newDir.ToDirection();
 		FindObjectOfType<Notifier>().NotificateTurn();
 	}
 }

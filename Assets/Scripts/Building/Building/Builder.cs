@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utils.Extensions;
 
 /// <summary>
 /// Any builder is a helper with square, tiles info
@@ -13,6 +14,7 @@ public abstract class Builder : MonoBehaviour
     /// If OnValidate() saw any change which needs rebuilt.
     /// </summary>
     protected bool rebuild = false;
+    string nameInEditor;
 
 	void Awake()
 	{
@@ -28,6 +30,8 @@ public abstract class Builder : MonoBehaviour
 
     protected virtual void Build()
     {
+        //if(nameInEditor!=null && nameInEditor.HasContent())
+        //    gameObject.name = GetComponent<SquareTransform>() + " " + nameInEditor;
         rebuild = false;
     }
 

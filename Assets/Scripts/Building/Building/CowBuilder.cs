@@ -16,7 +16,7 @@ public class CowBuilder : Builder
 {
     SpriteRenderer sprite;
 
-    private void OnEnable()
+    void OnEnable()
     {
         sprite = GetComponent<SpriteRenderer>();
     }
