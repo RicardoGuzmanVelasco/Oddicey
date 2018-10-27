@@ -22,28 +22,24 @@ public class PostBuilder : ObstacleBuilder<Post>
     /// </summary>
     int attemps = 1;
 
-    protected override void Build()
+    #region Build assembly line
+    protected override void UpdateAttachedTypeName()
     {
-        base.Build();
-        
+        AttachedTypeName = type.ToString();
+    }
+
+    protected override void BeforeUpdateAttached()
+    {
         if(attached.GetType() == typeof(WeakPost))
             attemps = (attached as WeakPost).Attemps;
         else
             attemps = 1;
-
-        DestroyImmediate(attached);
-        switch (type)
-        {
-            case PostType.Unbreakable:
-                attached = gameObject.AddComponent<UnbreakablePost>();
-                break;
-            case PostType.Weak:
-                attached = gameObject.AddComponent<WeakPost>();
-                (attached as WeakPost).Attemps = attemps;
-                break;
-            default:
-                attached = gameObject.AddComponent<Post>();
-                break;
-        }
     }
+
+    protected override void AfterUpdateAttached()
+    {
+        if((attached as WeakPost)!=null)
+            (attached as WeakPost).Attemps = attemps;
+    }
+    #endregion
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Utils.Directions;
 
 namespace Utils.Extensions
 {
-    public static class VectorExtensions
+    public static class VectorExtensionMethods
     {
         #region Snap
         /// <summary>
@@ -109,7 +110,7 @@ namespace Utils.Extensions
         #endregion
     }
 
-    public static class GameObjectExtensions
+    public static class GameObjectExtensionMethods
     {
         #region Clone
         /// <summary>
@@ -159,7 +160,7 @@ namespace Utils.Extensions
         #endregion
     }
 
-    public static class TransformExtensions
+    public static class TransformExtensionMethods
     {
         #region Destroy
         /// <summary>
@@ -190,7 +191,7 @@ namespace Utils.Extensions
         #endregion
     }
 
-    public static class EnumExtensions
+    public static class EnumExtensionMethods
     {
         /// <summary>
         /// Overrides* static <see cref="Enum"/>.HasFlag() functionality.
@@ -219,7 +220,7 @@ namespace Utils.Extensions
         }
     }
 
-    public static class ListExtensions
+    public static class ListExtensionMethods
     {
         /// <summary>
         /// Returns a random item from the list.
@@ -235,7 +236,7 @@ namespace Utils.Extensions
         }
     }
 
-    public static class StringExtensions
+    public static class StringExtensionMethods
     {
         /// <summary>
         /// If <paramref name="value"/> has any payload content.
@@ -260,6 +261,34 @@ namespace Utils.Extensions
         public static string Trim(this string value, string fragment)
         {
             return value.Replace(fragment, "");
+        }
+    }
+
+    public static class TypeExtensionMethods
+    {
+        /// <summary>
+        /// Find all children types of <paramref name="baseType"/> in current assembly.
+        /// </summary>
+        /// <remarks>
+        /// Based on Jay Hilyard, Stephen Teilhet solution at "C# Cookbook".
+        /// </remarks>
+        /// <returns><see cref="Array"/> of <see cref="Type"/>.</returns>
+        public static Type[] GetSubClasses(this Type baseType)
+        {
+            return (from Type childType
+                    in Assembly.GetExecutingAssembly().GetTypes()
+                    where childType.IsSubclassOf(baseType)
+                    select childType)
+                    .ToArray();
+        }
+
+        public static Type GetSubClass(this Type baseType, string name)
+        {
+            var childrenTypes = GetSubClasses(baseType);
+            foreach(var type in childrenTypes)
+                if(type.Name == name)
+                    return type;
+            return null;
         }
     }
 }

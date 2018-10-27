@@ -34,23 +34,14 @@ public class MarkBuilder : ObstacleBuilder<Mark>
     [SerializeField]
     Sprite[] sprites = new Sprite[6];
 
-    protected override void Build()
+    #region Build assembly line
+    protected override void UpdateAttachedTypeName()
     {
-        base.Build();
+        AttachedTypeName = type.ToString();
+    }
 
-        DestroyImmediate(attached);
-        switch (type)
-        {
-            case MarkType.Lazy:
-                attached = gameObject.AddComponent<LazyMark>();
-                break;
-            case MarkType.Sleepy:
-                attached = gameObject.AddComponent<SleepyMark>();
-                break;
-            default:
-                attached = gameObject.AddComponent<Mark>();
-                break;
-        }
+    protected override void AfterUpdateAttached()
+    {
         attached.sprites = sprites;
 
         attached.randomSide = sideRequired == 0;
@@ -58,4 +49,5 @@ public class MarkBuilder : ObstacleBuilder<Mark>
         //Draw on edit mode if no random side.
         attached.GetComponent<SpriteRenderer>().sprite = sideRequired != 0 ? sprites[sideRequired - 1] : null;
     }
+    #endregion
 }

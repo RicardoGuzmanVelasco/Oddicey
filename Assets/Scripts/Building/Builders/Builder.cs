@@ -27,11 +27,22 @@ public abstract class Builder : MonoBehaviour
             Build();
     }
 
+    /// <summary>
+    /// Deactivates <see cref="rebuild"/> bool-flag.
+    /// </summary>
     protected virtual void Build()
     {
         rebuild = false;
     }
 
+    /// <summary>
+    /// Keeps <see cref="UnityEngine.Object.name"/> updated,
+    /// both in <see cref="attached"/> and <see cref="SquareTransform"/> changes.
+    /// </summary>
+    /// <remarks>
+    /// It helps designer roles to shorty see the whole picture in hierarchy view,
+    /// following the trail of the object thanks to their types and grid positions.
+    /// </remarks>
     public virtual void UpdateName()
     {
         gameObject.name = GetComponent<SquareTransform>() + " " + GetType().ToString().Trim("Builder");

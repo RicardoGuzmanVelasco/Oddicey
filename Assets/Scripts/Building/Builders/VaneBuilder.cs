@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.Directions;
+using Utils.Extensions;
 
 public enum VaneType
 {
@@ -21,24 +22,15 @@ public class VaneBuilder : ObstacleBuilder<Vane>
     [SerializeField]
     Direction direction = Direction.left;
 
-    protected override void Build()
+    #region Build assembly line
+    protected override void UpdateAttachedTypeName()
     {
-        base.Build();
+        AttachedTypeName = type.ToString();
+    }
 
-        DestroyImmediate(attached);
-        switch (type)
-        {
-            case VaneType.Flipping:
-                attached = gameObject.AddComponent<FlippingVane>();
-                break;
-            case VaneType.Fixed:
-                attached = gameObject.AddComponent<FixedVane>();
-                break;
-            default:
-                attached = gameObject.AddComponent<Vane>();
-                break;
-        }
-
+    protected override void AfterUpdateAttached()
+    {
         attached.Dir = direction;
     }
+    #endregion
 }
