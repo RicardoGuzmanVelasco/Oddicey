@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Utils.Extensions;
 
+/// <summary>
+/// How a <see cref="ModularGroup"/> will select elements.
+/// </summary>
 public enum ModularGroupType
 {
 	/// <summary>

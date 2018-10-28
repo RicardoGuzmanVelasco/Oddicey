@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// A Notificable can both receive a <see cref="Notification"/> event
+/// <see cref="Notificable"/> can both receive a <see cref="Notification"/> event
 /// and also request the <see cref="Notifier"/> to raise any of them.
 /// </summary>
 public abstract class Notificable : MonoBehaviour
@@ -45,7 +45,7 @@ public abstract class Notificable : MonoBehaviour
 	#endregion
 
 	/// <summary>
-	/// Notificable will selfsubscribe when “start”.
+	/// Will self-subscribe when “start”.
 	/// </summary>
 	protected virtual void Start()
 	{
@@ -91,7 +91,7 @@ public abstract class Notificable : MonoBehaviour
 	}
 
     /// <summary>
-    /// Notificable will self-unsubscribe when it's destroyed.
+    /// Will self-unsubscribe when it's destroyed.
     /// </summary>
     protected virtual void OnDestroy()
     {

@@ -63,120 +63,136 @@ public enum Notification
 
 public sealed class Notifier : MonoBehaviour
 {
-	Dictionary<Notification, HashSet<Notificable>> listeners;
+    /// <summary>
+    /// A set of <see cref="Notificable"/> instances for each <see cref="Notification"/>.
+    /// </summary>
+    Dictionary<Notification, HashSet<Notificable>> listeners;
 
-	void Awake()
-	{
-		listeners = new Dictionary<Notification, HashSet<Notificable>>();
+    void Awake()
+    {
+        listeners = new Dictionary<Notification, HashSet<Notificable>>();
 
-		foreach(Notification notification in Enum.GetValues(typeof(Notification)))
-			if(notification != Notification.Any)
-				listeners.Add(notification, new HashSet<Notificable>());
-	}
+        foreach(Notification notification in Enum.GetValues(typeof(Notification)))
+            if(notification != Notification.Any)
+                listeners.Add(notification, new HashSet<Notificable>());
+    }
 
-	/// <summary>
-	/// Includes <paramref name="listener"/> to all <see cref="Notification"/> types within <paramref name="subscriptions"/>.
-	/// </summary>
-	/// <param name="subscriptions">Subscribed to all notifications by default.</param>
-	public void Subscribe(Notificable listener, Notification subscriptions = Notification.Any)
-	{
-		foreach(Notification notification in listeners.Keys)
-			if(subscriptions.HasFlag(notification))
-				listeners[notification].Add(listener);
-	}
+    /// <summary>
+    /// Includes <paramref name="listener"/> to all <see cref="Notification"/> types within <paramref name="subscriptions"/>.
+    /// </summary>
+    /// <param name="subscriptions">Subscribed to all notifications by default.</param>
+    public void Subscribe(Notificable listener, Notification subscriptions = Notification.Any)
+    {
+        foreach(Notification notification in listeners.Keys)
+            if(subscriptions.HasFlag(notification))
+                listeners[notification].Add(listener);
+    }
 
-	/// <summary>
-	/// Take out <paramref name="listener"/> to all <see cref="Notification"/> types within <paramref name="subscriptions"/>.
-	/// </summary>
-	/// <param name="subscriptions">Unsubscribed to all notifications by default.</param>
-	public void Unsubscribe(Notificable listener, Notification subscriptions = Notification.Any)
-	{
-		foreach(Notification notification in listeners.Keys)
-			if(subscriptions.HasFlag(notification))
-				listeners[notification].Remove(listener);
-	}
+    /// <summary>
+    /// Take out <paramref name="listener"/> to all <see cref="Notification"/> types within <paramref name="subscriptions"/>.
+    /// </summary>
+    /// <param name="subscriptions">Unsubscribed to all notifications by default.</param>
+    public void Unsubscribe(Notificable listener, Notification subscriptions = Notification.Any)
+    {
+        foreach(Notification notification in listeners.Keys)
+            if(subscriptions.HasFlag(notification))
+                listeners[notification].Remove(listener);
+    }
 
-	public void NotificateBeep()
-	{
-		foreach(var listener in listeners[Notification.Beep].ToArray()) //ToArray() returns a copy, which prevents problems unsubscribing during foreach.
-			listener.OnBeep();
-	}
+    public void NotificateBeep()
+    {
+        foreach(var listener in listeners[Notification.Beep].ToArray()) //ToArray() returns a copy, which prevents problems unsubscribing during foreach.
+            listener.OnBeep();
+    }
 
-	public void NotificateFlip()
-	{
-		foreach(var listener in listeners[Notification.Flip])
-			listener.OnFlip();
-	}
+    public void NotificateFlip()
+    {
+        foreach(var listener in listeners[Notification.Flip])
+            listener.OnFlip();
+    }
 
-	public void NotificateFail()
-	{
-		foreach(var listener in listeners[Notification.Fail])
-			listener.OnFail();
-	}
+    public void NotificateFail()
+    {
+        foreach(var listener in listeners[Notification.Fail])
+            listener.OnFail();
+    }
 
-	public void NotificateDead()
-	{
-		foreach(var listener in listeners[Notification.Dead])
-			listener.OnDead();
-	}
+    public void NotificateDead()
+    {
+        foreach(var listener in listeners[Notification.Dead])
+            listener.OnDead();
+    }
 
-	public void NotificateTurn()
-	{
-		foreach(var listener in listeners[Notification.Turn])
-			listener.OnTurn();
-	}
+    public void NotificateTurn()
+    {
+        foreach(var listener in listeners[Notification.Turn])
+            listener.OnTurn();
+    }
 
-	public void NotificateSave()
-	{
-		foreach(var listener in listeners[Notification.Save])
-			listener.OnSave();
-	}
+    public void NotificateSave()
+    {
+        foreach(var listener in listeners[Notification.Save])
+            listener.OnSave();
+    }
 
     public void NotificateUnsave()
     {
-        foreach (var listener in listeners[Notification.Unsave])
+        foreach(var listener in listeners[Notification.Unsave])
             listener.OnUnsave();
     }
 
-	public void NotificateFall()
-	{
-		foreach(var listener in listeners[Notification.Fall])
-			listener.OnFall();
-	}
+    public void NotificateFall()
+    {
+        foreach(var listener in listeners[Notification.Fall])
+            listener.OnFall();
+    }
 
-	public void NotificateLand()
-	{
-		foreach(var listener in listeners[Notification.Land])
-			listener.OnLand();
-	}
+    public void NotificateLand()
+    {
+        foreach(var listener in listeners[Notification.Land])
+            listener.OnLand();
+    }
 
     public void NotificateWalk()
     {
-        foreach (var listener in listeners[Notification.Walk])
+        foreach(var listener in listeners[Notification.Walk])
             listener.OnWalk();
     }
 
+    /// <summary>
+    /// Public interface to notificate some <see cref="Notification"/> at once.
+    /// </summary>
+    /// <param name="notification">
+    /// Set of flags whose <see cref="Notification"/> will be called.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// If <paramref name="notification"/> equals <see cref="Notification.None>"/>.
+    /// That is considered an unintended call to this method, since no action will be taken.
+    /// Throw this exception prevents an incorrect call or using '&' bitwise operator instead of '|'.
+    /// </exception>
     public void Notificate(Notification notification)
-	{
-		if(notification.HasFlag(Notification.Beep))
-			NotificateBeep();
-		if(notification.HasFlag(Notification.Flip))
-			NotificateFlip();
-		if(notification.HasFlag(Notification.Fail))
-			NotificateFail();
-		if(notification.HasFlag(Notification.Dead))
-			NotificateDead();
-		if(notification.HasFlag(Notification.Turn))
-			NotificateTurn();
-		if(notification.HasFlag(Notification.Save))
-			NotificateSave();
-        if (notification.HasFlag(Notification.Unsave))
+    {
+        if(notification == Notification.None)
+            throw new ArgumentNullException("No notification is going to be called.");
+        if(notification.HasFlag(Notification.Beep))
+            NotificateBeep();
+        if(notification.HasFlag(Notification.Flip))
+            NotificateFlip();
+        if(notification.HasFlag(Notification.Fail))
+            NotificateFail();
+        if(notification.HasFlag(Notification.Dead))
+            NotificateDead();
+        if(notification.HasFlag(Notification.Turn))
+            NotificateTurn();
+        if(notification.HasFlag(Notification.Save))
+            NotificateSave();
+        if(notification.HasFlag(Notification.Unsave))
             NotificateUnsave();
-        if (notification.HasFlag(Notification.Fall))
-			NotificateFall();
-		if(notification.HasFlag(Notification.Land))
-			NotificateLand();
-        if (notification.HasFlag(Notification.Walk))
+        if(notification.HasFlag(Notification.Fall))
+            NotificateFall();
+        if(notification.HasFlag(Notification.Land))
+            NotificateLand();
+        if(notification.HasFlag(Notification.Walk))
             NotificateWalk();
-	}
+    }
 }

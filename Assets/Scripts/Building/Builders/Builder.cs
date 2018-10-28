@@ -3,24 +3,33 @@ using UnityEngine;
 using Utils.Extensions;
 
 /// <summary>
-/// Any builder is a helper with square, tiles info
-/// which will be deleted when playing.
+/// Any builder is a helper with square, tiles info.
+/// Lets a designer build on edit mode, while it will be deleted when playing.
 /// </summary>
 public abstract class Builder : MonoBehaviour
 {
+    /// <summary>
+    /// Relation between Unity default units and grid tile units.
+    /// </summary>
     public const float SquareSize = 4;
 
     /// <summary>
-    /// If OnValidate() saw any change which needs rebuilt.
+    /// If a property of an instance has any change which needs rebuilt.
     /// </summary>
     protected bool rebuild = false;
 
+    /// <summary>
+    /// <see cref="Builder"/> will self-destroy on play mode.
+    /// </summary>
     void Awake()
     {
         if(Application.isPlaying)
             Destroy(this);
     }
 
+    /// <summary>
+    /// This check encapsulates a <see cref="Build"/> call after validate change of property in editor.
+    /// </summary>
     void Update()
     {
         if(rebuild)
@@ -30,6 +39,9 @@ public abstract class Builder : MonoBehaviour
     /// <summary>
     /// Deactivates <see cref="rebuild"/> bool-flag.
     /// </summary>
+    /// <remarks>
+    /// The actual build functionality must be override by child builders.
+    /// </remarks>
     protected virtual void Build()
     {
         rebuild = false;
@@ -37,7 +49,7 @@ public abstract class Builder : MonoBehaviour
 
     /// <summary>
     /// Keeps <see cref="UnityEngine.Object.name"/> updated,
-    /// both in <see cref="attached"/> and <see cref="SquareTransform"/> changes.
+    /// both when <see cref="attached"/> or <see cref="SquareTransform"/> changes.
     /// </summary>
     /// <remarks>
     /// It helps designer roles to shorty see the whole picture in hierarchy view,
