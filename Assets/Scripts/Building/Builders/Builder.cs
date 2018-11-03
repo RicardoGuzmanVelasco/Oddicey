@@ -18,6 +18,9 @@ public abstract class Builder : MonoBehaviour
     /// </summary>
     protected bool rebuild = false;
 
+    [SerializeField]
+    string hierarchyName;
+
     /// <summary>
     /// <see cref="Builder"/> will self-destroy on play mode.
     /// </summary>
@@ -47,18 +50,32 @@ public abstract class Builder : MonoBehaviour
         rebuild = false;
     }
 
+    #region Name in hierarchy
     /// <summary>
-    /// Keeps <see cref="UnityEngine.Object.name"/> updated,
+    /// Keeps <see cref="UnityEngine.Object.name"/> updated with <see cref="SquareTransform.ToString"/>,
     /// both when <see cref="attached"/> or <see cref="SquareTransform"/> changes.
     /// </summary>
     /// <remarks>
     /// It helps designer roles to shorty see the whole picture in hierarchy view,
     /// following the trail of the object thanks to their types and grid positions.
     /// </remarks>
-    public virtual void UpdateName()
+    public void UpdateName()
     {
-        gameObject.name = GetComponent<SquareTransform>() + " " + GetType().ToString().Trim("Builder");
+        gameObject.name = GetComponent<SquareTransform>() + " ";
+        gameObject.name += hierarchyName.HasContent() ? hierarchyName : BaseName();
     }
+
+    /// <summary>
+    /// The name this game object will have in hierarchy beside <see cref="SquareTransform.ToString"/>.
+    /// </summary>
+    /// <remarks>
+    /// Override this in a child class if the base hierarchy name must be specialized.
+    /// </remarks>
+    protected virtual string BaseName()
+    {
+        return GetType().ToString().Trim("Builder");
+    }
+    #endregion
 
     #region Static methods
     public static bool IsSquare(Vector2 position)

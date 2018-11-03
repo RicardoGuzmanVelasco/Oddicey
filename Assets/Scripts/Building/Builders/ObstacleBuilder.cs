@@ -87,9 +87,14 @@ public abstract class ObstacleBuilder<T> : Builder
         rebuild = true;
     }
 
-    ///<summary><seealso cref="Builder.UpdateName"/></summary>
-    public override void UpdateName()
+    #region Name in hierarchy
+    ///<summary>
+    ///<seealso cref="Builder.UpdateName"/>.
+    ///In this case, instead of builder type it uses <see cref="attached"/> type.
+    ///</summary>
+    protected override string BaseName()
     {
-        gameObject.name = GetComponent<SquareTransform>() + " " + attached.GetType();
+        return attached.GetType().ToString();
     }
+    #endregion
 }
