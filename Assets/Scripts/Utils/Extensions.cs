@@ -158,6 +158,33 @@ namespace Utils.Extensions
             return child;
         }
         #endregion
+
+        /// <summary>
+        /// Find the first component of <typeparamref name="T"/> type whose game object is called <see cref="childName"/>.
+        /// </summary>
+        /// <remarks>
+        /// This extension is highly useful avoiding troublesome changes in scenes or prefabs hierarchy.
+        /// </remarks>
+        /// <exception cref="MissingComponentException">
+        /// If there isn't any <typeparamref name="T"/> component in game object or children.
+        /// </exception>
+        /// <exception cref="UnassignedReferenceException">
+        /// If there isn't child with <paramref name="childName"/>, but there was a <typeparamref name="T"/> component.
+        /// </exception>
+        /// <typeparam name="T">Any <see cref="Component"/> type to find.</typeparam>
+        /// <param name="childName">Name of the game object wherein the component lives.</param>
+        /// <returns>A reference to the component.</returns>
+        public static T GetComponentInChildren<T>(this GameObject gameObject, string childName) where T : Component
+        {
+            foreach(var component in gameObject.GetComponentsInChildren<T>())
+                if(component.gameObject.name == "Arrow")
+                    return component;
+
+            if(!gameObject.GetComponentInChildren<T>())
+                throw new MissingComponentException("No component of type " + typeof(T) + " was found.");
+            else
+                throw new UnassignedReferenceException("No child with name \"" + childName + "\" was found.");
+        }
     }
 
     public static class TransformExtensionMethods

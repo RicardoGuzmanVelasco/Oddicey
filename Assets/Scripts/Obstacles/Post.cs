@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Utils.Directions;
+using Utils.Extensions;
 
 /// <summary>
 /// Checkpoint. It breaks after save player position.
@@ -39,12 +41,12 @@ public class Post : Notificable
 
     void Awake()
     {
-        arrowSprite = GetComponentsInChildren<SpriteRenderer>()[1];
+        arrowSprite = gameObject.GetComponentInChildren<SpriteRenderer>("Arrow");
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.gameObject.CompareTag("Player"))
+        if(!collision.gameObject.CompareTag("Player"))
             return;
 
         Direction = collision.GetComponent<RollingCube>().direction;
