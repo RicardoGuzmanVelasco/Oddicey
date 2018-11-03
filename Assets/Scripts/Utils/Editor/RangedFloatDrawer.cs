@@ -1,4 +1,4 @@
-﻿using Utils.RangedTypes;
+﻿using Utils.Types;
 using UnityEditor;
 using UnityEngine;
 

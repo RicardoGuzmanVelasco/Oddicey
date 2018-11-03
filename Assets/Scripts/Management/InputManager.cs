@@ -92,13 +92,13 @@ public class InputManager : Notificable
 		if(flipOrder == FlipOrder.NoFlip)
 			return;
 
-		if(!die.Flip((int)flipOrder))
-			Debug.Log("Out of time"); //TODO: when player try to flip out of time;
-		else
-		{
-			GetComponent<Notifier>().NotificateFlip();
-			FlipEnabled = false;
-		}
+        if(!die.Flip((int)flipOrder))
+            notifier.NotificateLate();
+        else
+        {
+            notifier.NotificateFlip();
+            FlipEnabled = false;
+        }
 
 		flipOrder = FlipOrder.NoFlip;
 	}
@@ -106,11 +106,16 @@ public class InputManager : Notificable
 	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = Notification.Beep | Notification.Fall | Notification.Land;
+		subscriptions = Notification.Beep | Notification.Fall | Notification.Land | Notification.Late;
 	}
 
-	//This overriding did make the die not properly falling.
-	public override void OnBeep()
+    public override void OnLate()
+    {
+        Debug.Log("OutOfTime");
+    }
+
+    //This overriding did make the die not properly falling.
+    public override void OnBeep()
 	{
 		FlipEnabled = !player.GetComponent<RollingCube>().Falling;
 	}

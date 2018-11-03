@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
 	{
 		cube = GetComponent<RollingCube>();
 		body = GetComponent<Rigidbody2D>();
+
+        //Prevents rolling problems when this GameObject is selected while play mode.
+        Destroy(GetComponent<SquareTransform>());
 	}
 
 	public void Teleport(Vector3 position)

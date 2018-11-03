@@ -159,6 +159,12 @@ public sealed class Notifier : MonoBehaviour
             listener.OnWalk();
     }
 
+    public void NotificateLate()
+    {
+        foreach(var listener in listeners[Notification.Late])
+            listener.OnLate();
+    }
+
     /// <summary>
     /// Public interface to notificate some <see cref="Notification"/> at once.
     /// </summary>

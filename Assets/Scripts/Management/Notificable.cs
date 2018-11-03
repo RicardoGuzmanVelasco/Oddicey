@@ -77,6 +77,7 @@ public abstract class Notificable : MonoBehaviour
 	public virtual void OnFall()    { }
 	public virtual void OnLand()    { }
     public virtual void OnWalk()    { }
+    public virtual void OnLate()    { }
 	#endregion
 
 	/// <summary>

@@ -3,7 +3,7 @@
 namespace Utils.Directions
 {
     /// <summary>
-    /// 2D sidescrolling direction.
+    /// 2D side-scrolling direction.
     /// </summary>
     public enum Direction
     {
@@ -14,7 +14,7 @@ namespace Utils.Directions
     static class DirectionExtensions
     {
         /// <summary>
-        /// Conversion to Vector2 sidescrolling direction.
+        /// Conversion to Vector2 side-scrolling direction.
         /// </summary>
         /// <returns>
         /// Vector2 on behalf of the direction.
@@ -25,10 +25,8 @@ namespace Utils.Directions
             {
                 case Direction.left:
                     return Vector2.left;
-                //break;
                 case Direction.right:
                     return Vector2.right;
-                    //break;
             }
             return Vector2.zero;
         }
