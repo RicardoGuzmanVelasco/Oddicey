@@ -55,7 +55,7 @@ public class Mark : Notificable
 			state = value;
 			//Will be changed by animation play. That animation will make the color change.
 			spriteRenderer.color = state ? Color.green : Color.red;
-            transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color; //TEST: to see easierly cows.
+            transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color; //TEST: to see easily cows.
 		}
 	}
 	#endregion
@@ -68,7 +68,7 @@ public class Mark : Notificable
 
 	protected override void Start()
 	{
-        base.Start(); //Notificable will selfsubscribe.
+        base.Start(); //Notificable will self-subscribe.
         if(randomSide)
             SelectRandomSide();
 	}
@@ -92,7 +92,7 @@ public class Mark : Notificable
 	}
 
     /// <summary>
-    /// Checking state every beep, towards state changes if neccesary.
+    /// Checking state every beep, towards state changes if necessary.
     /// </summary>
     public override void OnBeep()
 	{
@@ -100,7 +100,7 @@ public class Mark : Notificable
 	}
 
 	/// <summary>
-	/// Checking state when die changes side, towards skin changes if neccesary.
+	/// Checking state when die changes side, towards skin changes if necessary.
 	/// </summary>
 	public override void OnFlip()
 	{
@@ -167,7 +167,7 @@ public class Mark : Notificable
 	/// </summary>
 	protected virtual void OnFailure()
 	{
-		//TODO: replace by effect on gameplay. Death, rewind, -1 lifes... whatever.
+		//TODO: replace by effect on gameplay. Death, rewind, -1 lives... whatever.
 		Debug.Log("Fail");
 		notifier.NotificateFail();
 	}

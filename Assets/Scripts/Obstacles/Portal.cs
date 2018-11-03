@@ -19,7 +19,7 @@ public class Portal : MonoBehaviour
 		GetComponent<Collider2D>().enabled = false;
 
 		if (GetComponentInChildren<MarksPile>() != null)
-			GetComponentInChildren<MarksPile>().Gate = this;
+			GetComponentInChildren<MarksPile>().gate = this;
 		else
 			Open();
 	}

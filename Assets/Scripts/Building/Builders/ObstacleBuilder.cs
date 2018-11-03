@@ -55,6 +55,7 @@ public abstract class ObstacleBuilder<T> : Builder
         BeforeUpdateAttached();
         UpdateAttached();
         AfterUpdateAttached();
+        UpdateName();
     }
 
     /// <summary>
@@ -84,7 +85,6 @@ public abstract class ObstacleBuilder<T> : Builder
     {
         attached = GetComponent<T>();
         rebuild = true;
-        UpdateName();
     }
 
     ///<summary><seealso cref="Builder.UpdateName"/></summary>

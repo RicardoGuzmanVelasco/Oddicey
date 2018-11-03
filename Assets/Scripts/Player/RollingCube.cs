@@ -110,11 +110,6 @@ public class RollingCube : MonoBehaviour
             return currentRollRotation;
     }
 
-    private void Update()
-    {
-        Debug.Log(DistanceFromGround());
-    }
-
     public void Roll()
     {
         if(falling)

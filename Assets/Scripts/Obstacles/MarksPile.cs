@@ -16,20 +16,21 @@ public class MarksPile : Notificable
 	/// If marks remaining.
 	/// </summary>
 	/// <value>
-	/// False: still not passed. Marks remaining.
+	/// If <see langword="false"/>, still not passed. Marks remaining.
+    /// <see langword="true"/> otherwise.
 	/// </value>
 	bool state;
 
 	/// <summary>
 	/// Portal linked with this pile, if any.
 	/// </summary>
-	public Portal Gate;
+	public Portal gate;
 
-	/// <summary>
-	/// Setting State to true will send Open instruction to the linked gate.
-	/// </summary>
-	#region Properties
-	public bool State
+    #region Properties
+    /// <summary>
+    /// Setting State to true will send Open instruction to the linked gate.
+    /// </summary>
+    public bool State
 	{
 		get
 		{
@@ -38,16 +39,17 @@ public class MarksPile : Notificable
 
 		private set
 		{
-			if (Gate != null)
-				Gate.Open();
+			if (gate != null)
+				gate.Open();
 			state = value;
+            //TODO: close.
 		}
 	}
 	#endregion
 
 	void Awake()
 	{
-		foreach (var mark in GetComponentsInChildren<Mark>())
+		foreach (var mark in GetComponentsInChildren<Mark>() )
 		{
 			marks.Add(mark);
 			mark.GetComponent<Collider2D>().enabled = false;
@@ -56,20 +58,21 @@ public class MarksPile : Notificable
 
 	protected override void Start()
 	{
-		StackMarks();
-		base.Start(); //The pile selfsubscribes.
+        base.Start(); //The pile self-subscribes.
+        StackMarks();
 	}
 
 	/// <summary>
-	/// Set the marks shaping a pile, one over other.
+	/// Set the marks shaping a pile, one on top of the other.
 	/// </summary>
-	private void StackMarks()
+	void StackMarks()
 	{
 		for (int i = foot; i < marks.Count; i++)
 		{
-			//Stacking marks by 'hierarchy' order.
-			marks[i].transform.position = transform.position.Y(-Builder.SquareSize + Builder.ToUnits(i - foot));
-			if (marks[i].Listening)
+            //Stacking marks containers, like cows, by 'hierarchy' order.
+            Transform containerTransform = marks[i].GetComponentInParent<MarkContainer>().transform;
+            containerTransform.position = transform.position.Y(Builder.ToUnits(i - foot));
+			if (marks[i].Listening) //TODO: unnecessary conditional.
 				marks[i].Listening = false;
 		}
 		if (!State)
