@@ -32,8 +32,7 @@ public class Post : Notificable
         set
         {
             direction = value;
-            //TODO: replace by animation play. That animation will make the checked effect.
-            arrowSprite.enabled = true;
+            GetComponent<Animator>().SetTrigger("Bounce");
             arrowSprite.flipX = direction == Direction.left;
         }
     }
@@ -88,7 +87,7 @@ public class Post : Notificable
 
     protected IEnumerator ReactivateCollider()
     {
-        yield return new WaitForFixedUpdate(); //This wait saferly avoids a new save every death teleporting.
+        yield return new WaitForFixedUpdate(); //This wait safely avoids a new save every death teleporting.
         GetComponent<Collider2D>().enabled = true;
     }
 }

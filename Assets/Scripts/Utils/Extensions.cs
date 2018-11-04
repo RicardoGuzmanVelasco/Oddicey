@@ -159,6 +159,7 @@ namespace Utils.Extensions
         }
         #endregion
 
+        #region GetComponent
         /// <summary>
         /// Find the first component of <typeparamref name="T"/> type whose game object is called <see cref="childName"/>.
         /// </summary>
@@ -176,7 +177,7 @@ namespace Utils.Extensions
         /// <returns>A reference to the component.</returns>
         public static T GetComponentInChildren<T>(this GameObject gameObject, string childName) where T : Component
         {
-            foreach(var component in gameObject.GetComponentsInChildren<T>())
+            foreach(var component in gameObject.GetComponentsInChildren<T>(true))
                 if(component.gameObject.name == "Arrow")
                     return component;
 
@@ -185,6 +186,7 @@ namespace Utils.Extensions
             else
                 throw new UnassignedReferenceException("No child with name \"" + childName + "\" was found.");
         }
+        #endregion
     }
 
     public static class TransformExtensionMethods
