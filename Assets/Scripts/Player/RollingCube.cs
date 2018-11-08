@@ -185,11 +185,21 @@ public class RollingCube : MonoBehaviour
     /// Fall from y=0 to y=-4 also takes 1 <see cref="Notification.Beep"/>.
     /// Fall to BOTTOM boundary, wherever it is, also takes 1 <see cref="Notification.Beep"/>.
     /// </example>
+    /// <exception cref="System.InvalidOperationException">
+    /// When current position of <see cref="RollingCube"/> is lower than the target floor.
+    /// </exception>
     IEnumerator Fall()
     {
-        Vector2 ground = LookForGround();
-        float distance = Mathf.Abs(ground.y - transform.position.y);
-        yield return StartCoroutine(FallOnRhythm());
+        float distance = transform.position.y - LookForGround().y;
+        if(distance < 0)
+            throw new System.InvalidOperationException("Falling upwards in such an oxymoron.");
+        float speed = distance / rollingTime;
+
+        do
+        {
+            transform.Translate(Vector2.down * speed * Time.fixedDeltaTime, Space.World);
+            yield return new WaitForFixedUpdate();
+        } while(falling);
     }
 
     //TODO: static in utilities class.
@@ -205,6 +215,7 @@ public class RollingCube : MonoBehaviour
         foreach(var hit in hitsOrderedByDistance)
             if(hit.collider.gameObject.CompareTag("Boundary")) //BOTTOM. No platform below die. So fall until death.
             {
+                //TODO: if bottom, then camera must stop its Y following. Could be made by a scene trigger that is created yet.
                 found = true;
                 ground = hit.collider.transform.position;
             }
