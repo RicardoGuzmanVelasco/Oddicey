@@ -1,11 +1,12 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Utils.Directions;
 using Utils.Extensions;
 
 public class RollingCube : MonoBehaviour
 {
-    private bool falling = false;
+    bool falling = false;
 
     Vector2 pivot;
 
@@ -172,7 +173,61 @@ public class RollingCube : MonoBehaviour
         transform.eulerAngles = transform.eulerAngles.Snap(90);
     }
 
+    /// <summary>
+    /// Fast fall, as on a gravity-based environment. 
+    /// </summary>
+    /// <remarks>
+    /// The fall towards floor below or BOTTOM boundary takes exactly
+    /// 1 <see cref="Notification.Beep"/>, regardless the total distance of the fall.
+    /// </remarks>
+    /// <example>
+    /// Fall from y=0 to y=-112 takes 1 <see cref="Notification.Beep"/>.
+    /// Fall from y=0 to y=-4 also takes 1 <see cref="Notification.Beep"/>.
+    /// Fall to BOTTOM boundary, wherever it is, also takes 1 <see cref="Notification.Beep"/>.
+    /// </example>
     IEnumerator Fall()
+    {
+        Vector2 ground = LookForGround();
+        float distance = Mathf.Abs(ground.y - transform.position.y);
+        yield return StartCoroutine(FallOnRhythm());
+    }
+
+    //TODO: static in utilities class.
+    Vector2 LookForGround()
+    {
+        Vector2 ground = new Vector2();
+        bool found = false;
+
+        //The order of collisions is not guaranteed by Unity.
+        RaycastHit2D[] hitsOrderedByDistance = Physics2D.RaycastAll(transform.position, Vector2.down);
+        hitsOrderedByDistance = hitsOrderedByDistance.OrderBy(h => h.distance).ToArray();
+
+        foreach(var hit in hitsOrderedByDistance)
+            if(hit.collider.gameObject.CompareTag("Boundary")) //BOTTOM. No platform below die. So fall until death.
+            {
+                found = true;
+                ground = hit.collider.transform.position;
+            }
+            else if(hit.collider.gameObject.CompareTag("Floor")) //First platform below die. It is, die grounding goal.
+            {
+                found = true;
+                ground = hit.collider.transform.position;
+                break;
+            }
+
+        if(!found)
+            throw new MissingReferenceException("No BOTTOM boundary neither any platform below die were found.");
+
+        return ground;
+    }
+
+    /// <summary>
+    /// Simple falling at <see cref="Notification.Beep"/> rhythm.
+    /// </summary>
+    /// <remarks>
+    /// One <see cref="Notification.Beep"/> means one <see cref="Builder.SquareSize> down translation.
+    /// </remarks>
+    IEnumerator FallOnRhythm()
     {
         do
         {
