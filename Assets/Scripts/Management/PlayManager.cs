@@ -27,7 +27,7 @@ public class PlayManager : Notificable
 
     protected override void Start()
     {
-        base.Start(); //Notificable will selfsuscribe when "start".
+        base.Start(); //Notificable will self-subscribe when "start".
 
         checkpoints.Push(new Checkpoint(player));
     }

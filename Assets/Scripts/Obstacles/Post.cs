@@ -7,16 +7,13 @@ using Utils.Extensions;
 /// <summary>
 /// Checkpoint. It breaks after save player position.
 /// </summary>
+[RequireComponent(typeof(PostController))]
 public class Post : Notificable
 {
     /// <summary>
     /// Direction the die was pointing to when it reached this checkpoint.
     /// </summary>
     Direction direction;
-    /// <summary>
-    /// Sprite of the arrow that points the saved direction.
-    /// </summary>
-    SpriteRenderer arrowSprite;
     /// <summary>
     /// If this post is the last checkpoint on <see cref="PlayManager.checkpoints"/>.
     /// </summary>
@@ -32,16 +29,10 @@ public class Post : Notificable
         set
         {
             direction = value;
-            GetComponent<Animator>().SetTrigger("Bounce");
-            arrowSprite.flipX = direction == Direction.left;
+            GetComponent<PostController>().SetDirection(direction);
         }
     }
     #endregion
-
-    void Awake()
-    {
-        arrowSprite = gameObject.GetComponentInChildren<SpriteRenderer>("Arrow");
-    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -77,17 +68,24 @@ public class Post : Notificable
         yield return new WaitForEndOfFrame();
 
         var playManager = FindObjectOfType<PlayManager>();
-        isLastCheckpoint = playManager.LastCheckpoint.position == (Vector2)transform.position;
-        Direction = playManager.LastCheckpoint.direction;
 
-        arrowSprite.enabled = playManager.IsSavedCheckpoint(transform.position);
-        if(!arrowSprite.enabled)
+        isLastCheckpoint = (Vector2)transform.position == playManager.LastCheckpoint.position;
+
+        bool isSavedCheckpoint = playManager.IsSavedCheckpoint(transform.position);
+        GetComponent<PostController>().ShowArrow(isSavedCheckpoint);
+        if(!isSavedCheckpoint)
             StartCoroutine(ReactivateCollider());
+
+        if(isLastCheckpoint)
+            Direction = playManager.LastCheckpoint.direction;
     }
 
     protected IEnumerator ReactivateCollider()
     {
-        yield return new WaitForFixedUpdate(); //This wait safely avoids a new save every death teleporting.
+        //This waits safely avoids a new save every death teleporting.
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
+
         GetComponent<Collider2D>().enabled = true;
     }
 }
