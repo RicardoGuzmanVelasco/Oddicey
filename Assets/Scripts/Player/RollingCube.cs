@@ -204,6 +204,7 @@ public class RollingCube : MonoBehaviour
             distance -= fallAdvance; //Remaining distance decreases as long as fall advances.
             if(distance < 0) //Last iteration.
                 fallAdvance += distance; //Prevents die beneath the target floor after last advance.
+
             transform.Translate(Vector2.down * fallAdvance, Space.World);
 
             yield return new WaitForFixedUpdate();

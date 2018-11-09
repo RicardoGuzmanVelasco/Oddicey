@@ -11,11 +11,11 @@ public class CameraTracker : Notificable
 	[SerializeField]
 	bool x = true;
 	[SerializeField]
-	bool y = false;
+	bool y = true;
 	/// <summary>
 	/// When stopped, if retrack it will take last values.
 	/// </summary>
-	bool lastX = true, lastY = false;
+	bool lastX = true, lastY = true;
 
 	#region Properties
 	public bool X
@@ -74,10 +74,10 @@ public class CameraTracker : Notificable
 		}
 	}
 
-	#region Notificacions
+	#region Notifications
 	protected override void ConfigureSubscriptions()
 	{
-		subscriptions = Notification.Turn;
+		subscriptions = Notification.Turn | Notification.Dead;
 	}
 
 	public override void OnTurn()
@@ -88,5 +88,10 @@ public class CameraTracker : Notificable
 			Y = lastY;
 		}
 	}
-	#endregion
+
+    public override void OnDead()
+    {
+        x = y = lastX = lastY = true;
+    }
+    #endregion
 }
