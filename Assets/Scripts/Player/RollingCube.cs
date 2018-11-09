@@ -169,6 +169,7 @@ public class RollingCube : MonoBehaviour
 
     public void Snap()
     {
+        floor = Mathf.RoundToInt(floor); //Avoid accumulated error.
         transform.position = transform.position.XY(Mathf.RoundToInt(transform.position.x), floor);
         transform.eulerAngles = transform.eulerAngles.Snap(90);
     }
@@ -190,9 +191,11 @@ public class RollingCube : MonoBehaviour
     /// </exception>
     IEnumerator Fall()
     {
-        float distance = transform.position.y - LookForGround().y;
+        int distance = Mathf.RoundToInt(transform.position.y - LookForGround().y);
+        Debug.Log(distance);
         if(distance < 0)
             throw new System.InvalidOperationException("Falling upwards in such an oxymoron.");
+
         float speed = distance / rollingTime;
 
         do
@@ -200,6 +203,8 @@ public class RollingCube : MonoBehaviour
             transform.Translate(Vector2.down * speed * Time.fixedDeltaTime, Space.World);
             yield return new WaitForFixedUpdate();
         } while(falling);
+        Snap();
+        Debug.Log(transform.position + " " + floor);
     }
 
     //TODO: static in utilities class.
