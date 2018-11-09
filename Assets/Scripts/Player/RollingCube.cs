@@ -86,7 +86,7 @@ public class RollingCube : MonoBehaviour
     /// If negative, how much the rolling cube is out of absolute ground, it is 0º rotation.
     /// If zero, the rolling cube is in absolute ground.
     /// </returns>
-    public float DistanceFromGround()
+    public float RollingDistanceFromGround()
     {
         if(currentRollRotation == 90 || currentRollRotation == 0)
             return 0;
@@ -163,13 +163,14 @@ public class RollingCube : MonoBehaviour
 
         //Reset, free and snap properly.
         pivot = transform.position;
-        Snap();
+        if(!falling) //Prevents snap 1 frame after begin falling.
+            Snap();
         rolling = false;
     }
 
     public void Snap()
     {
-        floor = Mathf.RoundToInt(floor); //Avoid accumulated error.
+        floor = Mathf.RoundToInt(floor); //Avoids accumulated error.
         transform.position = transform.position.XY(Mathf.RoundToInt(transform.position.x), floor);
         transform.eulerAngles = transform.eulerAngles.Snap(90);
     }
@@ -191,20 +192,23 @@ public class RollingCube : MonoBehaviour
     /// </exception>
     IEnumerator Fall()
     {
-        int distance = Mathf.RoundToInt(transform.position.y - LookForGround().y);
-        Debug.Log(distance);
+        float distance = Mathf.RoundToInt(transform.position.y - LookForGround().y);
         if(distance < 0)
             throw new System.InvalidOperationException("Falling upwards in such an oxymoron.");
 
         float speed = distance / rollingTime;
+        float fallAdvance = speed * Time.fixedDeltaTime;
 
         do
         {
-            transform.Translate(Vector2.down * speed * Time.fixedDeltaTime, Space.World);
+            distance -= fallAdvance; //Remaining distance decreases as long as fall advances.
+            if(distance < 0) //Last iteration.
+                fallAdvance += distance; //Prevents die beneath the target floor after last advance.
+            transform.Translate(Vector2.down * fallAdvance, Space.World);
+
             yield return new WaitForFixedUpdate();
         } while(falling);
         Snap();
-        Debug.Log(transform.position + " " + floor);
     }
 
     //TODO: static in utilities class.
