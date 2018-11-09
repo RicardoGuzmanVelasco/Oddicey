@@ -1,11 +1,12 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Utils.Directions;
 using Utils.Extensions;
 
 public class RollingCube : MonoBehaviour
 {
-    private bool falling = false;
+    bool falling = false;
 
     Vector2 pivot;
 
@@ -85,7 +86,7 @@ public class RollingCube : MonoBehaviour
     /// If negative, how much the rolling cube is out of absolute ground, it is 0º rotation.
     /// If zero, the rolling cube is in absolute ground.
     /// </returns>
-    public float DistanceFromGround()
+    public float RollingDistanceFromGround()
     {
         if(currentRollRotation == 90 || currentRollRotation == 0)
             return 0;
@@ -162,17 +163,92 @@ public class RollingCube : MonoBehaviour
 
         //Reset, free and snap properly.
         pivot = transform.position;
-        Snap();
+        if(!falling) //Prevents snap 1 frame after begin falling.
+            Snap();
         rolling = false;
     }
 
     public void Snap()
     {
+        floor = Mathf.RoundToInt(floor); //Avoids accumulated error.
         transform.position = transform.position.XY(Mathf.RoundToInt(transform.position.x), floor);
         transform.eulerAngles = transform.eulerAngles.Snap(90);
     }
 
+    /// <summary>
+    /// Fast fall, as on a gravity-based environment. 
+    /// </summary>
+    /// <remarks>
+    /// The fall towards floor below or BOTTOM boundary takes exactly
+    /// 1 <see cref="Notification.Beep"/>, regardless the total distance of the fall.
+    /// </remarks>
+    /// <example>
+    /// Fall from y=0 to y=-112 takes 1 <see cref="Notification.Beep"/>.
+    /// Fall from y=0 to y=-4 also takes 1 <see cref="Notification.Beep"/>.
+    /// Fall to BOTTOM boundary, wherever it is, also takes 1 <see cref="Notification.Beep"/>.
+    /// </example>
+    /// <exception cref="System.InvalidOperationException">
+    /// When current position of <see cref="RollingCube"/> is lower than the target floor.
+    /// </exception>
     IEnumerator Fall()
+    {
+        float distance = Mathf.RoundToInt(transform.position.y - LookForGround().y);
+        if(distance < 0)
+            throw new System.InvalidOperationException("Falling upwards in such an oxymoron.");
+
+        float speed = distance / rollingTime;
+        float fallAdvance = speed * Time.fixedDeltaTime;
+
+        do
+        {
+            distance -= fallAdvance; //Remaining distance decreases as long as fall advances.
+            if(distance < 0) //Last iteration.
+                fallAdvance += distance; //Prevents die beneath the target floor after last advance.
+
+            transform.Translate(Vector2.down * fallAdvance, Space.World);
+
+            yield return new WaitForFixedUpdate();
+        } while(falling);
+        Snap();
+    }
+
+    //TODO: static in utilities class.
+    Vector2 LookForGround()
+    {
+        Vector2 ground = new Vector2();
+        bool found = false;
+
+        //The order of collisions is not guaranteed by Unity.
+        RaycastHit2D[] hitsOrderedByDistance = Physics2D.RaycastAll(transform.position, Vector2.down);
+        hitsOrderedByDistance = hitsOrderedByDistance.OrderBy(h => h.distance).ToArray();
+
+        foreach(var hit in hitsOrderedByDistance)
+            if(hit.collider.gameObject.CompareTag("Boundary")) //BOTTOM. No platform below die. So fall until death.
+            {
+                //TODO: if bottom, then camera must stop its Y following. Could be made by a scene trigger that is created yet.
+                found = true;
+                ground = hit.collider.transform.position;
+            }
+            else if(hit.collider.gameObject.CompareTag("Floor")) //First platform below die. It is, die grounding goal.
+            {
+                found = true;
+                ground = hit.collider.transform.position;
+                break;
+            }
+
+        if(!found)
+            throw new MissingReferenceException("No BOTTOM boundary neither any platform below die were found.");
+
+        return ground;
+    }
+
+    /// <summary>
+    /// Simple falling at <see cref="Notification.Beep"/> rhythm.
+    /// </summary>
+    /// <remarks>
+    /// One <see cref="Notification.Beep"/> means one <see cref="Builder.SquareSize> down translation.
+    /// </remarks>
+    IEnumerator FallOnRhythm()
     {
         do
         {
