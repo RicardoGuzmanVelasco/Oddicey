@@ -31,7 +31,7 @@ public class PostController : Controller
 
     public void ShowArrow(bool show)
     {
-        arrowSprite.enabled = show;
+        arrowSprite.gameObject.SetActive(show);
     }
 
     public void Break()

@@ -63,9 +63,12 @@ public class LevelCircuit : Notificable
     }
 
     #region Notifications
+    /// <remarks>
+    /// <para><see cref="Notification.SavingGroup"/>: set checkpoint flag icon if necessary.</para>
+    /// </remarks>
     protected override void ConfigureSubscriptions()
     {
-        subscriptions = Notification.Save | Notification.Unsave;
+        subscriptions = Notification.SavingGroup;
     }
 
     public override void OnSave()

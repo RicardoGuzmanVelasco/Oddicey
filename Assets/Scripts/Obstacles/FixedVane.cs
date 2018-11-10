@@ -8,7 +8,10 @@
 /// </remarks>
 public class FixedVane : Vane
 {
-	protected override void ConfigureSubscriptions()
+    /// <remarks>
+    /// <para><see cref="Notification.None"/>: as long as it doesn't interacts.</para>
+    /// </remarks>
+    protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.None;
 	}

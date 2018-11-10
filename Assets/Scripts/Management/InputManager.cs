@@ -62,7 +62,7 @@ public class InputManager : Notificable
             }
 		}
 		if(Input.GetButtonUp("Test2"))
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			notifier.NotificateDead();
 		if(Input.GetButtonUp("Test3"))
 			GetComponent<MotorSystem>().Tempo += 10;
 		if(Input.GetButtonUp("Test4"))
@@ -103,10 +103,15 @@ public class InputManager : Notificable
 		flipOrder = FlipOrder.NoFlip;
 	}
 
-	#region Notifications
-	protected override void ConfigureSubscriptions()
+    #region Notifications
+    /// <remarks>
+    /// <para><see cref="Notification.Beep"/>: keep flip disabled while die is falling.</para>
+    /// <para><see cref="Notification.Late"/>: how try to flip side out of time impacts on gameplay.</para>
+    /// <para><see cref="Notification.FallingGroup"/>: disable flip if die is falling.</para>
+    /// </remarks>
+    protected override void ConfigureSubscriptions()
 	{
-		subscriptions = Notification.Beep | Notification.Fall | Notification.Land | Notification.Late;
+		subscriptions = Notification.Beep | Notification.FallingGroup | Notification.Late;
 	}
 
     public override void OnLate()

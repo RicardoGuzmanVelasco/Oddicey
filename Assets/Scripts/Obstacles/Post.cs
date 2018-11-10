@@ -5,7 +5,7 @@ using Utils.Directions;
 using Utils.Extensions;
 
 /// <summary>
-/// Checkpoint. It breaks after save player position.
+/// Checkpoint. It stops being interactable after save player position.
 /// </summary>
 [RequireComponent(typeof(PostController))]
 public class Post : Notificable
@@ -42,14 +42,19 @@ public class Post : Notificable
         Direction = collision.GetComponent<RollingCube>().direction;
         GetComponent<Collider2D>().enabled = false;
 
-        notifier.NotificateSave(); //All posts will set isLastCheckpoint to false.
-        isLastCheckpoint = true; //Just this post will set isLastCheckpoint to true.
+        notifier.NotificateSave(); //All posts, including this, will set isLastCheckpoint to false.
+        isLastCheckpoint = true; //Just this post will set to true.
+
+        GetComponent<PostController>().ShowArrow(true);
     }
 
     #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.SavingGroup"/>: check if handle saving changes.</para>
+    /// </summary>
     protected override void ConfigureSubscriptions()
     {
-        subscriptions = Notification.Save | Notification.Unsave;
+        subscriptions = Notification.SavingGroup;
     }
 
     public override void OnSave()

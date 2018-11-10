@@ -85,8 +85,8 @@ public class Mark : Notificable
 			CheckSuccess();
 	}
 
-	#region Notifications
-	protected override void ConfigureSubscriptions()
+    #region Notifications
+    protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep | Notification.Flip | Notification.Dead;
 	}

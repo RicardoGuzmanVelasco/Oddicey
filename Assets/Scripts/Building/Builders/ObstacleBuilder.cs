@@ -68,7 +68,9 @@ public abstract class ObstacleBuilder<T> : Builder
     virtual protected void BeforeUpdateAttached() { }
     void UpdateAttached()
     {
-        DestroyImmediate(attached as UnityEngine.Object);
+        //This loop prevents attached cloning when prefab is modified in edit time.
+        foreach(var attachedClones in GetComponents<T>())
+            DestroyImmediate(attachedClones as UnityEngine.Object);
 
         Type type = TypeExtensions.GetStaticType<T>(attached).GetSubClass(attachedTypeName);
         // If this operation return null, type is the obstacle's class itself, not a subclass.

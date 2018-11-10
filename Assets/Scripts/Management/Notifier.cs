@@ -69,7 +69,11 @@ public enum Notification
     /// <summary>
     /// Related to lost and gain ground. It is, falling over and recovering floor.
     /// </summary>
-    FallingGroup = Fall | Land
+    FallingGroup = Fall | Land,
+    /// <summary>
+    /// Related to save and remove checkpoints.
+    /// </summary>
+    SavingGroup = Save | Unsave
     #endregion
 
 }
