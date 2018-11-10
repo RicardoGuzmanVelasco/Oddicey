@@ -39,6 +39,12 @@ public class SquareTransform : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Formats the world position in <see cref="Builder.SquareSize"/>, square-units.
+    /// </summary>
+    /// <returns>
+    /// "[x,y]" where x,y are coords of <see cref="GameObject.transform"/> as int.
+    /// </returns>
     public override string ToString()
     {
         return "[" + (int)X + "," + (int)Y + "]";

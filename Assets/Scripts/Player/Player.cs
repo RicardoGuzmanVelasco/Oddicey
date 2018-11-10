@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -32,15 +33,25 @@ public class Player : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "NotFloor")
-			OnGroundLost();
-		else if (collision.tag == "Floor" && cube.Falling)
-			OnGroundGained();
-		else if (collision.tag == "Boundary" && collision.name == "BOTTOM")
-			FindObjectOfType<Notifier>().NotificateFail(); //TODO: change: If EOL, no fail!
+        switch(collision.tag)
+        {
+            case "NotFloor":
+                //Avoid collision between top of the die and past NotFloor in "downstairs" scheme.
+                if(collision.transform.position.y <= Mathf.RoundToInt(transform.position.y))
+                    OnGroundLost();
+                break;
+            case "Floor":
+                if(cube.Falling)
+                    OnGroundGained();
+                break;
+            case "Boundary":
+                if(collision.name == "BOTTOM")
+                    FindObjectOfType<Notifier>().NotificateFail(); //TODO: change: If EOL, no fail!
+                break;
+        }
 	}
 
-	void OnGroundLost()
+    void OnGroundLost()
 	{
 		cube.Falling = true;
 		FindObjectOfType<Notifier>().NotificateFall();
