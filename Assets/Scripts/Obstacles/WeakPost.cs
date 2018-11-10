@@ -36,7 +36,7 @@ public class WeakPost : Post
 
     public override void OnDead()
     {
-        if (!isLastCheckpoint)
+        if (!IsLastCheckpoint)
             return;
 
         if(++currentAttemps >= attemps)

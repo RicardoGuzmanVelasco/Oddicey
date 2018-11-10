@@ -17,7 +17,7 @@ public class Post : Notificable
     /// <summary>
     /// If this post is the last checkpoint on <see cref="PlayManager.checkpoints"/>.
     /// </summary>
-    protected bool isLastCheckpoint;
+    bool isLastCheckpoint;
 
     #region Properties
     public Direction Direction
@@ -32,6 +32,20 @@ public class Post : Notificable
             GetComponent<PostController>().SetDirection(direction);
         }
     }
+
+    protected bool IsLastCheckpoint
+    {
+        get
+        {
+            return isLastCheckpoint;
+        }
+
+        set
+        {
+            isLastCheckpoint = value;
+            GetComponent<PostController>().SetLastCheckpoint(value);
+        }
+    }
     #endregion
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -43,7 +57,7 @@ public class Post : Notificable
         GetComponent<Collider2D>().enabled = false;
 
         notifier.NotificateSave(); //All posts, including this, will set isLastCheckpoint to false.
-        isLastCheckpoint = true; //Just this post will set to true.
+        IsLastCheckpoint = true; //Just this post will set to true.
 
         GetComponent<PostController>().ShowArrow(true);
     }
@@ -59,7 +73,7 @@ public class Post : Notificable
 
     public override void OnSave()
     {
-        isLastCheckpoint = false;
+        IsLastCheckpoint = false;
     }
 
     public override void OnUnsave()
@@ -80,7 +94,8 @@ public class Post : Notificable
             StartCoroutine(ReactivateCollider());
         }
 
-        if((Vector2)transform.position == playManager.LastCheckpoint.position)
+        IsLastCheckpoint = (Vector2)transform.position == playManager.LastCheckpoint.position;
+        if(IsLastCheckpoint)
             Direction = playManager.LastCheckpoint.direction;
     }
 

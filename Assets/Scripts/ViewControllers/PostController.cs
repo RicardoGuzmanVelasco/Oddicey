@@ -11,11 +11,18 @@ public class PostController : Controller
     /// Sprite of the arrow that points the saved direction.
     /// </summary>
     SpriteRenderer arrowSprite;
+    /// <summary>
+    /// Sprite of the sign where the arrow is drawn.
+    /// </summary>
+    SpriteRenderer signSprite;
+    [SerializeField]
+    Color lastCheckpointColor;
 
     protected override void Awake()
     {
         base.Awake();
         arrowSprite = gameObject.GetComponentInChildren<SpriteRenderer>("Arrow");
+        signSprite = gameObject.GetComponentInChildren<SpriteRenderer>("Sign");
     }
 
     public void SetDirection(Direction direction)
@@ -39,5 +46,10 @@ public class PostController : Controller
     public void Break()
     {
         animator.SetTrigger("Break");
+    }
+
+    public void SetLastCheckpoint(bool active)
+    {
+        signSprite.color = active ? lastCheckpointColor : Color.white;
     }
 }

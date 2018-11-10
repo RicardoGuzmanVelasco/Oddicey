@@ -194,7 +194,7 @@ namespace Utils.Extensions
         public static T GetComponentInChildren<T>(this GameObject gameObject, string childName) where T : Component
         {
             foreach(var component in gameObject.GetComponentsInChildren<T>(true))
-                if(component.gameObject.name == "Arrow")
+                if(component.gameObject.name == childName)
                     return component;
 
             if(!gameObject.GetComponentInChildren<T>())
