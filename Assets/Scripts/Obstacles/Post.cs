@@ -78,7 +78,8 @@ public class Post : Notificable
 
     public override void OnUnsave()
     {
-        StartCoroutine(CheckIfNewLastCheckpoint());
+        if(isActiveAndEnabled) //Prevents LogError after stop play mode.
+            StartCoroutine(CheckIfNewLastCheckpoint());
     }
     #endregion
 
@@ -87,7 +88,7 @@ public class Post : Notificable
         yield return new WaitForEndOfFrame();
 
         var playManager = FindObjectOfType<PlayManager>();
-        
+
         if(!playManager.IsSavedCheckpoint(transform.position))
         {
             GetComponent<PostController>().ShowArrow(false);
