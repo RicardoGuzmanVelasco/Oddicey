@@ -31,6 +31,8 @@ public class PostController : Controller
 
     public void ShowArrow(bool show)
     {
+        if(!show && arrowSprite.gameObject.activeSelf)
+            Unsave();
         arrowSprite.gameObject.SetActive(show);
     }
 

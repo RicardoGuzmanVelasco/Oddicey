@@ -73,15 +73,14 @@ public class Post : Notificable
         yield return new WaitForEndOfFrame();
 
         var playManager = FindObjectOfType<PlayManager>();
-
-        isLastCheckpoint = (Vector2)transform.position == playManager.LastCheckpoint.position;
-
-        bool isSavedCheckpoint = playManager.IsSavedCheckpoint(transform.position);
-        GetComponent<PostController>().ShowArrow(isSavedCheckpoint);
-        if(!isSavedCheckpoint)
+        
+        if(!playManager.IsSavedCheckpoint(transform.position))
+        {
+            GetComponent<PostController>().ShowArrow(false);
             StartCoroutine(ReactivateCollider());
+        }
 
-        if(isLastCheckpoint)
+        if((Vector2)transform.position == playManager.LastCheckpoint.position)
             Direction = playManager.LastCheckpoint.direction;
     }
 
