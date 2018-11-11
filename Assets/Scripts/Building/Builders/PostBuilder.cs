@@ -18,7 +18,7 @@ public class PostBuilder : ObstacleBuilder<Post>
     [SerializeField]
     PostType type = PostType.Default;
     /// <summary>
-    /// If a <see cref="WeakPost"/>, how many attemps are set.
+    /// If a <see cref="WeakPost"/>, how many attempts are set.
     /// </summary>
     int attemps = 1;
 

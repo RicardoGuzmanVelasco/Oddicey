@@ -7,18 +7,22 @@ using Utils.Extensions;
 [Flags]
 public enum Notification
 {
-	/// <summary>
-	/// All news, identity element.
-	/// </summary>
-	Any = 255,
-	/// <summary>
-	/// Zero, absorbing element.
-	/// </summary>
-	None = 0,
-	/// <summary>
-	/// Musical beat.
-	/// </summary>
-	Beep    = 1 << 00,
+    #region Elements
+    /// <summary>
+    /// All news, identity element.
+    /// </summary>
+    Any = 255,
+    /// <summary>
+    /// Zero, absorbing element.
+    /// </summary>
+    None = 0,
+    #endregion
+
+    #region Individual notifications
+    /// <summary>
+    /// Musical beat.
+    /// </summary>
+    Beep    = 1 << 00,
 	/// <summary>
 	/// Active side on die changed.
 	/// </summary>
@@ -58,7 +62,20 @@ public enum Notification
     /// <summary>
 	/// Ground lost.
 	/// </summary>
-	Late    = 1 << 10
+	Late    = 1 << 10,
+    #endregion
+
+    #region Notification groups
+    /// <summary>
+    /// Related to lost and gain ground. It is, falling over and recovering floor.
+    /// </summary>
+    FallingGroup = Fall | Land,
+    /// <summary>
+    /// Related to save and remove checkpoints.
+    /// </summary>
+    SavingGroup = Save | Unsave
+    #endregion
+
 }
 
 public sealed class Notifier : MonoBehaviour

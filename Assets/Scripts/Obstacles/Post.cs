@@ -5,8 +5,9 @@ using Utils.Directions;
 using Utils.Extensions;
 
 /// <summary>
-/// Checkpoint. It breaks after save player position.
+/// Checkpoint. It stops being interactable after save player position.
 /// </summary>
+[RequireComponent(typeof(PostController))]
 public class Post : Notificable
 {
     /// <summary>
@@ -14,13 +15,9 @@ public class Post : Notificable
     /// </summary>
     Direction direction;
     /// <summary>
-    /// Sprite of the arrow that points the saved direction.
-    /// </summary>
-    SpriteRenderer arrowSprite;
-    /// <summary>
     /// If this post is the last checkpoint on <see cref="PlayManager.checkpoints"/>.
     /// </summary>
-    protected bool isLastCheckpoint;
+    bool isLastCheckpoint;
 
     #region Properties
     public Direction Direction
@@ -32,17 +29,24 @@ public class Post : Notificable
         set
         {
             direction = value;
-            //TODO: replace by animation play. That animation will make the checked effect.
-            arrowSprite.enabled = true;
-            arrowSprite.flipX = direction == Direction.left;
+            GetComponent<PostController>().SetDirection(direction);
+        }
+    }
+
+    protected bool IsLastCheckpoint
+    {
+        get
+        {
+            return isLastCheckpoint;
+        }
+
+        set
+        {
+            isLastCheckpoint = value;
+            GetComponent<PostController>().SetLastCheckpoint(value);
         }
     }
     #endregion
-
-    void Awake()
-    {
-        arrowSprite = gameObject.GetComponentInChildren<SpriteRenderer>("Arrow");
-    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -52,24 +56,30 @@ public class Post : Notificable
         Direction = collision.GetComponent<RollingCube>().direction;
         GetComponent<Collider2D>().enabled = false;
 
-        notifier.NotificateSave(); //All posts will set isLastCheckpoint to false.
-        isLastCheckpoint = true; //Just this post will set isLastCheckpoint to true.
+        notifier.NotificateSave(); //All posts, including this, will set isLastCheckpoint to false.
+        IsLastCheckpoint = true; //Just this post will set to true.
+
+        GetComponent<PostController>().ShowArrow(true);
     }
 
     #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.SavingGroup"/>: check if handle saving changes.</para>
+    /// </summary>
     protected override void ConfigureSubscriptions()
     {
-        subscriptions = Notification.Save | Notification.Unsave;
+        subscriptions = Notification.SavingGroup;
     }
 
     public override void OnSave()
     {
-        isLastCheckpoint = false;
+        IsLastCheckpoint = false;
     }
 
     public override void OnUnsave()
     {
-        StartCoroutine(CheckIfNewLastCheckpoint());
+        if(isActiveAndEnabled) //Prevents LogError after stop play mode.
+            StartCoroutine(CheckIfNewLastCheckpoint());
     }
     #endregion
 
@@ -78,17 +88,24 @@ public class Post : Notificable
         yield return new WaitForEndOfFrame();
 
         var playManager = FindObjectOfType<PlayManager>();
-        isLastCheckpoint = playManager.LastCheckpoint.position == (Vector2)transform.position;
-        Direction = playManager.LastCheckpoint.direction;
 
-        arrowSprite.enabled = playManager.IsSavedCheckpoint(transform.position);
-        if(!arrowSprite.enabled)
+        if(!playManager.IsSavedCheckpoint(transform.position))
+        {
+            GetComponent<PostController>().ShowArrow(false);
             StartCoroutine(ReactivateCollider());
+        }
+
+        IsLastCheckpoint = (Vector2)transform.position == playManager.LastCheckpoint.position;
+        if(IsLastCheckpoint)
+            Direction = playManager.LastCheckpoint.direction;
     }
 
     protected IEnumerator ReactivateCollider()
     {
-        yield return new WaitForFixedUpdate(); //This wait saferly avoids a new save every death teleporting.
+        //This waits safely avoids a new save every death teleporting.
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
+
         GetComponent<Collider2D>().enabled = true;
     }
 }

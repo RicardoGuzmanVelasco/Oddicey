@@ -48,20 +48,24 @@ namespace Utils.Extensions
 
         #region Coords
         /// <summary>
-        /// Returns same vector with 'x' changed to parameter <paramref name="x"/>.
+        /// Returns same vector with <see cref="Vector3.x"/> changed to <paramref name="x"/>.
         /// </summary>
-        /// <param name="x">New 'x' coordinate.</param>
-        /// <returns></returns>
+        /// <param name="x">New <see cref="Vector3.x"/> coordinate.</param>
+        /// <returns>
+        /// The new <see cref="Vector3"/>. Is an extension method, so original <see cref="Vector3"/> isn't mutable.
+        /// </returns>
         public static Vector3 X(this Vector3 vector, float x)
         {
             return new Vector3(x, vector.y, vector.z);
         }
 
         /// <summary>
-        /// Returns same vector with 'y' changed to parameter <paramref name="y"/>.
+        /// Returns same vector with <see cref="Vector3.y"/> changed to <paramref name="y"/>.
         /// </summary>
-        /// <param name="y">New 'y' coordinate.</param>
-        /// <returns></returns>
+        /// <param name="y">New <see cref="Vector3.y"/> coordinate.</param>
+        /// <returns>
+        /// The new <see cref="Vector3"/>. Is an extension method, so original <see cref="Vector3"/> isn't mutable.
+        /// </returns>
         public static Vector3 Y(this Vector3 vector, float y)
         {
             return new Vector3(vector.x, y, vector.z);
@@ -69,24 +73,28 @@ namespace Utils.Extensions
 
         /// <summary>
         /// <para>Returns same vector with
-        /// 'x' changed to parameter <paramref name="x"/> and 
-        /// 'y' changed to parameter <paramref name="y"/>.
+        /// <see cref="Vector3.x"/> changed to <paramref name="x"/> and 
+        /// <see cref="Vector3.y"/> changed to <paramref name="y"/>.
         /// </para>
         /// <para>Frequently used in 2D environments.</para>
         /// </summary>
         /// <param name="x">New 'x' coordinate.</param>
         /// <param name="y">New 'y' coordinate</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The new <see cref="Vector3"/>. Is an extension method, so original <see cref="Vector3"/> isn't mutable.
+        /// </returns>
         public static Vector3 XY(this Vector3 vector, float x, float y)
         {
             return new Vector3(x, y, vector.z);
         }
 
         /// <summary>
-        /// Returns same vector with 'z' changed to parameter <paramref name="z"/>.
+        /// Returns same vector with <see cref="Vector3.z"/> changed to <paramref name="z"/>.
         /// </summary>
-        /// <param name="z">New 'z' coordinate.</param>
-        /// <returns></returns>
+        /// <param name="z">New <see cref="Vector3.z"/> coordinate.</param>
+        /// <returns>
+        /// The new <see cref="Vector3"/>. Is an extension method, so original <see cref="Vector3"/> isn't mutable.
+        /// </returns>
         public static Vector3 Z(this Vector3 vector, float z)
         {
             return new Vector3(vector.x, vector.y, z);
@@ -95,17 +103,25 @@ namespace Utils.Extensions
 
         #region Vector2Direction
         /// <summary>
-        /// Sidescrolling vector direction to Direction enum type.
+        /// Side-scrolling <see cref="Vector2"/> direction to <see cref="Direction"/> type.
         /// </summary>
-        /// <returns>Right if unknown.</returns>
-        public static Direction ToDirection(this Vector2 vector)
+        /// <param name="normalize">
+        /// If <paramref name="vector"/> must be unit (<see cref="Vector2.normalized"/>) before comparing.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// When <paramref name="vector"/> does not match any <see cref="Direction"/> value.
+        /// </exception>
+        public static Direction ToDirection(this Vector2 vector, bool normalize = false)
         {
-            if (vector == Vector2.right)
+            if(normalize)
+                vector = vector.normalized;
+
+            if(vector == Vector2.right)
                 return Direction.right;
-            if (vector == Vector2.left)
+            if(vector == Vector2.left)
                 return Direction.left;
 
-            return Direction.right;
+            throw new ArgumentException(vector + " isn't a side-scrolling direction.");
         }
         #endregion
     }
@@ -121,7 +137,7 @@ namespace Utils.Extensions
         /// <returns>The clone.</returns>
         public static GameObject Clone(this GameObject gameobject, Vector3 pos, string name = null)
         {
-            if (name == null)
+            if(name == null)
                 name = gameobject.name;
 
             GameObject clone = GameObject.Instantiate(gameobject, gameobject.transform.parent);
@@ -159,6 +175,7 @@ namespace Utils.Extensions
         }
         #endregion
 
+        #region GetComponent
         /// <summary>
         /// Find the first component of <typeparamref name="T"/> type whose game object is called <see cref="childName"/>.
         /// </summary>
@@ -176,8 +193,8 @@ namespace Utils.Extensions
         /// <returns>A reference to the component.</returns>
         public static T GetComponentInChildren<T>(this GameObject gameObject, string childName) where T : Component
         {
-            foreach(var component in gameObject.GetComponentsInChildren<T>())
-                if(component.gameObject.name == "Arrow")
+            foreach(var component in gameObject.GetComponentsInChildren<T>(true))
+                if(component.gameObject.name == childName)
                     return component;
 
             if(!gameObject.GetComponentInChildren<T>())
@@ -185,6 +202,7 @@ namespace Utils.Extensions
             else
                 throw new UnassignedReferenceException("No child with name \"" + childName + "\" was found.");
         }
+        #endregion
     }
 
     public static class TransformExtensionMethods
@@ -197,8 +215,8 @@ namespace Utils.Extensions
         public static void DestroyChildren(this Transform transform, string name)
         {
             //Cast & reverse prevent destroying on iterating array.
-            foreach (Transform child in transform.Cast<Transform>().Reverse())
-                if (child.name == name)
+            foreach(Transform child in transform.Cast<Transform>().Reverse())
+                if(child.name == name)
                     GameObject.DestroyImmediate(child.gameObject);
         }
 
@@ -257,7 +275,7 @@ namespace Utils.Extensions
         /// <returns> </returns>
         public static T GetRandom<T>(this IList<T> list)
         {
-            if (list.Count == 0)
+            if(list.Count == 0)
                 throw new System.IndexOutOfRangeException("Cannot select a random item from an empty list.");
             return list[UnityEngine.Random.Range(0, list.Count)];
         }

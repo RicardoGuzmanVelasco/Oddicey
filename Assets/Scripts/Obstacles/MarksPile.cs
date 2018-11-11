@@ -79,8 +79,11 @@ public class MarksPile : Notificable
 			marks[foot].Listening = true; //Just the foot of the pile subscribes.
 	}
 
-	#region Notifications
-	protected override void ConfigureSubscriptions()
+    #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.Beep"/>: reshape when popping out a mark.</para>
+    /// </summary>
+    protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep;
 	}

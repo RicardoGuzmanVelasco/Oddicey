@@ -10,7 +10,7 @@ public class WeakPost : Post
     [SerializeField]
     [Range(1,3)]
     int attemps = 1;
-    int currentAttemps = 0; //TODO: if a consumable can reset attemps, property here? or notification...
+    int currentAttemps = 0; //TODO: if a consumable can reset attempts, property here? or notification...
 
     #region Properties
     public int Attemps
@@ -28,6 +28,10 @@ public class WeakPost : Post
     #endregion
 
     #region Subscriptions
+    /// <summary>
+    /// <seealso cref="Post.ConfigureSubscriptions"/>.
+    /// <para><see cref="Notification.Dead"/>: break this post when attempts have been consumed.</para>
+    /// </summary>
     protected override void ConfigureSubscriptions()
     {
         base.ConfigureSubscriptions();
@@ -36,11 +40,17 @@ public class WeakPost : Post
 
     public override void OnDead()
     {
-        if (!isLastCheckpoint)
+        if (!IsLastCheckpoint)
             return;
 
         if(++currentAttemps >= attemps)
-            Destroy(gameObject); //TODO: will be an animation and maybe particles before destroys.
+            Break();
+    }
+
+    void Break()
+    {
+        GetComponent<PostController>().Break();
+        Destroy(this);
     }
 
     protected override void OnDestroy()

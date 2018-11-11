@@ -8,8 +8,11 @@
 /// </remarks>
 public class FlippingVane : Vane
 {
-	#region Notifications
-	protected override void ConfigureSubscriptions()
+    #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.Beep"/>: turn around endlessly.</para>
+    /// </summary>
+    protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep;
 	}

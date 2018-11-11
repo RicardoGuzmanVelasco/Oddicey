@@ -27,7 +27,7 @@ public class PlayManager : Notificable
 
     protected override void Start()
     {
-        base.Start(); //Notificable will selfsuscribe when "start".
+        base.Start(); //Notificable will self-subscribe when "start".
 
         checkpoints.Push(new Checkpoint(player));
     }
@@ -44,14 +44,23 @@ public class PlayManager : Notificable
     }
 
     #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.Fail"/>: how fail a mark obstacle impacts in gameplay.</para>
+    /// <para><see cref="Notification.Dead"/>: handle dead. Teleport to checkpoint, stop motor system...</para>
+    /// <para><see cref="Notification.SavingGroup"/>: store or discard element in checkpoints stack.</para>
+    /// </summary>
     protected override void ConfigureSubscriptions()
 	{
-		subscriptions = Notification.Fail | Notification.Save | Notification.Unsave;
+		subscriptions = Notification.Fail | Notification.Dead | Notification.SavingGroup;
 	}
 
 	public override void OnFail()
     {
         notifier.NotificateDead();
+    }
+
+    public override void OnDead()
+    {
         player.Teleport(checkpoints.Peek().position);
         player.GetComponent<RollingCube>().direction = checkpoints.Peek().direction;
 

@@ -6,8 +6,14 @@ using UnityEngine;
 /// </summary>
 public class UnbreakablePost : Post
 {
-	#region Notifications
-	protected override void ConfigureSubscriptions()
+    #region Notifications
+    /// <summary>
+    /// <seealso cref="Post.ConfigureSubscriptions"/>.
+    /// <para><see cref="Notification.Walk"/>: waiting for die advances to reactivate.</para>
+    /// <para><see cref="Notification.Dead"/>: waiting for die advances to reactivate</para>
+    /// <para><see cref="Notification.Turn"/>: reactivate if die turns in case it overlaps again.</para>
+    /// </summary>
+    protected override void ConfigureSubscriptions()
 	{
         base.ConfigureSubscriptions();
 		subscriptions |= Notification.Walk | Notification.Dead | Notification.Turn;
@@ -24,7 +30,7 @@ public class UnbreakablePost : Post
 
     /// <summary>
     /// When death, post stops listening collisions, in case die overlap after teleporting to checkpoint.
-    /// This avoids multiple saves within the same checkpoint due to death and not to rewalking.
+    /// This avoids multiple saves within the same checkpoint due to death and not to re-walking.
     /// </summary>
     public override void OnDead()
     {

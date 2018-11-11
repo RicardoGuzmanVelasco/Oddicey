@@ -81,7 +81,7 @@ public abstract class Notificable : MonoBehaviour
 	#endregion
 
 	/// <summary>
-	/// Set <see cref="subscriptions"/> content, regardless if <see cref="listening"/> or not.
+	/// Set <see cref="subscriptions"/> content, regardless whether or not <see cref="listening"/>.
 	/// </summary>
 	/// <remarks>
 	/// Having <see cref="Notification.Any"/> by default avoids children forget to subscribe.
