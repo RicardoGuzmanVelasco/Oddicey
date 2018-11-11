@@ -60,8 +60,12 @@ public class Vane : Notificable
 		rollingCube.Turn(dir.ToVector2());
 	}
 
-	#region Notifications
-	protected override void ConfigureSubscriptions()
+    #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.Turn"/>: turns as long as the die does.</para>
+    /// <para><see cref="Notification.Dead"/>: reset starting direction.</para>
+    /// </summary>
+    protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Turn | Notification.Dead;
 	}

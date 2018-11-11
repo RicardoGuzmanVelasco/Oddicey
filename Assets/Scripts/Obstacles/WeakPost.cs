@@ -28,6 +28,10 @@ public class WeakPost : Post
     #endregion
 
     #region Subscriptions
+    /// <summary>
+    /// <seealso cref="Post.ConfigureSubscriptions"/>.
+    /// <para><see cref="Notification.Dead"/>: break this post when attempts have been consumed.</para>
+    /// </summary>
     protected override void ConfigureSubscriptions()
     {
         base.ConfigureSubscriptions();

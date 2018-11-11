@@ -9,7 +9,7 @@
 public class FixedVane : Vane
 {
     /// <remarks>
-    /// <para><see cref="Notification.None"/>: as long as it doesn't interacts.</para>
+    /// <para><see cref="Notification.None"/>: as long as it isn't mutable.</para>
     /// </remarks>
     protected override void ConfigureSubscriptions()
 	{

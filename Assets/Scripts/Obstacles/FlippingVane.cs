@@ -9,9 +9,9 @@
 public class FlippingVane : Vane
 {
     #region Notifications
-    /// <remarks>
+    /// <summary>
     /// <para><see cref="Notification.Beep"/>: turn around endlessly.</para>
-    /// </remarks>
+    /// </summary>
     protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep;

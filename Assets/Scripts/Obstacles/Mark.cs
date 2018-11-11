@@ -86,6 +86,11 @@ public class Mark : Notificable
 	}
 
     #region Notifications
+    /// <summary>
+    /// <para><see cref="Notification.Beep"/>: keep mark state updated.</para>
+    /// <para><see cref="Notification.Flip"/>: update mark state immediately.</para>
+    /// <para><see cref="Notification.Dead"/>: reactivation.</para>
+    /// </summary>
     protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep | Notification.Flip | Notification.Dead;
@@ -102,6 +107,10 @@ public class Mark : Notificable
 	/// <summary>
 	/// Checking state when die changes side, towards skin changes if necessary.
 	/// </summary>
+    /// <remarks>
+    /// Just for better visual response. If player flips die side early, there is
+    /// a little offset until next beep, so mark feels taking a long time to set.
+    /// </remarks>
 	public override void OnFlip()
 	{
 		CheckRight();

@@ -104,11 +104,11 @@ public class InputManager : Notificable
 	}
 
     #region Notifications
-    /// <remarks>
+    /// <summary>
     /// <para><see cref="Notification.Beep"/>: keep flip disabled while die is falling.</para>
     /// <para><see cref="Notification.Late"/>: how try to flip side out of time impacts on gameplay.</para>
     /// <para><see cref="Notification.FallingGroup"/>: disable flip if die is falling.</para>
-    /// </remarks>
+    /// </summary>
     protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Beep | Notification.FallingGroup | Notification.Late;

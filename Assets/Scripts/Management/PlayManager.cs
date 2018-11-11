@@ -44,11 +44,11 @@ public class PlayManager : Notificable
     }
 
     #region Notifications
-    /// <remarks>
+    /// <summary>
     /// <para><see cref="Notification.Fail"/>: how fail a mark obstacle impacts in gameplay.</para>
     /// <para><see cref="Notification.Dead"/>: handle dead. Teleport to checkpoint, stop motor system...</para>
     /// <para><see cref="Notification.SavingGroup"/>: store or discard element in checkpoints stack.</para>
-    /// </remarks>
+    /// </summary>
     protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Fail | Notification.Dead | Notification.SavingGroup;

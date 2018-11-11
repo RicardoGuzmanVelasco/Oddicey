@@ -79,11 +79,11 @@ public class CameraTracker : Notificable
 	}
 
     #region Notifications
-    /// <remarks>
+    /// <summary>
     /// <para><see cref="Notification.Turn"/>: recover last options if isn't tracking in any axis.</para>
     /// <para><see cref="Notification.Dead"/>: reset default tracking options.</para>
     /// <para><see cref="Notification.FallingGroup"/>: vertical self-tracking while falling.</para>
-    /// </remarks>
+    /// </summary>
     protected override void ConfigureSubscriptions()
 	{
 		subscriptions = Notification.Turn | Notification.Dead | Notification.FallingGroup;
