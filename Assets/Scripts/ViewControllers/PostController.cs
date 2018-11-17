@@ -48,6 +48,11 @@ public class PostController : Controller
         animator.SetTrigger("Break");
     }
 
+    public void RiseUp()
+    {
+        animator.SetTrigger("Reset");
+    }
+
     public void SetLastCheckpoint(bool active)
     {
         signSprite.color = active ? lastCheckpointColor : Color.white;

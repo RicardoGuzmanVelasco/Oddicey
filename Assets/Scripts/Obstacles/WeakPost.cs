@@ -8,9 +8,11 @@ public class WeakPost : Post
     /// How many times player can respawn before this post breaks, thus lose its <see cref="Checkpoint"/>.
     /// </summary>
     [SerializeField]
-    [Range(1,3)]
+    [Range(1, 3)]
     int attemps = 1;
     int currentAttemps = 0; //TODO: if a consumable can reset attempts, property here? or notification...
+
+    bool broken = false;
 
     #region Properties
     public int Attemps
@@ -40,18 +42,43 @@ public class WeakPost : Post
 
     public override void OnDead()
     {
-        if (!IsLastCheckpoint)
+        if(!IsLastCheckpoint)
             return;
 
         if(currentAttemps++ >= attemps)
             Break();
     }
+    #endregion
 
     void Break()
     {
+        broken = true;
         GetComponent<PostController>().Break();
         enabled = false;
         notifier.NotificateUnsave();
     }
-    #endregion
+
+    /// <summary>
+    /// Reset <see cref="currentAttemps"/> and visual state.
+    /// </summary>
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if(!broken)
+            return;
+
+        GetComponent<PostController>().SetLastCheckpoint(false);
+        GetComponent<PostController>().RiseUp();
+        GetComponent<Collider2D>().enabled = true;
+        currentAttemps = 0;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if(FindObjectOfType<NotificableGraveyard>())
+            FindObjectOfType<NotificableGraveyard>().Add(this);
+    }
 }

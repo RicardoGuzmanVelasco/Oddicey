@@ -223,17 +223,18 @@ public class RollingCube : MonoBehaviour
         hitsOrderedByDistance = hitsOrderedByDistance.OrderBy(h => h.distance).ToArray();
 
         foreach(var hit in hitsOrderedByDistance)
-            if(hit.collider.gameObject.CompareTag("Boundary")) //BOTTOM. No platform below die. So fall until death.
-            {
-                //TODO: if bottom, then camera must stop its Y following. Could be made by a scene trigger that is created yet.
-                found = true;
-                ground = hit.collider.transform.position;
-            }
-            else if(hit.collider.gameObject.CompareTag("Floor")) //First platform below die. It is, die grounding goal.
+            //First platform below die. It is, die grounding goal.
+            if(hit.collider.gameObject.CompareTag("Floor"))
             {
                 found = true;
                 ground = hit.collider.transform.position;
                 break;
+            }
+            //BOTTOM. No platform below die. So fall until death.
+            else if(hit.collider.gameObject.CompareTag("Boundary"))
+            {
+                found = true;
+                ground = hit.collider.transform.position;
             }
 
         if(!found)
