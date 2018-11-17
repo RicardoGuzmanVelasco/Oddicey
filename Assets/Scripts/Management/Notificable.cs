@@ -98,4 +98,22 @@ public abstract class Notificable : MonoBehaviour
     {
         Listening = false;
     }
+
+    /// <summary>
+    /// Will self-subscribe when it's enabled.
+    /// </summary>
+    protected virtual void OnEnable()
+    {
+        if(notifier)
+            Listening = true;
+    }
+
+    ///<summary>
+    ///Notificable will self-unsubscribe when it's disabled.
+    ///</summary>
+    protected virtual void OnDisable()
+    {
+        if(notifier)
+            Listening = false;
+    }
 }

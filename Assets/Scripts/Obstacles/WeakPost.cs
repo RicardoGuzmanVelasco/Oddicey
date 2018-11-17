@@ -35,7 +35,7 @@ public class WeakPost : Post
     protected override void ConfigureSubscriptions()
     {
         base.ConfigureSubscriptions();
-        subscriptions |= Notification.Dead;
+        subscriptions |= Notification.Dead | Notification.Walk;
     }
 
     public override void OnDead()
@@ -43,21 +43,15 @@ public class WeakPost : Post
         if (!IsLastCheckpoint)
             return;
 
-        if(++currentAttemps >= attemps)
+        if(currentAttemps++ >= attemps)
             Break();
     }
 
     void Break()
     {
         GetComponent<PostController>().Break();
-        Destroy(this);
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy(); //Notificable will self-unsubscribe when it's destroyed.
+        enabled = false;
         notifier.NotificateUnsave();
     }
-
     #endregion
 }
