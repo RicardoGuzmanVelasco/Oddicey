@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.Directions;
+using Utils.Extensions;
 
 /// <summary>
 /// Shows a rect representing some positions relevant to the player as die, last checkpoint, etc.
@@ -25,6 +27,8 @@ public class LevelCircuit : Notificable
     /// </summary>
     [SerializeField]
     Slider checkpointSlider;
+    RectTransform checkpointTransform;
+    Direction checkpointDirection;
 
     GameObject player;
     /// <summary>
@@ -36,6 +40,7 @@ public class LevelCircuit : Notificable
     {
         player = FindObjectOfType<Die>().gameObject;
         playManager = FindObjectOfType<PlayManager>();
+        checkpointTransform = checkpointSlider.GetComponentInChildren<Image>().rectTransform;
     }
 
     protected override void Start()
@@ -75,6 +80,7 @@ public class LevelCircuit : Notificable
     {
         checkpointSlider.gameObject.SetActive(true); //TODO: will be an animation making "pop" effect or something.
         checkpointSlider.value = playerSlider.value;
+        UpdateCheckpointDirection();
     }
 
     public override void OnUnsave()
@@ -82,11 +88,19 @@ public class LevelCircuit : Notificable
         UpdateCheckpointSlider();
     }
 
-    private void UpdateCheckpointSlider()
+    void UpdateCheckpointSlider()
     {
         float lastCheckpointX = playManager.LastCheckpoint.position.x;
         checkpointSlider.value = NormalizeIntoCircuit(lastCheckpointX);
         checkpointSlider.gameObject.SetActive(lastCheckpointX != startingPoint.x);
+        UpdateCheckpointDirection();
+    }
+
+    void UpdateCheckpointDirection()
+    {
+        if(checkpointDirection != playManager.LastCheckpoint.direction)
+            checkpointTransform.localScale = checkpointTransform.localScale.X(-checkpointTransform.localScale.x);
+        checkpointDirection = playManager.LastCheckpoint.direction;
     }
     #endregion
 }
