@@ -45,10 +45,20 @@ public class CameraTracker : Notificable
 			y = value;
 			RecalculateDistance();
 		}
-	} 
-	#endregion
+	}
 
-	override protected void Start()
+    /// <summary>
+    /// By default, <see cref="pursued"/> is any <see cref="Die"/> in scene.
+    /// </summary>
+    void Awake()
+    {
+        if(pursued == null)
+            pursued = FindObjectOfType<Die>().transform;
+    }
+    #endregion
+
+
+    protected override void Start()
 	{
 		base.Start(); // Subscribing to the notifier.
 		RecalculateDistance();

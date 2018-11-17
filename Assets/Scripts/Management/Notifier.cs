@@ -116,9 +116,14 @@ public sealed class Notifier : MonoBehaviour
                 listeners[notification].Remove(listener);
     }
 
+    /* ============== ADVICE ============== 
+        Every ToArray() hereinafter return a copy,
+        which prevents problems unsubscribing during for-each.
+       ===================================== */
+
     public void NotificateBeep()
     {
-        foreach(var listener in listeners[Notification.Beep].ToArray()) //ToArray() returns a copy, which prevents problems unsubscribing during foreach.
+        foreach(var listener in listeners[Notification.Beep].ToArray())
             listener.OnBeep();
     }
 
@@ -136,7 +141,7 @@ public sealed class Notifier : MonoBehaviour
 
     public void NotificateDead()
     {
-        foreach(var listener in listeners[Notification.Dead])
+        foreach(var listener in listeners[Notification.Dead].ToArray())
             listener.OnDead();
     }
 
