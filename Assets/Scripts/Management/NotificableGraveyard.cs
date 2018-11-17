@@ -18,28 +18,21 @@ using UnityEngine;
 public class NotificableGraveyard : Notificable
 {
     HashSet<Notificable> undeads;
-    HashSet<Notificable> undeadsBuffer;
 
     void Awake()
     {
         undeads = new HashSet<Notificable>();
-        undeadsBuffer = new HashSet<Notificable>();
     }
 
     #region Notifications
     protected override void ConfigureSubscriptions()
     {
-        subscriptions = Notification.Dead | Notification.Walk;
+        subscriptions = Notification.Dead;
     }
 
     public override void OnDead()
     {
         Revive();
-    }
-
-    public override void OnWalk()
-    {
-        DrawOffBuffer();
     }
     #endregion
 
@@ -52,7 +45,7 @@ public class NotificableGraveyard : Notificable
     /// </exception>
     public void Add(Notificable notificable)
     {
-        if(undeads.Contains(notificable) || !undeadsBuffer.Add(notificable))
+        if(!undeads.Add(notificable))
             throw new ArgumentException(notificable + " have already subscribed into the graveyard");
     }
 
@@ -65,6 +58,7 @@ public class NotificableGraveyard : Notificable
         foreach(var undead in undeads)
             undead.enabled = true;
         undeads.Clear();
+        
     }
 
     /// <summary>
@@ -77,12 +71,5 @@ public class NotificableGraveyard : Notificable
     {
         //TODO: if necessary, destroy all Notificable components to optimization purposes.
         undeads.Clear();
-    }
-
-    void DrawOffBuffer()
-    {
-        foreach(var awaitingUndead in undeadsBuffer)
-            undeads.Add(awaitingUndead);
-        undeadsBuffer.Clear();
     }
 }

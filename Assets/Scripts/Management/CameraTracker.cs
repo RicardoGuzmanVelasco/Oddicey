@@ -18,6 +18,8 @@ public class CameraTracker : Notificable
 	bool lastX = true, lastY = false;
     bool startingX, startingY;
 
+    bool autoY = true;
+
 	#region Properties
 	public bool X
 	{
@@ -42,10 +44,26 @@ public class CameraTracker : Notificable
 
 		set
 		{
+            if(!autoY)
+                return;
+
 			y = value;
 			RecalculateDistance();
 		}
 	}
+
+    public bool AutoY
+    {
+        get
+        {
+            return autoY;
+        }
+
+        set
+        {
+            autoY = value;
+        }
+    }
 
     /// <summary>
     /// By default, <see cref="pursued"/> is any <see cref="Die"/> in scene.
@@ -116,7 +134,8 @@ public class CameraTracker : Notificable
 
     public override void OnFall()
     {
-        Y = true;
+        if(autoY)
+            Y = true;
     }
 
     public override void OnLand()

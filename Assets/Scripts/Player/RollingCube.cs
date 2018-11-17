@@ -208,7 +208,7 @@ public class RollingCube : MonoBehaviour
             transform.Translate(Vector2.down * fallAdvance, Space.World);
 
             yield return new WaitForFixedUpdate();
-        } while(falling);
+        } while(falling && !(distance < 0));
         Snap();
     }
 
@@ -228,6 +228,8 @@ public class RollingCube : MonoBehaviour
             {
                 found = true;
                 ground = hit.collider.transform.position;
+
+                FindObjectOfType<CameraTracker>().AutoY = true;
                 break;
             }
             //BOTTOM. No platform below die. So fall until death.
@@ -235,6 +237,8 @@ public class RollingCube : MonoBehaviour
             {
                 found = true;
                 ground = hit.collider.transform.position;
+
+                FindObjectOfType<CameraTracker>().AutoY = false;
             }
 
         if(!found)

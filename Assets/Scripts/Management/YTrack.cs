@@ -13,13 +13,11 @@ public class YTrack : MonoBehaviour
 	[SerializeField]
 	TrackTriggerType type = TrackTriggerType.TrackOn;
 
-	public Transform cam;
-	CameraTracker cameraScript;
+	CameraTracker cam;
 
 	private void Awake()
 	{
-		cam = Camera.main.transform;
-		cameraScript = cam.GetComponent<CameraTracker>();
+		cam = Camera.main.transform.GetComponent<CameraTracker>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -27,6 +25,7 @@ public class YTrack : MonoBehaviour
 		if(!(collision.tag == "Player"))
 			return;
 	
-		cameraScript.Y = type == TrackTriggerType.TrackOn;
+		cam.Y = type == TrackTriggerType.TrackOn;
+        cam.AutoY = false;
 	}
 }

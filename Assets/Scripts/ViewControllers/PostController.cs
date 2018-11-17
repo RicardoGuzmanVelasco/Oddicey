@@ -31,26 +31,11 @@ public class PostController : Controller
         arrowSprite.flipX = direction == Direction.left;
     }
 
-    public void Unsave()
-    {
-        animator.SetTrigger("Wobble");
-    }
-
     public void ShowArrow(bool show)
     {
         if(!show && arrowSprite.gameObject.activeSelf)
-            Unsave();
+            Event("Wobble");
         arrowSprite.gameObject.SetActive(show);
-    }
-
-    public void Break()
-    {
-        animator.SetTrigger("Break");
-    }
-
-    public void RiseUp()
-    {
-        animator.SetTrigger("Reset");
     }
 
     public void SetLastCheckpoint(bool active)

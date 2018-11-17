@@ -8,4 +8,9 @@ public abstract class Controller : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
+
+    public void Event(string trigger)
+    {
+        animator.SetTrigger(trigger);
+    }
 }
