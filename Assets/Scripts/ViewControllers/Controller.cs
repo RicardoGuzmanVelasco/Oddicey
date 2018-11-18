@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public abstract class Controller : MonoBehaviour
+public class Controller : MonoBehaviour
 {
     protected Animator animator;
 
@@ -12,5 +13,10 @@ public abstract class Controller : MonoBehaviour
     public void Event(string trigger)
     {
         animator.SetTrigger(trigger);
+    }
+
+    public virtual void Event(string trigger, bool state)
+    {
+        throw new NotImplementedException();
     }
 }

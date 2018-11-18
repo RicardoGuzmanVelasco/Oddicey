@@ -25,20 +25,39 @@ public class PostController : Controller
         signSprite = gameObject.GetComponentInChildren<SpriteRenderer>("Sign");
     }
 
-    public void SetDirection(Direction direction)
+    public override void Event(string trigger, bool state)
+    {
+        switch(trigger)
+        {
+            case "ShowArrow":
+                ShowArrow(state);
+                break;
+            case "LastCheckpoint":
+                SetLastCheckpoint(state);
+                break;
+            case "RightDirection":
+                SetDirection(state ? Direction.right : Direction.left);
+                break;
+            default:
+                throw new NotImplementedException();
+                //break;
+        }
+    }
+
+    void SetDirection(Direction direction)
     {
         animator.SetTrigger("Bounce");
         arrowSprite.flipX = direction == Direction.left;
     }
 
-    public void ShowArrow(bool show)
+    void ShowArrow(bool show)
     {
         if(!show && arrowSprite.gameObject.activeSelf)
             Event("Wobble");
         arrowSprite.gameObject.SetActive(show);
     }
 
-    public void SetLastCheckpoint(bool active)
+    void SetLastCheckpoint(bool active)
     {
         signSprite.color = active ? lastCheckpointColor : Color.white;
     }

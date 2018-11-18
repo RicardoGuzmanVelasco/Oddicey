@@ -53,7 +53,7 @@ public class WeakPost : Post
     void Break()
     {
         broken = true;
-        GetComponent<PostController>().Event("Break");
+        controller.Event("Break");
         enabled = false;
         notifier.NotificateUnsave();
     }
@@ -68,8 +68,8 @@ public class WeakPost : Post
         if(!broken)
             return;
 
-        GetComponent<PostController>().Event("Reset");
-        GetComponent<PostController>().ShowArrow(false);
+        controller.Event("Reset");
+        controller.Event("ShowArrow", false);
         broken = false;
         GetComponent<Collider2D>().enabled = true;
         currentAttemps = 0;

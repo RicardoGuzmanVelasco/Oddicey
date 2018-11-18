@@ -8,7 +8,7 @@ using Utils.Extensions;
 /// Checkpoint. It stops being interactable after save player position.
 /// </summary>
 [RequireComponent(typeof(PostController))]
-public class Post : Notificable
+public class Post : Obstacle
 {
     /// <summary>
     /// Direction the die was pointing to when it reached this checkpoint.
@@ -29,7 +29,7 @@ public class Post : Notificable
         set
         {
             direction = value;
-            GetComponent<PostController>().SetDirection(direction);
+            controller.Event("RightDirection", direction == Direction.right);
         }
     }
 
@@ -43,7 +43,7 @@ public class Post : Notificable
         set
         {
             isLastCheckpoint = value;
-            GetComponent<PostController>().SetLastCheckpoint(value);
+            controller.Event("LastCheckpoint", value);
         }
     }
     #endregion
@@ -59,7 +59,7 @@ public class Post : Notificable
         notifier.NotificateSave(); //All posts, including this, will set isLastCheckpoint to false.
         IsLastCheckpoint = true; //Just this post will set to true.
 
-        GetComponent<PostController>().ShowArrow(true);
+        controller.Event("ShowArrow", true);
     }
 
     #region Notifications
@@ -91,7 +91,7 @@ public class Post : Notificable
 
         if(!playManager.IsSavedCheckpoint(transform.position))
         {
-            GetComponent<PostController>().ShowArrow(false);
+            controller.Event("ShowArrow", false);
             StartCoroutine(ReactivateCollider());
         }
 
