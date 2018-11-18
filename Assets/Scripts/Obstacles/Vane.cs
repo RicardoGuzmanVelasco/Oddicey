@@ -14,13 +14,13 @@ public class Vane : Obstacle
 	/// <summary>
 	/// Course the die will take when collides.
 	/// </summary>
-	[SerializeField]
+    /// <remarks>
+    /// CAVEAT: keep this SERIALIZED, preventing coherence fails.
+    /// </remarks>
+    [SerializeField]
     Direction dir;
 	Direction startingDir;
 
-    /// <summary>
-    /// Set <see cref="dir"/> and sprites to fit visually.
-    /// </summary>
     public Direction Dir
     {
         get
@@ -30,6 +30,7 @@ public class Vane : Obstacle
         
         set
         {
+            gameObject.GetComponentInChildren<SpriteRenderer>("Arrow").flipX = value == Direction.right;
             dir = value;
         }
     }
@@ -42,7 +43,7 @@ public class Vane : Obstacle
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Player")
+		if (collision.CompareTag("Player"))
 			TurnPlayer(collision.GetComponent<RollingCube>());
 	}
 
@@ -52,7 +53,7 @@ public class Vane : Obstacle
 	/// <param name="rollingCube">Player's <see cref="RollingCube"/> assigned.</param>
 	protected virtual void TurnPlayer(RollingCube rollingCube)
 	{
-		rollingCube.Turn(dir.ToVector2());
+		rollingCube.Turn(dir);
 	}
 
     #region Notifications
@@ -72,7 +73,8 @@ public class Vane : Obstacle
 
 	public override void OnDead()
 	{
-		dir = startingDir;
+        if(dir != startingDir)
+            TurnAround();
 	}
 	#endregion
 

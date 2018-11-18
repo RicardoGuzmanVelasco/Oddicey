@@ -268,9 +268,9 @@ public class RollingCube : MonoBehaviour
         FindObjectOfType<Notifier>().NotificateTurn();
     }
 
-    public void Turn(Vector2 newDir)
+    public void Turn(Direction newDir)
     {
-        direction = newDir.ToDirection();
-        FindObjectOfType<Notifier>().NotificateTurn();
+        if(direction != newDir)
+            Turn();
     }
 }
