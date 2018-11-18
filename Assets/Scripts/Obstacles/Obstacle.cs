@@ -17,8 +17,11 @@ using UnityEngine;
 /// </example>
 /// 
 [RequireComponent(typeof(SquareTransform))]
-public class Obstacle : MonoBehaviour
+public class Obstacle : Notificable
 {
+    /// <summary>
+    /// Global info about how grid squares have been populated.
+    /// </summary>
     static readonly Dictionary<Vector2, Obstacle> grid = new Dictionary<Vector2, Obstacle>();
     public static Dictionary<Vector2, Obstacle> Grid
     {
@@ -28,8 +31,19 @@ public class Obstacle : MonoBehaviour
         }
     }
 
-    void Start ()
+    /// <summary>
+    /// Visual MVC controller.
+    /// </summary>
+    protected Controller controller;
+
+    private void Awake()
+    {
+        controller = GetComponent<Controller>();
+    }
+
+    protected override void Start ()
 	{
+        base.Start();
         Grid.Add(GetComponent<SquareTransform>().Position, this);
 	}
 }

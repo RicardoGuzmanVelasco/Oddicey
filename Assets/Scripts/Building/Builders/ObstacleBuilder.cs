@@ -41,7 +41,7 @@ public abstract class ObstacleBuilder<T> : Builder
 
         set
         {
-            attachedTypeName = value.Trim("Default")+TypeExtensions.GetStaticType<T>(attached);
+            attachedTypeName = value.Trim("Default") + TypeExtensions.GetStaticType<T>(attached);
         }
     }
 
@@ -64,7 +64,7 @@ public abstract class ObstacleBuilder<T> : Builder
     /// <example>
     /// <seealso cref="VaneBuilder.type"/>, <seealso cref="VaneBuilder.UpdateAttachedTypeName"/>.
     /// </example>
-    abstract protected void UpdateAttachedTypeName();
+    abstract protected void UpdateAttachedTypeName(); //Maybe by reflection it can search type property in child.
     virtual protected void BeforeUpdateAttached() { }
     void UpdateAttached()
     {

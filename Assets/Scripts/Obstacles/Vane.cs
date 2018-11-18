@@ -9,7 +9,7 @@ using Utils.Directions;
 /// Change his own direction when player does, always being against the player.
 /// </remarks>
 [RequireComponent(typeof(Animator))]
-public class Vane : Notificable
+public class Vane : Obstacle
 {
 	/// <summary>
 	/// Course the die will take when collides.
@@ -17,8 +17,6 @@ public class Vane : Notificable
 	[SerializeField]
     Direction dir;
 	Direction startingDir;
-
-    private Animator animator;
 
     /// <summary>
     /// Set <see cref="dir"/> and sprites to fit visually.
@@ -32,8 +30,6 @@ public class Vane : Notificable
         
         set
         {
-            foreach (var sprite in GetComponentsInChildren<SpriteRenderer>())
-                sprite.flipX = value == Direction.right;
             dir = value;
         }
     }
@@ -41,7 +37,6 @@ public class Vane : Notificable
     protected override void Start()
 	{
         base.Start();
-        animator = GetComponent<Animator>();
         startingDir = dir;
 	}
 
@@ -87,6 +82,6 @@ public class Vane : Notificable
 	protected void TurnAround()
 	{
 		dir = dir.Reverse();
-        animator.SetTrigger("Turn");
+        controller.Event("Turn");
 	}
 }
