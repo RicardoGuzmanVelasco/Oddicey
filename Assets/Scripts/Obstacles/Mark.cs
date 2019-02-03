@@ -53,7 +53,7 @@ public class Mark : Notificable
 		set
 		{
 			state = value;
-			//Will be changed by animation play. That animation will make the color change.
+			//TODO: will be changed by animation play. That animation will make the color change.
 			spriteRenderer.color = state ? Color.green : Color.red;
             transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color; //TEST: to see easily cows.
 		}
@@ -73,9 +73,15 @@ public class Mark : Notificable
             SelectRandomSide();
 	}
 
-	private void SelectRandomSide()
+    /// <summary>
+    /// Chooses a random side if applicable — it is, <see cref="randomSide"/>.
+    /// </summary>
+	void SelectRandomSide()
 	{
-		sideRequired = Random.Range(1, 7); //'max' is exclusive.
+        if(!randomSide)
+            return;
+
+		sideRequired = Random.Range(1, 7); //'max' exclusive when int randomization.
 		spriteRenderer.sprite = sprites[sideRequired - 1];
 	}
 
