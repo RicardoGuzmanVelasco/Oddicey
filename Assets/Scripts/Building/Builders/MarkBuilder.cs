@@ -33,6 +33,11 @@ public class MarkBuilder : ObstacleBuilder<Mark>
     /// </remarks>
     [SerializeField]
     Sprite[] sprites = new Sprite[6];
+    /// <summary>
+    /// Sprite to show in editor in case the mark will be randomized.
+    /// </summary>
+    [SerializeField]
+    Sprite randomSpriteInEditor;
 
     #region Build assembly line
     protected override void UpdateAttachedTypeName()
@@ -46,8 +51,14 @@ public class MarkBuilder : ObstacleBuilder<Mark>
 
         attached.randomSide = sideRequired == 0;
         attached.sideRequired = sideRequired;
-        //Draw on edit mode if no random side.
-        attached.GetComponent<SpriteRenderer>().sprite = sideRequired != 0 ? sprites[sideRequired - 1] : null;
+
+        //Draw on edit mode if no random side and random sprite to perform in editor exists.
+        Sprite newSprite = null;
+        if(sideRequired != 0)
+            newSprite = sprites[sideRequired - 1];
+        else if (randomSpriteInEditor != null)
+            newSprite = randomSpriteInEditor;
+        attached.GetComponent<SpriteRenderer>().sprite = newSprite;
     }
     #endregion
 }
