@@ -18,12 +18,19 @@ public abstract class Builder : MonoBehaviour
     /// </summary>
     protected bool rebuild = false;
 
+    /// <summary>
+    /// An optional name the GameObject built by this script will own.
+    /// </summary>
     [SerializeField]
     string hierarchyName;
 
     /// <summary>
     /// <see cref="Builder"/> will self-destroy on play mode.
     /// </summary>
+    /// <remarks>
+    /// TODO: eventually this code could be restricted to UNITY_EDITOR,
+    /// and also any builder won't exist in !UNITY_EDITOR environments. 
+    /// </remarks>
     void Awake()
     {
         if(Application.isPlaying)
@@ -78,18 +85,24 @@ public abstract class Builder : MonoBehaviour
     #endregion
 
     #region Static methods
+    /// <summary>
+    /// Giving a space point, returns whether or not its the center of a square in this builder space.
+    /// </summary>
     public static bool IsSquare(Vector2 position)
     {
-        return position.x % SquareSize <= float.Epsilon && position.y % SquareSize <= float.Epsilon;
+        return position.x % SquareSize <= float.Epsilon &&
+               position.y % SquareSize <= float.Epsilon;
     }
-
+    /// <summary>
+    /// Giving a space single axis, returns whether or not its the center of a square in this builder space.
+    /// </summary>
     public static bool IsSquare(float units)
     {
         return units % SquareSize <= float.Epsilon;
     }
 
     /// <summary>
-    /// Convert from <paramref name="units"/> to game squares.
+    /// Converts from <paramref name="units"/> to game squares.
     /// </summary>
     /// <param name="units">Size in units.</param>
     /// <returns><paramref name="units"/> converted to squares.</returns>

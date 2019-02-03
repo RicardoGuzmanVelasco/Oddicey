@@ -75,7 +75,6 @@ public enum Notification
     /// </summary>
     SavingGroup = Save | Unsave
     #endregion
-
 }
 
 public sealed class Notifier : MonoBehaviour

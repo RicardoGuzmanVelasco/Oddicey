@@ -9,7 +9,7 @@
 public class Mark : Notificable
 {
     /// <summary>
-    /// If <see cref="sideRequired"/> must be shuffle within [1,6] or it's prefixed.
+    /// If <see cref="sideRequired"/> must be shuffled within [1,6] or it's prefixed.
     /// </summary>
     [HideInInspector]
     public bool randomSide;

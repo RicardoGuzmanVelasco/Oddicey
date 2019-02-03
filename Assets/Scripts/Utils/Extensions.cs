@@ -46,7 +46,7 @@ namespace Utils.Extensions
         }
         #endregion
 
-        #region Coords
+        #region Axis
         /// <summary>
         /// Returns same vector with <see cref="Vector3.x"/> changed to <paramref name="x"/>.
         /// </summary>

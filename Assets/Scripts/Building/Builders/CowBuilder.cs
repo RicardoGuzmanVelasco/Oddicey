@@ -15,7 +15,7 @@ using UnityEngine;
 public class CowBuilder : Builder
 {
     /// <summary>
-    /// Cow sprite. It will need rewording if cow sprite is split.
+    /// Cow sprite. TODO: It will need rewording if cow sprite is split.
     /// For example, a head sprite and a body sprite split with animate purposes.
     /// </summary>
     SpriteRenderer sprite;

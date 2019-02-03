@@ -46,6 +46,9 @@ public abstract class ObstacleBuilder<T> : Builder
     }
 
     #region Build assembly line
+    /// <summary>
+    /// Works as a generic assembly line. Thus, children just has to override relevant functions.
+    /// </summary>
     protected override void Build()
     {
         base.Build();
@@ -64,18 +67,22 @@ public abstract class ObstacleBuilder<T> : Builder
     /// <example>
     /// <seealso cref="VaneBuilder.type"/>, <seealso cref="VaneBuilder.UpdateAttachedTypeName"/>.
     /// </example>
-    abstract protected void UpdateAttachedTypeName(); //Maybe by reflection it can search type property in child.
+    abstract protected void UpdateAttachedTypeName(); //TODO: Maybe by reflection it can search type property in child.
     virtual protected void BeforeUpdateAttached() { }
+
+    /// <summary>
+    /// By type reflection, this builder infers obstacle that must build.
+    /// </summary>
+    /// <seealso cref="TypeExtensions.GetStaticType{T}(T)"/>
     void UpdateAttached()
     {
         //This loop prevents attached cloning when prefab is modified in edit time.
         foreach(var attachedClones in GetComponents<T>())
             DestroyImmediate(attachedClones as UnityEngine.Object);
 
-        Type type = TypeExtensions.GetStaticType<T>(attached).GetSubClass(attachedTypeName);
-        // If this operation return null, type is the obstacle's class itself, not a subclass.
-        if(type == null)
-            type = TypeExtensions.GetStaticType<T>(attached);
+        // If GetSubClass() returns null, type is the obstacle's class itself, not a subclass.
+        Type type = TypeExtensions.GetStaticType<T>(attached).GetSubClass(attachedTypeName) ??
+                    TypeExtensions.GetStaticType<T>(attached);
         gameObject.AddComponent(type);
 
         attached = GetComponent<T>();
