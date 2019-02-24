@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -278,6 +279,17 @@ namespace Utils.Extensions
             if(list.Count == 0)
                 throw new System.IndexOutOfRangeException("Cannot select a random item from an empty list.");
             return list[UnityEngine.Random.Range(0, list.Count)];
+        }
+    }
+
+    public static class DictionaryExtensionMethods
+    {
+        public static Dictionary<K, V> HashtableToDictionary<K, V>(Hashtable hashTable)
+        {
+            Dictionary<K, V> dict = new Dictionary<K, V>();
+            foreach(DictionaryEntry tuple in hashTable)
+                dict.Add((K)tuple.Key, (V)tuple.Value);
+            return dict;
         }
     }
 

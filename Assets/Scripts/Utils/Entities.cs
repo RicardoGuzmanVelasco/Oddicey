@@ -2,7 +2,7 @@
 using Utils.Directions;
 
 /// <summary>
-/// Represents a checkpoint data in world space.
+/// Represents a 2D checkpoint data in world space.
 /// </summary>
 public struct Checkpoint
 {
@@ -19,9 +19,9 @@ public struct Checkpoint
     /// Makes a new checkpoint with <see cref="Player"/> current position and direction.
     /// </summary>
     /// <param name="player"></param>
-    public Checkpoint(Player player)
+    public Checkpoint(Vector2 position, Direction direction)
     {
-        position = player.transform.position;
-        direction = player.GetComponent<RollingCube>().direction;
+        this.position = position;
+        this.direction = direction;
     }
 }

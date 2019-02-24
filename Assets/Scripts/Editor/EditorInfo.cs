@@ -20,6 +20,10 @@ namespace Utils.EditorExtensions
 
     }
 
+    /// <summary>
+    /// Controls the taxonomy and hotkeys created by all menu items needed. 
+    /// </summary>
+    /// <seealso cref="https://unity3d.com/es/learn/tutorials/topics/interface-essentials/unity-editor-extensions-menu-items"/>
     public static class MenuItems
     {
         /// <summary>
@@ -53,7 +57,6 @@ namespace Utils.EditorExtensions
         /// </remarks>
         /// <param name="key"> Character representing the keyboard key to attach the hotkey.</param>
         /// <param name="hotkeys">Optional sequence of commands to attach the hotkey.</param>
-        /// <seealso cref="https://unity3d.com/es/learn/tutorials/topics/interface-essentials/unity-editor-extensions-menu-items."/>
         public static string Hotkey(char key, params string[] hotkeys)
         {
             string commands = " ";

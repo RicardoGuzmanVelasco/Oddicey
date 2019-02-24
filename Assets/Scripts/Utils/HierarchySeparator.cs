@@ -28,7 +28,7 @@ public class HierarchySeparator : MonoBehaviour
 
     private void Start()
     {
-        throw new System.TypeLoadException("A Separator gameobject mustn't be actived.");
+        throw new System.TypeLoadException("A Separator gameobject mustn't be active.");
     }
 
     private void OnEnable()

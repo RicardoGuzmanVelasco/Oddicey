@@ -4,11 +4,11 @@ using Utils.Extensions;
 using System;
 
 /// <summary>
-/// Draw sprites from <see cref="groups"/> as childs of a <see cref="GameObject"/> called "/Sprites".
+/// Draw sprites from <see cref="groups"/> as children of a <see cref="GameObject"/> called "/Sprites".
 /// It requires <see cref="SpriteRenderer"/> component to set the sprites setup.
 /// </summary>
 /// <remarks>
-/// As a child of <see cref="Builder"/>, it selfdestroys on play mode,
+/// As a child of <see cref="Builder"/>, it self-destroys on play mode,
 /// so <see cref="Start"/> acts just on edit mode.
 /// </remarks>
 [ExecuteInEditMode]

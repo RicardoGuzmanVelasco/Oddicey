@@ -29,7 +29,7 @@ public class PlayManager : Notificable
     {
         base.Start(); //Notificable will self-subscribe when "start".
 
-        checkpoints.Push(new Checkpoint(player));
+        checkpoints.Push(new Checkpoint(player.transform.position, player.GetComponent<RollingCube>().direction));
     }
 
     /// <summary>
@@ -61,6 +61,7 @@ public class PlayManager : Notificable
 
     public override void OnDead()
     {
+
         player.Teleport(checkpoints.Peek().position);
         player.GetComponent<RollingCube>().direction = checkpoints.Peek().direction;
 
@@ -69,8 +70,8 @@ public class PlayManager : Notificable
 
     public override void OnSave()
 	{
-		checkpoints.Push(new Checkpoint(player));
-	}
+        checkpoints.Push(new Checkpoint(player.transform.position, player.GetComponent<RollingCube>().direction));
+    }
 
     /// <summary>
     /// Deletes the last saved checkpoint if exists, excluding starting point.
