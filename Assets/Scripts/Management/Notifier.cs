@@ -7,11 +7,11 @@ using Utils.Extensions;
 [Flags]
 public enum Notification
 {
-    #region Special elements
+    #region Elements
     /// <summary>
     /// All news, identity element.
     /// </summary>
-    Any = ~0,
+    Any = 255,
     /// <summary>
     /// Zero, absorbing element.
     /// </summary>
